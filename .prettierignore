@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+
+# Next.js
+.next
+out
+
+# Build
+dist
+build
+.turbo
+
+# Environment
+.env*
+!.env.example
+
+# Logs
+*.log
+
+# Cache
+.cache
+.eslintcache
+.parcel-cache
+
+# Testing
+coverage
+.nyc_output
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vercel
+.vercel
