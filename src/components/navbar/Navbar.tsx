@@ -5,7 +5,7 @@ import CutCornerButton from '../CutCornerButton';
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full">
+    <header className="sticky top-5 z-50 w-full">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-10 px-6">
         <Link
           href="/"
