@@ -1,5 +1,4 @@
 'use client';
-import { Navbar } from '@/components/navbar/Navbar';
 import HeroSection from './HeroSection';
 import Philosophy from './components/Philosophy';
 import Newsletter from './components/Newsletter';
@@ -23,7 +22,6 @@ export default function Home() {
         id="smooth-content"
         className="bg-background text-foreground selection:bg-foreground selection:text-background min-h-screen"
       >
-        <Navbar />
         <main className="mx-auto max-w-7xl px-6 py-20 lg:py-32">
           <HeroSection />
           <Philosophy />
