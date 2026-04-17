@@ -1,7 +1,6 @@
-'use client';
-
 import Link from 'next/link';
 import CutCornerButton from '../CutCornerButton';
+import SignIn from '../sign-in';
 
 export function Navbar() {
   return (
@@ -13,10 +12,12 @@ export function Navbar() {
         >
           KIRITO.BLOG
         </Link>
+
         <nav className="flex items-center gap-8">
           <CutCornerButton text="Blogs </>" url="/blogs" />
           <CutCornerButton text="About </>" url="/about" />
         </nav>
+        <SignIn />
       </div>
     </header>
   );

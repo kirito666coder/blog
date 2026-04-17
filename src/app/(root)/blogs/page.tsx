@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { ScrollSmoother } from '@/lib/gsap';
 import BlogsContainer from './BlogsContainer';
-import { Navbar } from '@/components/navbar/Navbar';
 
 export default function BlogsPage() {
   useEffect(() => {
@@ -23,7 +22,6 @@ export default function BlogsPage() {
         id="smooth-content"
         className="bg-background text-foreground selection:bg-foreground selection:text-background min-h-screen"
       >
-        <Navbar />
         <div className="mx-auto flex max-w-7xl flex-col gap-16 px-6 py-20 lg:py-32">
           <header className="flex max-w-4xl flex-col gap-6">
             <div className="flex items-center gap-4">
