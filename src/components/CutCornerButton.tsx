@@ -4,7 +4,23 @@ import { useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import type { CSSProperties } from 'react';
 
-export default function CutCornerButton({ text, url = '' }: { text: string; url?: string }) {
+type CutCornerButtonProps = {
+  text: string;
+  url?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  className?: string;
+  onClick?: () => void;
+};
+
+export default function CutCornerButton({
+  text,
+  url = '',
+  type = 'button',
+  disabled = false,
+  className = '',
+  onClick,
+}: CutCornerButtonProps) {
   const btnRef = useRef<HTMLButtonElement | null>(null);
   const pathname = usePathname();
 
@@ -46,15 +62,18 @@ export default function CutCornerButton({ text, url = '' }: { text: string; url?
         onMouseLeave={() => {
           if (!isActive) applyLeave();
         }}
-        className={`cursor-pointer border-white py-1.5 hover:border ${isActive ? 'border' : ''}`}
+        className={`cursor-pointer py-1.5 hover:border ${isActive ? 'border' : ''} ${className}`}
         style={{
           clipPath:
             'polygon(14px 0%, 100% 0%, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0% 100%, 0% 14px)',
         }}
       >
         <button
+          onClick={onClick}
+          type={type}
+          disabled={disabled}
           ref={btnRef}
-          className="relative cursor-pointer overflow-hidden px-8 py-2 font-semibold tracking-wide text-white"
+          className="relative cursor-pointer overflow-hidden px-8 py-2 font-semibold tracking-wide"
           style={
             {
               '--cut': isActive ? '0px' : '14px',

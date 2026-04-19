@@ -36,7 +36,7 @@ export default function SignOut() {
       onMouseLeave={() => {
         applyLeave();
       }}
-      className="cursor-pointer border-red-500 py-1.5 hover:border"
+      className="cursor-pointer border-red-500 py-1 hover:border"
       style={{
         clipPath:
           'polygon(14px 0%, 100% 0%, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0% 100%, 0% 14px)',
