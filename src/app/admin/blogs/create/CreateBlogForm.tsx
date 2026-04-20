@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import CutCornerButton from '@/components/CutCornerButton';
+import { blogValidator } from '@/lib/validators/blogs';
+import { createBlog } from './action';
 
 interface BlogFormData {
   title: string;
@@ -11,7 +13,6 @@ interface BlogFormData {
   tags: string;
   category: string;
   status: 'draft' | 'published';
-  readingTime: number;
   seo: {
     metaTitle: string;
     metaDescription: string;
@@ -28,7 +29,6 @@ export default function CreateBlogForm() {
     tags: '',
     category: '',
     status: 'draft',
-    readingTime: 5,
     seo: {
       metaTitle: '',
       metaDescription: '',
@@ -84,7 +84,21 @@ export default function CreateBlogForm() {
       },
     };
 
-    console.log('Submitting blog payload:', processedData);
+    const result = blogValidator.safeParse(processedData);
+
+    if (!result.success) {
+      console.error('zod validation failed:', result.error.flatten());
+      setIsSubmitting(false);
+      return;
+    }
+
+    const res = await createBlog(result.data);
+
+    if (res.error) {
+      console.error(res.error);
+      setIsSubmitting(false);
+      return;
+    }
 
     // Simulate API call
     setTimeout(() => {
@@ -193,25 +207,6 @@ export default function CreateBlogForm() {
                   Published
                 </option>
               </select>
-            </div>
-
-            <div className="flex flex-1 flex-col gap-2">
-              <label
-                htmlFor="readingTime"
-                className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-              >
-                Read Time (min)
-              </label>
-              <input
-                type="number"
-                id="readingTime"
-                name="readingTime"
-                min="1"
-                required
-                value={formData.readingTime}
-                onChange={handleChange}
-                className="bg-input/20 border-border/50 text-foreground rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-              />
             </div>
           </div>
         </div>
@@ -371,7 +366,7 @@ export default function CreateBlogForm() {
           text={isSubmitting ? 'publishing...' : 'Publish'}
           type="submit"
           disabled={isSubmitting}
-          className="border-blue-600"
+          className={`${isSubmitting ? 'border-green-600' : 'border-blue-600'}`}
         />
       </div>
     </form>

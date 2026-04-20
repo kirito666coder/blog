@@ -6,7 +6,7 @@ import SignOut from '../sign-out';
 
 export async function Navbar() {
   const session = await auth();
-  console.log(session?.user.role, 'this is session');
+
   return (
     <header className="sticky top-5 z-50 w-full">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-10 px-6">
