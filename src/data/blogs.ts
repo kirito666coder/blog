@@ -1,100 +1,147 @@
-export type Category = 'Development' | 'Design' | 'AI' | 'Personal';
-
-export interface BlogPost {
-  id: string;
-  title: string;
-  description: string;
-  content: string;
-  date: string;
-  category: Category;
-  slug: string;
-  codeSnippet?: {
-    language: string;
-    code: string;
-  };
-}
-
-export const categories: Category[] = ['Development', 'Design', 'AI', 'Personal'];
-
-export const blogs: BlogPost[] = [
+export const dummyBlogs = [
   {
-    id: '1',
-    title: 'The Future of Web Development',
-    description: 'Exploring the impact of AI on the future of web development and how to adapt.',
-    date: 'April 15, 2026',
-    category: 'Development',
-    slug: 'future-of-web-dev',
+    title: 'Advanced React Patterns for Scalable Applications',
+    slug: 'advanced-react-patterns',
+    category: 'Frontend',
+    excerpt:
+      'Explore advanced React patterns like compound components, render props, and custom hooks used in large-scale applications.',
+
     content: `
-      Web development is changing rapidly. With the rise of AI-driven tools, developers are becoming more productive than ever. 
-      However, this also means the bar for entry is rising. You need to understand not just how to code, but how to architect systems.
-      
-      Here is a simple example of a modern React component using Tailwind CSS:
-    `,
-    codeSnippet: {
-      language: 'tsx',
-      code: `
-export function Welcome({ name }: { name: string }) {
-  return (
-    <div className="p-8 border border-white/10 rounded-xl glass">
-      <h1 className="text-2xl font-bold">Welcome, {name}!</h1>
-      <p className="text-muted-foreground">Modern B&W design system.</p>
-    </div>
-  );
+# Advanced React Patterns
+
+In modern React development, simple component structures are often not enough for scalable applications.
+
+## 1. Compound Components
+
+This pattern allows components to share implicit state.
+
+\`\`\`tsx
+function Tabs({ children }) {
+  const [active, setActive] = useState(0);
+  return children({ active, setActive });
 }
-      `.trim(),
+\`\`\`
+
+## 2. Render Props
+
+A technique for sharing logic using a function as a child.
+
+\`\`\`tsx
+<FetchData render={(data) => <UI data={data} />} />
+\`\`\`
+
+## 3. Custom Hooks
+
+Encapsulate reusable logic.
+
+\`\`\`ts
+function useAuth() {
+  const [user, setUser] = useState(null);
+  return { user };
+}
+\`\`\`
+
+## Conclusion
+
+These patterns help maintain clean and scalable React architecture.
+    `,
+
+    tags: ['react', 'patterns', 'advanced'],
+    seo: {
+      metaTitle: 'Advanced React Patterns Explained',
+      metaDescription:
+        'Learn advanced React patterns like compound components, render props, and hooks for scalable apps.',
+      keywords: ['react patterns', 'advanced react', 'react architecture'],
     },
   },
-  {
-    id: '2',
-    title: 'Minimalist Design Principles',
-    description: 'How to build beautiful, high-performance websites using only black and white.',
-    date: 'April 12, 2026',
-    category: 'Design',
-    slug: 'minimalist-design',
-    content: `
-      Design doesn't need to be colorful to be impactful. In fact, a black and white palette can often feel more premium and focused.
-      The key is to use whitespace effectively and focus on typography.
-    `,
-  },
-  {
-    id: '3',
-    title: 'Getting Started with Shiki',
-    description: 'A guide to implementing beautiful syntax highlighting in your Next.js project.',
-    date: 'April 10, 2026',
-    category: 'Development',
-    slug: 'shiki-highlighting',
-    content: `
-      Shiki is a powerful syntax highlighter based on TextMate grammars. It provides high-quality highlighting that matches your VS Code theme.
-      
-      Here is how you initialize Shiki:
-    `,
-    codeSnippet: {
-      language: 'typescript',
-      code: `
-import { getHighlighter } from 'shiki';
 
-const highlighter = await getHighlighter({
-  themes: ['github-dark', 'github-light'],
-  langs: ['javascript', 'typescript', 'tsx', 'css', 'html'],
-});
+  {
+    title: 'Understanding Next.js Server Actions Deeply',
+    slug: 'nextjs-server-actions-guide',
+    category: 'Backend',
+    excerpt:
+      'A deep dive into Next.js Server Actions, how they work, and when to use them in real-world apps.',
 
-const html = highlighter.codeToHtml('const hello = "world";', {
-  lang: 'javascript',
-  theme: 'github-dark',
-});
-      `.trim(),
+    content: `
+# Next.js Server Actions
+
+Server Actions allow you to run server-side code directly from components.
+
+## Example
+
+\`\`\`ts
+'use server';
+
+export async function createPost(data) {
+  // server logic
+}
+\`\`\`
+
+## Why Use Server Actions?
+
+- No need for API routes
+- Better security
+- Direct DB access
+
+## Use Cases
+
+- Form submissions
+- Mutations
+- Admin dashboards
+
+## Conclusion
+
+Server Actions simplify backend logic in modern React apps.
+    `,
+
+    tags: ['nextjs', 'server-actions', 'backend'],
+    seo: {
+      metaTitle: 'Next.js Server Actions Guide',
+      metaDescription:
+        'Learn how to use Next.js Server Actions effectively in real-world applications.',
+      keywords: ['nextjs server actions', 'nextjs backend', 'react server'],
     },
   },
+
   {
-    id: '4',
-    title: 'The AI Revolution in 2026',
-    description: 'Looking back at the transformative power of AI in the last year.',
-    date: 'April 5, 2026',
-    category: 'AI',
-    slug: 'ai-revolution-2026',
+    title: 'DevOps Basics for Frontend Developers',
+    slug: 'devops-for-frontend',
+    category: 'DevOps',
+    excerpt:
+      'Learn essential DevOps concepts every frontend developer should know including CI/CD and deployment.',
+
     content: `
-      AI has moved from being a tool to a collaborator. We no longer just use AI; we work alongside it.
-      This shift has changed the way we think about software engineering and general productivity.
+# DevOps for Frontend Developers
+
+DevOps is not just for backend engineers.
+
+## CI/CD Pipeline
+
+Continuous Integration and Deployment automate your workflow.
+
+## Example Flow
+
+1. Push code to GitHub
+2. Run tests
+3. Deploy automatically
+
+## Tools
+
+- GitHub Actions
+- Docker
+- Vercel
+
+## Conclusion
+
+Understanding DevOps improves deployment and reliability.
     `,
+
+    tags: ['devops', 'ci-cd', 'deployment'],
+    seo: {
+      metaTitle: 'DevOps Basics for Frontend Developers',
+      metaDescription:
+        'Understand CI/CD, deployment, and DevOps essentials for frontend developers.',
+      keywords: ['devops frontend', 'ci cd basics', 'deployment guide'],
+    },
   },
 ];
