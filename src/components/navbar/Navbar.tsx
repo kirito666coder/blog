@@ -24,8 +24,8 @@ export async function Navbar() {
               <CutCornerButton text="About </>" url="/about" />
             </div>
             <div className="flex max-h-15 min-h-15 max-w-85 min-w-85 items-center justify-between">
-              <CutCornerButton text="Coming Soon" url="/" />
-              <CutCornerButton text="Coming Soon" url="/" />
+              <CutCornerButton text="Coming Soon" url="/coming-soon" />
+              <CutCornerButton text="Coming Soon" url="/coming-soon" />
             </div>
           </nav>
         </div>
