@@ -68,7 +68,7 @@ export const BlogCard = ({ title, slug, category, excerpt, tags }: BlogCardProps
   }, []);
 
   return (
-    <Link href={`/blog/${slug}`} className="group perspective-1000 block">
+    <Link href={`blogs/${slug}`} className="group perspective-1000 block">
       <div
         ref={cardRef}
         className="glass premium-shadow relative flex flex-col gap-4 overflow-hidden rounded-2xl p-6 transition-colors hover:border-white/20"
