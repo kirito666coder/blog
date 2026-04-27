@@ -43,3 +43,5 @@ export const blogSchema = z.object({
   updatedAt: z.date(),
   publishedAt: z.date().nullable(),
 });
+
+export type Blog = z.infer<typeof blogSchema>;

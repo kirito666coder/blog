@@ -1,7 +1,7 @@
 'use server';
 
 import { auth } from '@/auth';
-import { connectDb } from '@/lib/mongodb';
+import { connectDb } from '@/db/mongodb';
 import { blogValidator } from '@/lib/validators/blogs';
 export async function createBlog(data: unknown) {
   try {
