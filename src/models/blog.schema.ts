@@ -39,9 +39,9 @@ export const blogSchema = z.object({
     keywords: z.array(z.string()),
   }),
 
-  createdAt: z.date(),
-  updatedAt: z.date(),
-  publishedAt: z.date().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  publishedAt: z.string().nullable(),
 });
 
 export type Blog = z.infer<typeof blogSchema>;

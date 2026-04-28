@@ -43,9 +43,9 @@ export async function createBlog(data: unknown) {
         likes: 0,
       },
       readingTime: Math.ceil(validData.content.split(/\s+/).length / 200),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      publishedAt: validData.status === 'published' ? new Date() : null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      publishedAt: validData.status === 'published' ? new Date().toISOString() : null,
     };
 
     await db.collection('blogs').insertOne(finalData);
