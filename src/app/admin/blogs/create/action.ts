@@ -1,7 +1,7 @@
 'use server';
 
 import { auth } from '@/auth';
-import { connectDb } from '@/db/mongodb';
+import { getCollection } from '@/db/services/collectionServices';
 import { blogValidator } from '@/lib/validators/blogs';
 export async function createBlog(data: unknown) {
   try {
@@ -25,8 +25,6 @@ export async function createBlog(data: unknown) {
 
     const user = session.user;
 
-    const db = await connectDb();
-
     const validData = parsed.data;
 
     const finalData = {
@@ -48,7 +46,9 @@ export async function createBlog(data: unknown) {
       publishedAt: validData.status === 'published' ? new Date().toISOString() : null,
     };
 
-    await db.collection('blogs').insertOne(finalData);
+    const db = await getCollection('blogs');
+
+    await db.insertOne(finalData);
 
     return { success: true };
   } catch (error) {
@@ -57,6 +57,40 @@ export async function createBlog(data: unknown) {
     return {
       error: {
         message: 'Failed to create blog',
+      },
+    };
+  }
+}
+
+export async function findSlug(slug: string) {
+  try {
+    const db = await getCollection('blogs');
+
+    const existing = await db.findOne({ slug });
+
+    if (!existing) {
+      return {
+        available: true,
+        suggestedSlug: slug,
+      };
+    }
+
+    let count = 1;
+    let newSlug = `${slug}-${count}`;
+
+    while (await db.findOne({ slug: newSlug })) {
+      count++;
+      newSlug = `${slug}-${count}`;
+    }
+
+    return {
+      available: false,
+      suggestedSlug: newSlug,
+    };
+  } catch {
+    return {
+      error: {
+        message: 'Something went wrong',
       },
     };
   }

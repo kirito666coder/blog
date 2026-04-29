@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
 import { Navbar } from '@/components/navbar/Navbar';
+import { ToastContainer } from 'react-toastify';
 
 const roboto = localFont({
   src: [
@@ -51,6 +52,7 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <Navbar />
         {children}
+        <ToastContainer />
       </body>
     </html>
   );

@@ -46,6 +46,9 @@ importers:
       react-syntax-highlighter:
         specifier: ^16.1.1
         version: 16.1.1(react@19.2.4)
+      react-toastify:
+        specifier: ^11.1.0
+        version: 11.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
       shiki:
         specifier: ^4.0.2
         version: 4.0.2
@@ -4037,6 +4040,15 @@ packages:
     peerDependencies:
       react: '>= 0.14.0'
 
+  react-toastify@11.1.0:
+    resolution:
+      {
+        integrity: sha512-e9h23x3phN0wbFeB6yovmWp7lobzV4CaCH0LO8nVP6H7Y+3GbcLpIzMm9dJhcp1RXbpyfvjgpfXqO80QAmn7sg==,
+      }
+    peerDependencies:
+      react: ^18 || ^19
+      react-dom: ^18 || ^19
+
   react-use-measure@2.1.7:
     resolution:
       {
@@ -7430,6 +7442,12 @@ snapshots:
       prismjs: 1.30.0
       react: 19.2.4
       refractor: 5.0.0
+
+  react-toastify@11.1.0(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
+    dependencies:
+      clsx: 2.1.1
+      react: 19.2.4
+      react-dom: 19.2.4(react@19.2.4)
 
   react-use-measure@2.1.7(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:

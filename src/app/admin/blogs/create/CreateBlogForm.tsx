@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import CutCornerButton from '@/components/CutCornerButton';
 import { blogValidator } from '@/lib/validators/blogs';
-import { createBlog } from './action';
+import { createBlog, findSlug } from './action';
+import { toast } from 'react-toastify';
 
 interface BlogFormData {
   title: string;
@@ -53,7 +54,7 @@ export default function CreateBlogForm() {
     }
   };
 
-  const generateSlug = () => {
+  const generateSlug = async () => {
     if (!formData.title) return;
     const generated = formData.title
       .toLowerCase()
@@ -61,6 +62,19 @@ export default function CreateBlogForm() {
       .replace(/[^\w\s-]/g, '')
       .replace(/[\s_-]+/g, '-')
       .replace(/^-+|-+$/g, '');
+
+    const SlugIsAvailable = await findSlug(generated);
+
+    if (!SlugIsAvailable.available) {
+      if (!SlugIsAvailable.suggestedSlug) return toast.error('Something went wrong');
+      setFormData((prev) => ({
+        ...prev,
+        slug: SlugIsAvailable.suggestedSlug,
+      }));
+      toast.info(`Slug updated to ${SlugIsAvailable.suggestedSlug}`);
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, slug: generated }));
   };
 
@@ -68,6 +82,16 @@ export default function CreateBlogForm() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const SlugIsAvailable = await findSlug(formData.slug);
+
+    if (!SlugIsAvailable.available) {
+      if (!SlugIsAvailable.suggestedSlug) return;
+      setFormData((prev) => ({
+        ...prev,
+        slug: SlugIsAvailable.suggestedSlug,
+      }));
+      toast.info(`Slug updated to ${SlugIsAvailable.suggestedSlug}`);
+    }
     // Process comma-separated tags
     const processedData = {
       ...formData,
@@ -88,6 +112,7 @@ export default function CreateBlogForm() {
 
     if (!result.success) {
       console.error('zod validation failed:', result.error.flatten());
+      toast.error(result.error.message);
       setIsSubmitting(false);
       return;
     }
@@ -100,11 +125,22 @@ export default function CreateBlogForm() {
       return;
     }
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      alert('Blog created successfully! (Check console for payload)');
-    }, 1500);
+    toast.success('Blog created successfully');
+    setIsSubmitting(false);
+    setFormData({
+      title: '',
+      slug: '',
+      excerpt: '',
+      content: '',
+      tags: '',
+      category: '',
+      status: 'draft',
+      seo: {
+        metaTitle: '',
+        metaDescription: '',
+        keywords: '',
+      },
+    });
   };
 
   return (
