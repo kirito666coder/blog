@@ -21,9 +21,9 @@ export function toBlogDTO(doc: WithId<Document>) {
     readingTime: doc.readingTime,
     seo: doc.seo,
 
-    createdAt: doc.createdAt.toISOString(),
-    updatedAt: doc.updatedAt.toISOString(),
-    publishedAt: doc.publishedAt?.toISOString() ?? null,
+    createdAt: doc.createdAt,
+    updatedAt: doc.updatedAt,
+    publishedAt: doc.publishedAt ?? null,
   };
 
   return blogSchema.parse(raw);

@@ -1,527 +1,728 @@
 export const dummyBlogs = [
   {
-    title: 'Advanced React Patterns for Scalable Applications',
-    slug: 'advanced-react-patterns',
-    category: 'Frontend',
+    title: 'Scaling Next.js Applications with App Router Architecture',
+    slug: 'scaling-nextjs-app-router-architecture',
+    category: 'Architecture',
     excerpt:
-      'Explore advanced React patterns like compound components, render props, and custom hooks used in large-scale applications.',
-
+      'Learn how to structure large-scale Next.js applications using the App Router, layouts, and modular architecture patterns.',
+    status: 'published',
     content: `
-# Advanced React Patterns
+# Scaling Next.js Applications
 
-In modern React development, simple component structures are often not enough for scalable applications.
+As your application grows, structuring your project correctly becomes critical.
 
-## 1. Compound Components
+## Folder Structure Strategy
 
-This pattern allows components to share implicit state.
+Organize by feature instead of type:
+
+\`\`\`bash
+/app
+  /dashboard
+    /components
+    /hooks
+    /services
+\`\`\`
+
+This improves scalability and maintainability.
+
+## Layouts for Reusability
+
+Use nested layouts to avoid repetition:
 
 \`\`\`tsx
-function Tabs({ children }) {
-  const [active, setActive] = useState(0);
-  return children({ active, setActive });
+export default function DashboardLayout({ children }) {
+  return <div className="dashboard">{children}</div>;
 }
 \`\`\`
 
-## 2. Render Props
+## Server vs Client Components
 
-A technique for sharing logic using a function as a child.
+- Use Server Components for data fetching
+- Use Client Components only when needed
 
-\`\`\`tsx
-<FetchData render={(data) => <UI data={data} />} />
-\`\`\`
-
-## 3. Custom Hooks
-
-Encapsulate reusable logic.
+## Data Fetching Strategy
 
 \`\`\`ts
-function useAuth() {
-  const [user, setUser] = useState(null);
-  return { user };
+async function getData() {
+  const res = await fetch('/api/data', { cache: 'no-store' });
+  return res.json();
 }
 \`\`\`
 
 ## Conclusion
 
-These patterns help maintain clean and scalable React architecture.
-    `,
+A well-structured App Router setup ensures long-term scalability.
+  `,
 
-    tags: ['react', 'patterns', 'advanced'],
+    tags: ['nextjs', 'architecture', 'scalable'],
     seo: {
-      metaTitle: 'Advanced React Patterns Explained',
-      metaDescription:
-        'Learn advanced React patterns like compound components, render props, and hooks for scalable apps.',
-      keywords: ['react patterns', 'advanced react', 'react architecture'],
+      metaTitle: 'Scaling Next.js Apps with App Router',
+      metaDescription: 'Learn scalable architecture patterns in Next.js App Router.',
+      keywords: ['nextjs architecture', 'app router', 'scalable nextjs'],
     },
   },
-
   {
-    title: 'Understanding Next.js Server Actions Deeply',
-    slug: 'nextjs-server-actions-guide',
+    title: 'Optimizing React Performance in Large Applications',
+    slug: 'react-performance-optimization-guide',
+    category: 'Performance',
+    excerpt:
+      'Deep dive into techniques like memoization, code splitting, and virtualization to boost React performance.',
+    status: 'published',
+    content: `
+# React Performance Optimization
+
+Performance becomes critical in large applications.
+
+## Memoization
+
+Prevent unnecessary re-renders:
+
+\`\`\`tsx
+const MemoComponent = React.memo(({ value }) => {
+  return <div>{value}</div>;
+});
+\`\`\`
+
+## useMemo & useCallback
+
+\`\`\`tsx
+const memoValue = useMemo(() => compute(value), [value]);
+\`\`\`
+
+## Code Splitting
+
+\`\`\`tsx
+const LazyComponent = React.lazy(() => import('./HeavyComponent'));
+\`\`\`
+
+## Virtualization
+
+Use libraries like react-window:
+
+\`\`\`tsx
+<List height={400} itemCount={1000} itemSize={35}>
+  {Row}
+</List>
+\`\`\`
+
+## Conclusion
+
+Combining these techniques significantly improves performance.
+  `,
+
+    tags: ['react', 'performance', 'optimization'],
+    seo: {
+      metaTitle: 'React Performance Optimization Guide',
+      metaDescription: 'Improve React app performance with advanced techniques.',
+      keywords: ['react performance', 'memoization', 'optimization'],
+    },
+  },
+  {
+    title: 'Building Reusable UI Systems with Design Patterns in React',
+    slug: 'react-reusable-ui-design-patterns',
+    category: 'Frontend',
+    excerpt:
+      'Learn how to build scalable and reusable UI systems using compound components, slots, and composition.',
+    status: 'published',
+    content: `
+# Reusable UI Systems in React
+
+Reusable UI is key to scalable frontend architecture.
+
+## Compound Components
+
+\`\`\`tsx
+<Tabs>
+  <Tabs.List />
+  <Tabs.Panel />
+</Tabs>
+\`\`\`
+
+## Slot Pattern
+
+\`\`\`tsx
+<Card header={<Header />} footer={<Footer />} />
+\`\`\`
+
+## Composition Over Props
+
+\`\`\`tsx
+<Button>
+  <Icon />
+  Click Me
+</Button>
+\`\`\`
+
+## Benefits
+
+- Cleaner APIs
+- Flexible UI
+- Easier maintenance
+
+## Conclusion
+
+Design patterns help build scalable UI systems.
+  `,
+
+    tags: ['react', 'ui', 'patterns'],
+    seo: {
+      metaTitle: 'Reusable UI Patterns in React',
+      metaDescription: 'Build scalable UI systems using React patterns.',
+      keywords: ['react ui patterns', 'compound components', 'design system'],
+    },
+  },
+  {
+    title: 'Mastering Data Fetching in Next.js 14',
+    slug: 'nextjs-data-fetching-mastery',
     category: 'Backend',
     excerpt:
-      'A deep dive into Next.js Server Actions, how they work, and when to use them in real-world apps.',
-
+      'Understand caching, revalidation, and server-side data fetching strategies in modern Next.js.',
+    status: 'published',
     content: `
-# Next.js Server Actions
+# Data Fetching in Next.js 14
 
-Server Actions allow you to run server-side code directly from components.
+Next.js introduces powerful data fetching mechanisms.
 
-## Example
+## Static vs Dynamic
+
+\`\`\`ts
+fetch('/api/data', { cache: 'force-cache' });
+\`\`\`
+
+## Revalidation
+
+\`\`\`ts
+fetch('/api/data', { next: { revalidate: 60 } });
+\`\`\`
+
+## Server Actions
 
 \`\`\`ts
 'use server';
 
-export async function createPost(data) {
-  // server logic
-}
+export async function createPost() {}
 \`\`\`
 
-## Why Use Server Actions?
+## Streaming
 
-- No need for API routes
-- Better security
-- Direct DB access
-
-## Use Cases
-
-- Form submissions
-- Mutations
-- Admin dashboards
+React Server Components allow streaming UI.
 
 ## Conclusion
 
-Server Actions simplify backend logic in modern React apps.
-    `,
+Choosing the right fetching strategy improves performance.
+  `,
 
-    tags: ['nextjs', 'server-actions', 'backend'],
+    tags: ['nextjs', 'data-fetching', 'backend'],
     seo: {
-      metaTitle: 'Next.js Server Actions Guide',
-      metaDescription:
-        'Learn how to use Next.js Server Actions effectively in real-world applications.',
-      keywords: ['nextjs server actions', 'nextjs backend', 'react server'],
+      metaTitle: 'Next.js Data Fetching Guide',
+      metaDescription: 'Master data fetching in Next.js with caching and revalidation.',
+      keywords: ['nextjs data fetching', 'server actions', 'nextjs caching'],
     },
   },
-
   {
-    title: 'DevOps Basics for Frontend Developers',
-    slug: 'devops-for-frontend',
-    category: 'DevOps',
+    title: 'State Management at Scale in React Applications',
+    slug: 'react-state-management-at-scale',
+    category: 'Frontend',
     excerpt:
-      'Learn essential DevOps concepts every frontend developer should know including CI/CD and deployment.',
+      'Explore different state management strategies and when to use Context, Zustand, or Redux.',
+    status: 'published',
 
     content: `
-# DevOps for Frontend Developers
+# State Management at Scale
 
-DevOps is not just for backend engineers.
+Managing state becomes complex as apps grow.
 
-## CI/CD Pipeline
+## Local State
 
-Continuous Integration and Deployment automate your workflow.
-
-## Example Flow
-
-1. Push code to GitHub
-2. Run tests
-3. Deploy automatically
-
-## Tools
-
-- GitHub Actions
-- Docker
-- Vercel
-
-## Conclusion
-
-Understanding DevOps improves deployment and reliability.
-    `,
-
-    tags: ['devops', 'ci-cd', 'deployment'],
-    seo: {
-      metaTitle: 'DevOps Basics for Frontend Developers',
-      metaDescription:
-        'Understand CI/CD, deployment, and DevOps essentials for frontend developers.',
-      keywords: ['devops frontend', 'ci cd basics', 'deployment guide'],
-    },
-  },
-  {
-    title: 'React Server Components Explained',
-    slug: 'react-server-components',
-    category: 'Frontend',
-    excerpt: 'Understand how React Server Components work and why they improve performance.',
-    content: `
-# React Server Components
-
-React Server Components allow rendering components on the server.
-
-## Benefits
-- Reduced bundle size
-- Faster load times
-
-## Example
 \`\`\`tsx
-export default async function Page() {
-  const data = await fetchData();
-  return <div>{data}</div>;
+const [count, setCount] = useState(0);
+\`\`\`
+
+## Context API
+
+\`\`\`tsx
+const ThemeContext = createContext();
+\`\`\`
+
+## Zustand
+
+\`\`\`ts
+const useStore = create((set) => ({
+  count: 0,
+  increment: () => set((state) => ({ count: state.count + 1 }))
+}));
+\`\`\`
+
+## Redux Toolkit
+
+Best for very large apps.
+
+## Choosing the Right Tool
+
+- Small → useState
+- Medium → Context/Zustand
+- Large → Redux
+
+## Conclusion
+
+Pick the right tool based on complexity.
+  `,
+
+    tags: ['react', 'state-management', 'scalable'],
+    seo: {
+      metaTitle: 'React State Management Guide',
+      metaDescription: 'Learn scalable state management strategies in React.',
+      keywords: ['react state management', 'zustand', 'redux'],
+    },
+  },
+  {
+    title: 'Building Scalable API Layers with Next.js Route Handlers',
+    slug: 'nextjs-route-handlers-scalable-api',
+    category: 'Backend',
+    excerpt:
+      'Learn how to design scalable and maintainable API layers using Next.js Route Handlers and modular service patterns.',
+    status: 'published',
+
+    content: `
+# Scalable APIs with Next.js Route Handlers
+
+As applications grow, APIs must be structured cleanly.
+
+## Route Handler Basics
+
+\`\`\`ts
+export async function GET() {
+  return Response.json({ message: 'Hello' });
 }
 \`\`\`
 
-## Conclusion
-They are a game changer for performance.
-    `,
-    tags: ['react', 'rsc'],
-    seo: {
-      metaTitle: 'React Server Components Guide',
-      metaDescription: 'Deep dive into React Server Components.',
-      keywords: ['react server components'],
-    },
-  },
+## Service Layer Pattern
 
-  {
-    title: 'System Design: URL Shortener',
-    slug: 'system-design-url-shortener',
-    category: 'Backend',
-    excerpt: 'Design a scalable URL shortener like Bitly.',
-    content: `
-# URL Shortener System Design
-
-## Requirements
-- Generate short links
-- Redirect fast
-
-## Architecture
-- Hashing
-- Database indexing
-
-## Example
 \`\`\`ts
-const short = hash(url);
+// services/user.service.ts
+export async function getUsers() {
+  return db.users.findMany();
+}
+\`\`\`
+
+## Keep Logic Out of Routes
+
+\`\`\`ts
+export async function GET() {
+  const users = await getUsers();
+  return Response.json(users);
+}
+\`\`\`
+
+## Validation with Zod
+
+\`\`\`ts
+const schema = z.object({
+  name: z.string()
+});
 \`\`\`
 
 ## Conclusion
-Focus on scalability and caching.
-    `,
-    tags: ['system-design', 'backend'],
+
+Separate layers make APIs scalable and testable.
+  `,
+
+    tags: ['nextjs', 'api', 'backend'],
     seo: {
-      metaTitle: 'URL Shortener System Design',
-      metaDescription: 'Learn how to design scalable URL shorteners.',
-      keywords: ['system design'],
+      metaTitle: 'Next.js Route Handlers Guide',
+      metaDescription: 'Build scalable APIs with Next.js route handlers.',
+      keywords: ['nextjs api', 'route handlers', 'backend architecture'],
     },
   },
-
   {
-    title: 'Understanding Event Loop in JavaScript',
-    slug: 'event-loop-js',
+    title: 'Advanced Caching Strategies in Next.js Applications',
+    slug: 'nextjs-advanced-caching-strategies',
+    category: 'Performance',
+    excerpt:
+      'Explore caching layers like static generation, ISR, and edge caching for maximum performance.',
+    status: 'published',
+
+    content: `
+# Advanced Caching in Next.js
+
+Caching is key for performance.
+
+## Static Rendering
+
+\`\`\`ts
+fetch('/api/data', { cache: 'force-cache' });
+\`\`\`
+
+## ISR
+
+\`\`\`ts
+fetch('/api/data', { next: { revalidate: 60 } });
+\`\`\`
+
+## Dynamic Rendering
+
+\`\`\`ts
+fetch('/api/data', { cache: 'no-store' });
+\`\`\`
+
+## Edge Caching
+
+Deploy on edge networks for speed.
+
+## Conclusion
+
+Use the right caching strategy based on data freshness.
+  `,
+
+    tags: ['nextjs', 'performance', 'caching'],
+    seo: {
+      metaTitle: 'Next.js Caching Strategies',
+      metaDescription: 'Learn caching strategies for scalable Next.js apps.',
+      keywords: ['nextjs caching', 'ISR', 'performance'],
+    },
+  },
+  {
+    title: 'Designing Scalable Component Libraries in React',
+    slug: 'react-component-library-design',
     category: 'Frontend',
-    excerpt: 'Deep dive into how JavaScript handles async operations.',
+    excerpt:
+      'Learn how to build reusable and scalable component libraries using modern React patterns.',
+    status: 'published',
+
     content: `
-# Event Loop
+# Scalable Component Libraries
 
-JavaScript is single-threaded but asynchronous.
+Design systems improve consistency.
 
-## Phases
-- Call Stack
-- Callback Queue
+## Folder Structure
 
-## Example
-\`\`\`js
-setTimeout(() => console.log("hi"), 0);
-\`\`\`
-
-## Conclusion
-Understanding this prevents bugs.
-    `,
-    tags: ['javascript'],
-    seo: {
-      metaTitle: 'JS Event Loop Explained',
-      metaDescription: 'Learn how event loop works.',
-      keywords: ['event loop'],
-    },
-  },
-
-  {
-    title: 'Docker for Developers',
-    slug: 'docker-basics',
-    category: 'DevOps',
-    excerpt: 'Learn containerization with Docker.',
-    content: `
-# Docker Basics
-
-## Why Docker?
-Consistency across environments.
-
-## Example
 \`\`\`bash
-docker build -t app .
+/components
+  /Button
+  /Card
 \`\`\`
 
-## Conclusion
-Docker simplifies deployment.
-    `,
-    tags: ['docker'],
-    seo: {
-      metaTitle: 'Docker Guide',
-      metaDescription: 'Learn Docker basics.',
-      keywords: ['docker'],
-    },
-  },
+## Reusable Components
 
-  {
-    title: 'GraphQL vs REST',
-    slug: 'graphql-vs-rest',
-    category: 'Backend',
-    excerpt: 'Compare GraphQL and REST APIs.',
-    content: `
-# GraphQL vs REST
-
-## GraphQL
-Flexible queries
-
-## REST
-Simple structure
-
-## Conclusion
-Choose based on use case.
-    `,
-    tags: ['graphql', 'rest'],
-    seo: {
-      metaTitle: 'GraphQL vs REST',
-      metaDescription: 'Comparison guide.',
-      keywords: ['graphql'],
-    },
-  },
-
-  {
-    title: 'Advanced TypeScript Patterns',
-    slug: 'advanced-typescript',
-    category: 'Frontend',
-    excerpt: 'Explore generics, utility types, and advanced patterns.',
-    content: `
-# Advanced TypeScript
-
-## Generics
-\`\`\`ts
-function identity<T>(arg: T): T {
-  return arg;
+\`\`\`tsx
+export function Button({ children }) {
+  return <button>{children}</button>;
 }
 \`\`\`
 
-## Utility Types
-- Partial
-- Pick
+## Variant Pattern
 
-## Conclusion
-TypeScript improves maintainability.
-    `,
-    tags: ['typescript'],
-    seo: {
-      metaTitle: 'Advanced TypeScript',
-      metaDescription: 'Learn advanced TS.',
-      keywords: ['typescript'],
-    },
-  },
-
-  {
-    title: 'Caching Strategies in Web Apps',
-    slug: 'caching-strategies',
-    category: 'Backend',
-    excerpt: 'Learn different caching mechanisms.',
-    content: `
-# Caching Strategies
-
-## Types
-- Memory cache
-- CDN
-
-## Example
-\`\`\`ts
-cache.set(key, value);
+\`\`\`tsx
+<Button variant="primary" />
 \`\`\`
 
+## Theming
+
+Use context or CSS variables.
+
 ## Conclusion
-Caching boosts performance.
-    `,
-    tags: ['cache'],
+
+A solid component library speeds up development.
+  `,
+
+    tags: ['react', 'ui', 'design-system'],
     seo: {
-      metaTitle: 'Caching Strategies',
-      metaDescription: 'Improve performance with caching.',
-      keywords: ['caching'],
+      metaTitle: 'React Component Library Guide',
+      metaDescription: 'Build scalable UI libraries in React.',
+      keywords: ['react components', 'design system'],
     },
   },
-
   {
-    title: 'Authentication with JWT',
-    slug: 'jwt-authentication',
+    title: 'Authentication Patterns in Next.js Applications',
+    slug: 'nextjs-authentication-patterns',
     category: 'Backend',
-    excerpt: 'Implement authentication using JWT.',
+    excerpt:
+      'Explore secure authentication strategies using JWT, sessions, and modern auth providers.',
+    status: 'published',
+
     content: `
-# JWT Auth
+# Authentication in Next.js
 
-## Flow
-1. Login
-2. Token issued
+Security is critical.
 
-## Example
+## JWT Authentication
+
 \`\`\`ts
-jwt.sign({ userId }, secret);
+const token = jwt.sign({ id: user.id }, SECRET);
 \`\`\`
 
+## Session-Based Auth
+
+Store session securely in cookies.
+
+## Middleware Protection
+
+\`\`\`ts
+export function middleware(req) {
+  // check auth
+}
+\`\`\`
+
+## OAuth Providers
+
+Use Google, GitHub login.
+
 ## Conclusion
-JWT is stateless and scalable.
-    `,
-    tags: ['auth'],
+
+Choose authentication based on your app needs.
+  `,
+
+    tags: ['nextjs', 'auth', 'security'],
     seo: {
-      metaTitle: 'JWT Auth Guide',
-      metaDescription: 'Learn JWT authentication.',
-      keywords: ['jwt'],
+      metaTitle: 'Next.js Authentication Guide',
+      metaDescription: 'Secure your app with modern auth strategies.',
+      keywords: ['nextjs auth', 'jwt', 'oauth'],
     },
   },
-
   {
-    title: 'Web Performance Optimization',
-    slug: 'web-performance',
+    title: 'Handling Forms and Validation in React at Scale',
+    slug: 'react-forms-validation-scale',
     category: 'Frontend',
-    excerpt: 'Improve loading speed and performance.',
-    content: `
-# Performance
+    excerpt: 'Learn scalable form handling using React Hook Form and Zod validation.',
+    status: 'published',
 
-## Techniques
-- Lazy loading
-- Code splitting
+    content: `
+# Forms at Scale
+
+Managing forms can get complex.
+
+## React Hook Form
+
+\`\`\`tsx
+const { register } = useForm();
+\`\`\`
+
+## Zod Validation
+
+\`\`\`ts
+const schema = z.object({
+  email: z.string().email()
+});
+\`\`\`
+
+## Error Handling
+
+Display validation errors clearly.
 
 ## Conclusion
-Performance impacts UX.
-    `,
-    tags: ['performance'],
+
+Use proper tools to simplify forms.
+  `,
+
+    tags: ['react', 'forms', 'validation'],
     seo: {
-      metaTitle: 'Web Performance',
-      metaDescription: 'Optimize web apps.',
-      keywords: ['performance'],
+      metaTitle: 'React Forms Guide',
+      metaDescription: 'Handle forms efficiently in React apps.',
+      keywords: ['react forms', 'zod', 'react hook form'],
     },
   },
-
   {
-    title: 'Microservices Architecture',
-    slug: 'microservices',
-    category: 'Backend',
-    excerpt: 'Understand microservices vs monolith.',
-    content: `
-# Microservices
+    title: 'Code Splitting and Lazy Loading in React Applications',
+    slug: 'react-code-splitting-lazy-loading',
+    category: 'Performance',
+    excerpt: 'Improve performance using code splitting and lazy loading techniques.',
+    status: 'published',
 
-## Benefits
-- Scalability
-- Independent deployment
+    content: `
+# Code Splitting in React
+
+Reduce bundle size.
+
+## Lazy Loading
+
+\`\`\`tsx
+const Page = React.lazy(() => import('./Page'));
+\`\`\`
+
+## Suspense
+
+\`\`\`tsx
+<Suspense fallback="Loading...">
+  <Page />
+</Suspense>
+\`\`\`
+
+## Dynamic Imports
+
+Load components on demand.
 
 ## Conclusion
-Use for large systems.
-    `,
-    tags: ['microservices'],
+
+Split code to improve load time.
+  `,
+
+    tags: ['react', 'performance', 'lazy-loading'],
     seo: {
-      metaTitle: 'Microservices Guide',
-      metaDescription: 'Learn microservices.',
-      keywords: ['microservices'],
+      metaTitle: 'React Code Splitting Guide',
+      metaDescription: 'Optimize React apps with lazy loading.',
+      keywords: ['code splitting', 'react lazy'],
     },
   },
-
-  // 10 MORE (shortened but still useful)
-
   {
-    title: 'Redis Deep Dive',
-    slug: 'redis-deep-dive',
+    title: 'Error Handling Strategies in Next.js Applications',
+    slug: 'nextjs-error-handling-strategies',
     category: 'Backend',
-    excerpt: 'In-memory data store explained.',
-    content: `# Redis\nFast key-value store.`,
-    tags: ['redis'],
-    seo: { metaTitle: 'Redis', metaDescription: 'Redis guide', keywords: ['redis'] },
-  },
+    excerpt: 'Implement robust error handling using boundaries and API strategies.',
+    status: 'published',
 
+    content: `
+# Error Handling in Next.js
+
+Handle errors gracefully.
+
+## Error Boundaries
+
+\`\`\`tsx
+<ErrorBoundary>
+  <App />
+</ErrorBoundary>
+\`\`\`
+
+## API Error Handling
+
+\`\`\`ts
+try {
+  // logic
+} catch (e) {
+  return Response.json({ error: 'Error' });
+}
+\`\`\`
+
+## Logging
+
+Use tools like Sentry.
+
+## Conclusion
+
+Proper error handling improves reliability.
+  `,
+
+    tags: ['nextjs', 'errors', 'backend'],
+    seo: {
+      metaTitle: 'Next.js Error Handling',
+      metaDescription: 'Handle errors effectively in Next.js.',
+      keywords: ['error handling', 'nextjs'],
+    },
+  },
   {
-    title: 'WebSockets vs HTTP',
-    slug: 'websockets-vs-http',
+    title: 'Database Design for Scalable Web Applications',
+    slug: 'scalable-database-design-web',
     category: 'Backend',
-    excerpt: 'Real-time vs request-response.',
-    content: `# WebSockets\nReal-time communication.`,
-    tags: ['websockets'],
-    seo: { metaTitle: 'WebSockets', metaDescription: 'Guide', keywords: ['ws'] },
-  },
+    excerpt: 'Learn how to design scalable database schemas and relationships.',
+    status: 'published',
 
-  {
-    title: 'AI in Web Development',
-    slug: 'ai-web-dev',
-    category: 'AI',
-    excerpt: 'How AI is changing development.',
-    content: `# AI\nUsed for automation.`,
-    tags: ['ai'],
-    seo: { metaTitle: 'AI Dev', metaDescription: 'AI guide', keywords: ['ai'] },
-  },
+    content: `
+# Database Design
 
-  {
-    title: 'Scaling Databases',
-    slug: 'scaling-databases',
-    category: 'Backend',
-    excerpt: 'Vertical vs horizontal scaling.',
-    content: `# Scaling\nImportant for growth.`,
-    tags: ['db'],
-    seo: { metaTitle: 'Scaling DB', metaDescription: 'Scaling guide', keywords: ['db'] },
-  },
+A strong schema is essential.
 
-  {
-    title: 'Edge Computing Explained',
-    slug: 'edge-computing',
-    category: 'DevOps',
-    excerpt: 'Compute closer to users.',
-    content: `# Edge\nLow latency.`,
-    tags: ['edge'],
-    seo: { metaTitle: 'Edge', metaDescription: 'Edge guide', keywords: ['edge'] },
-  },
+## Normalization
 
-  {
-    title: 'Security Best Practices',
-    slug: 'web-security',
-    category: 'Security',
-    excerpt: 'Protect your apps.',
-    content: `# Security\nAlways sanitize input.`,
-    tags: ['security'],
-    seo: { metaTitle: 'Security', metaDescription: 'Security tips', keywords: ['security'] },
-  },
+Avoid redundant data.
 
+## Indexing
+
+\`\`\`ts
+db.collection.createIndex({ email: 1 });
+\`\`\`
+
+## Relationships
+
+Use references wisely.
+
+## Conclusion
+
+Good database design ensures scalability.
+  `,
+
+    tags: ['database', 'backend', 'scalable'],
+    seo: {
+      metaTitle: 'Database Design Guide',
+      metaDescription: 'Design scalable databases.',
+      keywords: ['database design', 'scaling'],
+    },
+  },
   {
-    title: 'State Management Comparison',
-    slug: 'state-management',
+    title: 'Optimizing Images and Assets in Next.js',
+    slug: 'nextjs-image-optimization',
+    category: 'Performance',
+    excerpt: 'Learn how to optimize images and assets using Next.js features.',
+    status: 'published',
+
+    content: `
+# Image Optimization
+
+Images affect performance.
+
+## Next Image Component
+
+\`\`\`tsx
+<Image src="/img.png" width={500} height={300} />
+\`\`\`
+
+## Lazy Loading
+
+Load images only when needed.
+
+## Compression
+
+Use optimized formats.
+
+## Conclusion
+
+Optimized assets improve UX.
+  `,
+
+    tags: ['nextjs', 'images', 'performance'],
+    seo: {
+      metaTitle: 'Next.js Image Optimization',
+      metaDescription: 'Optimize images in Next.js apps.',
+      keywords: ['nextjs images', 'optimization'],
+    },
+  },
+  {
+    title: 'Testing Strategies for React and Next.js Applications',
+    slug: 'testing-react-nextjs-apps',
     category: 'Frontend',
-    excerpt: 'Redux vs Zustand vs Context.',
-    content: `# State\nChoose wisely.`,
-    tags: ['state'],
-    seo: { metaTitle: 'State', metaDescription: 'State guide', keywords: ['state'] },
-  },
+    excerpt: 'Implement testing strategies using Jest and React Testing Library.',
+    status: 'published',
 
-  {
-    title: 'CI/CD Advanced Pipelines',
-    slug: 'advanced-ci-cd',
-    category: 'DevOps',
-    excerpt: 'Automate deployments at scale.',
-    content: `# CI/CD\nAutomation is key.`,
-    tags: ['ci-cd'],
-    seo: { metaTitle: 'CI/CD', metaDescription: 'CI/CD guide', keywords: ['ci'] },
-  },
+    content: `
+# Testing React Apps
 
-  {
-    title: 'Kubernetes Basics',
-    slug: 'kubernetes',
-    category: 'DevOps',
-    excerpt: 'Container orchestration.',
-    content: `# Kubernetes\nManage containers.`,
-    tags: ['k8s'],
-    seo: { metaTitle: 'K8s', metaDescription: 'K8s guide', keywords: ['k8s'] },
-  },
+Testing ensures reliability.
 
-  {
-    title: 'Monorepo Architecture',
-    slug: 'monorepo',
-    category: 'Architecture',
-    excerpt: 'Managing multiple apps in one repo.',
-    content: `# Monorepo\nCentralized codebase.`,
-    tags: ['monorepo'],
-    seo: { metaTitle: 'Monorepo', metaDescription: 'Monorepo guide', keywords: ['repo'] },
+## Unit Testing
+
+\`\`\`ts
+test('renders', () => {
+  expect(true).toBe(true);
+});
+\`\`\`
+
+## Component Testing
+
+Use React Testing Library.
+
+## Integration Testing
+
+Test complete flows.
+
+## Conclusion
+
+Testing improves confidence in code.
+  `,
+
+    tags: ['testing', 'react', 'nextjs'],
+    seo: {
+      metaTitle: 'Testing React Apps',
+      metaDescription: 'Learn testing strategies.',
+      keywords: ['jest', 'testing'],
+    },
   },
 ];

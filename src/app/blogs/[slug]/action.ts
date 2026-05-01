@@ -1,3 +1,4 @@
+'use server';
 import { getCollection } from '@/db/services/collectionServices';
 import type { Blog } from '@/models/blog.schema';
 
