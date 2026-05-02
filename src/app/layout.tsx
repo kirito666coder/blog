@@ -49,9 +49,8 @@ export default function RootLayout({
       lang="en"
       className={`${roboto.variable} ${titanOne.variable} ${opsOne.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">
-        <Navbar />
-        {children}
+      <body className="bg-background text-foreground selection:bg-foreground selection:text-background flex min-h-full flex-col">
+        <Navbar>{children}</Navbar>
         <ToastContainer />
       </body>
     </html>

@@ -18,11 +18,8 @@ export default function Home() {
 
   return (
     <div id="smooth-wrapper">
-      <div
-        id="smooth-content"
-        className="bg-background text-foreground selection:bg-foreground selection:text-background min-h-screen"
-      >
-        <main className="mx-auto max-w-7xl px-6 py-20 lg:py-32">
+      <div id="smooth-content" className="min-h-screen">
+        <main className="mx-[12vw] w-[88vw] px-6 py-20 lg:py-32">
           <HeroSection />
           <Philosophy />
           <Newsletter />
