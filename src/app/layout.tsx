@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
-import { Navbar } from '@/components/navbar/Navbar';
 import { ToastContainer } from 'react-toastify';
 
 const roboto = localFont({
@@ -50,7 +49,7 @@ export default function RootLayout({
       className={`${roboto.variable} ${titanOne.variable} ${opsOne.variable} h-full antialiased`}
     >
       <body className="bg-background text-foreground selection:bg-foreground selection:text-background flex min-h-full flex-col">
-        <Navbar>{children}</Navbar>
+        {children}
         <ToastContainer />
       </body>
     </html>
