@@ -4,7 +4,7 @@ import { ScrollSmoother } from '@/lib/gsap';
 import Link from 'next/link';
 import Scene from '@/components/model/Scene';
 export default function Home() {
-  const [isHovered, setisHovered] = useState<boolean>(false);
+  const [isHovered, setisHovered] = useState<boolean | string>(false);
 
   useEffect(() => {
     if (!window) return;
@@ -17,11 +17,20 @@ export default function Home() {
     };
   });
 
-  const onHover = () => {
+  const onHover = (text?: string) => {
+    if (isHovered) return;
     const audio = new Audio('/mainhoversound.mp3');
-    setisHovered(true);
+    if (text) {
+      setisHovered(text);
+    } else {
+      setisHovered(true);
+    }
     audio.volume = 1;
     audio.play();
+  };
+  const leaveHover = () => {
+    if (!isHovered) return;
+    setisHovered(false);
   };
 
   return (
@@ -32,16 +41,40 @@ export default function Home() {
             <Scene isHovered={isHovered} />
           </div>
           <div className="px-6 py-20 lg:py-32">
-            <Link
-              onMouseEnter={() => onHover()}
-              onMouseLeave={() => setisHovered(false)}
-              href="/"
-              className="font-ops absolute text-6xl tracking-tighter opacity-80 transition-opacity hover:opacity-100"
+            <div
+              className={`absolute ${isHovered && isHovered !== 'mainText' ? 'opacity-100' : 'opacity-50'}`}
             >
-              KIRITO
-              <div className="leading-7">BLOG</div>
-            </Link>
-            <h1 className="absolute bottom-0">
+              <Link
+                onMouseEnter={() => onHover()}
+                onMouseLeave={() => leaveHover()}
+                href="/"
+                className="font-ops text-6xl tracking-tighter transition-opacity"
+              >
+                KIRITO
+                <div className="leading-7">BLOG</div>
+              </Link>
+              <div className="mt-8 ml-2 flex items-center gap-5">
+                <Link
+                  onMouseEnter={() => onHover()}
+                  onMouseLeave={() => leaveHover()}
+                  href="/blogs"
+                >
+                  Blogs
+                </Link>
+                <Link
+                  onMouseEnter={() => onHover()}
+                  onMouseLeave={() => leaveHover()}
+                  href="/about"
+                >
+                  About
+                </Link>
+              </div>
+            </div>
+            <h1
+              onMouseEnter={() => onHover('mainText')}
+              onMouseLeave={() => leaveHover()}
+              className={`absolute bottom-0 ${isHovered === 'mainText' ? 'opacity-100' : 'opacity-50'}`}
+            >
               <div className="text-2xl leading-20">MUSIC VIDEO 2023</div>
               <div className="font-ops text-7xl leading-9 uppercase md:text-8xl md:leading-12 lg:text-9xl">
                 ticking

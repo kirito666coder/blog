@@ -12,7 +12,7 @@ type GLTFResult = {
 };
 
 type ModelProps = {
-  isHovered: boolean;
+  isHovered: boolean | string;
 };
 
 export function Model({ isHovered }: ModelProps) {
@@ -45,8 +45,18 @@ export function Model({ isHovered }: ModelProps) {
   }, [nodes, activeTexture]);
 
   // Smooth spring animation
-  const { scale } = useSpring({
+
+  const { scale, position, rotation } = useSpring({
     scale: isHovered ? 1.12 : 1,
+    position:
+      isHovered === 'mainText'
+        ? ([-1.25, -0.2, 1.9] as [number, number, number])
+        : isHovered
+          ? ([-1.2, 0.7, 1.9] as [number, number, number])
+          : ([-0.7, 0.4, 1.9] as [number, number, number]),
+    rotation: isHovered
+      ? ([-0.8, -1.5, -1.6] as [number, number, number])
+      : ([-0.5, -1.5, -1.6] as [number, number, number]),
     config: {
       mass: 1,
       tension: 280,
@@ -55,7 +65,11 @@ export function Model({ isHovered }: ModelProps) {
   });
 
   return (
-    <a.group scale={scale} position={[-0.7, 0.2, 1.9]} rotation={[-0.5, -1.5, -1.6]}>
+    <a.group
+      scale={scale}
+      position={position as unknown as [number, number, number]}
+      rotation={rotation as unknown as [number, number, number]}
+    >
       <mesh receiveShadow geometry={nodes.Environment.geometry} material={material} />
     </a.group>
   );

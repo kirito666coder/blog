@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber';
 import { Suspense } from 'react';
 import { Model } from './MainModel';
 import { Environment } from '@react-three/drei';
-export default function Scene({ isHovered }: { isHovered: boolean }) {
+export default function Scene({ isHovered }: { isHovered: boolean | string }) {
   return (
     <div className="h-full w-full">
       <Canvas shadows camera={{ position: [0, 1, 4], fov: 45 }}>
