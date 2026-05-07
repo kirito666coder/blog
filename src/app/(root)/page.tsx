@@ -1,9 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScrollSmoother } from '@/lib/gsap';
 import Link from 'next/link';
 import Scene from '@/components/model/Scene';
 export default function Home() {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isHovered, setisHovered] = useState<boolean | string>(false);
 
   useEffect(() => {
@@ -17,16 +18,27 @@ export default function Home() {
     };
   });
 
+  useEffect(() => {
+    const audio = new Audio('/mainhoversound.mp3');
+
+    audio.preload = 'auto';
+    audio.volume = 1;
+    audioRef.current = audio;
+  }, []);
+
   const onHover = (text?: string) => {
     if (isHovered) return;
-    const audio = new Audio('/mainhoversound.mp3');
     if (text) {
       setisHovered(text);
     } else {
       setisHovered(true);
     }
-    audio.volume = 1;
-    audio.play();
+    const audio = audioRef.current;
+
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+    }
   };
   const leaveHover = () => {
     if (!isHovered) return;

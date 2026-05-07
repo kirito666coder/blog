@@ -64,7 +64,7 @@ export default function Loader({ progress, isDone }: LoaderProps) {
 
       {/* Center Line */}
       <div className="flex h-full items-center justify-center">
-        <div className="w-[320px]">
+        <div className="w-screen">
           {/* Line */}
           <div className="relative h-[2px] w-full overflow-hidden rounded-full bg-white/20">
             <div ref={lineRef} className="absolute top-0 left-0 h-full w-0 bg-white" />
