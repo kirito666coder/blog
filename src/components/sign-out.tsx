@@ -75,7 +75,9 @@ export default function SignOut() {
         <span className="relative z-10 flex items-center justify-between gap-2 py-1 text-sm">
           {/* GitHub Icon */}
 
-          <span>Sign Out</span>
+          <span>
+            {'< '}Sign Out {'/>'}
+          </span>
         </span>
 
         <style jsx>{`

@@ -61,7 +61,7 @@ export default function HeroSection() {
     );
   });
   return (
-    <header className="mb-16 flex flex-col gap-6">
+    <header className="mt-20 mb-16 flex flex-col gap-6 md:mt-0">
       <div className="flex flex-col justify-between gap-3 md:flex-row md:items-center">
         <div className="flex items-center gap-2">
           <div className="bg-foreground/20 h-px w-12" />
@@ -73,7 +73,7 @@ export default function HeroSection() {
           </span>
         </div>
         <div ref={titleRef}>
-          <h1 className="font-display text-center text-5xl font-semibold tracking-tight md:text-7xl lg:text-8xl">
+          <h1 className="font-ops text-center text-5xl font-semibold tracking-tight md:text-7xl lg:text-8xl">
             A personal space for <span className="text-red-500">development</span> <br />
             and <span className="text-blue-500">system design</span>
           </h1>

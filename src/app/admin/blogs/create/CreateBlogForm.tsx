@@ -3,7 +3,8 @@
 import React, { useState } from 'react';
 import CutCornerButton from '@/components/CutCornerButton';
 import { blogValidator } from '@/lib/validators/blogs';
-import { createBlog } from './action';
+import { createBlog, findSlug } from './action';
+import { toast } from 'react-toastify';
 
 interface BlogFormData {
   title: string;
@@ -21,6 +22,24 @@ interface BlogFormData {
 }
 
 export default function CreateBlogForm() {
+  const [showPrompt, setShowPrompt] = useState(false);
+
+  const prompt = `Write a high-quality blog post in Markdown format.
+
+Requirements:
+- Use clear headings (##, ###)
+- Add proper paragraphs
+- Include code examples using triple backticks with language (e.g. \`\`\`tsx)
+- Keep it structured and readable
+- Add a short conclusion at the end
+
+Topic: [Replace with your topic]
+`;
+
+  const copyPrompt = () => {
+    navigator.clipboard.writeText(prompt);
+  };
+
   const [formData, setFormData] = useState<BlogFormData>({
     title: '',
     slug: '',
@@ -53,7 +72,7 @@ export default function CreateBlogForm() {
     }
   };
 
-  const generateSlug = () => {
+  const generateSlug = async () => {
     if (!formData.title) return;
     const generated = formData.title
       .toLowerCase()
@@ -61,6 +80,19 @@ export default function CreateBlogForm() {
       .replace(/[^\w\s-]/g, '')
       .replace(/[\s_-]+/g, '-')
       .replace(/^-+|-+$/g, '');
+
+    const SlugIsAvailable = await findSlug(generated);
+
+    if (!SlugIsAvailable.available) {
+      if (!SlugIsAvailable.suggestedSlug) return toast.error('Something went wrong');
+      setFormData((prev) => ({
+        ...prev,
+        slug: SlugIsAvailable.suggestedSlug,
+      }));
+      toast.info(`Slug updated to ${SlugIsAvailable.suggestedSlug}`);
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, slug: generated }));
   };
 
@@ -68,6 +100,16 @@ export default function CreateBlogForm() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    const SlugIsAvailable = await findSlug(formData.slug);
+
+    if (!SlugIsAvailable.available) {
+      if (!SlugIsAvailable.suggestedSlug) return;
+      setFormData((prev) => ({
+        ...prev,
+        slug: SlugIsAvailable.suggestedSlug,
+      }));
+      toast.info(`Slug updated to ${SlugIsAvailable.suggestedSlug}`);
+    }
     // Process comma-separated tags
     const processedData = {
       ...formData,
@@ -88,6 +130,7 @@ export default function CreateBlogForm() {
 
     if (!result.success) {
       console.error('zod validation failed:', result.error.flatten());
+      toast.error(result.error.message);
       setIsSubmitting(false);
       return;
     }
@@ -100,11 +143,22 @@ export default function CreateBlogForm() {
       return;
     }
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      alert('Blog created successfully! (Check console for payload)');
-    }, 1500);
+    toast.success('Blog created successfully');
+    setIsSubmitting(false);
+    setFormData({
+      title: '',
+      slug: '',
+      excerpt: '',
+      content: '',
+      tags: '',
+      category: '',
+      status: 'draft',
+      seo: {
+        metaTitle: '',
+        metaDescription: '',
+        keywords: '',
+      },
+    });
   };
 
   return (
@@ -243,23 +297,80 @@ export default function CreateBlogForm() {
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="content"
-              className="text-muted-foreground flex items-center justify-between text-sm font-medium tracking-wider uppercase"
-            >
-              <span>Main Content (Markdown)</span>
-            </label>
-            <textarea
-              id="content"
-              name="content"
-              required
-              rows={12}
-              value={formData.content}
-              onChange={handleChange}
-              className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 resize-y rounded-lg border px-4 py-3 font-mono text-sm transition-all focus:ring-2 focus:ring-emerald-500/50 focus:outline-none"
-              placeholder="## Write your amazing content here..."
-            />
+          <div className="flex flex-col gap-6">
+            <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4 text-sm">
+              <p className="mb-2 font-semibold text-emerald-400">How to write content:</p>
+              <ul className="text-muted-foreground list-disc space-y-1 pl-5">
+                <li>Use Markdown format</li>
+                <li>
+                  Use <code>##</code> for headings
+                </li>
+                <li>Use triple backticks for code blocks</li>
+                <li>Example:</li>
+              </ul>
+
+              <pre className="mt-2 rounded bg-black/40 p-3 text-xs">
+                {`## Example Code
+
+\`\`\`tsx
+function App() {
+  return <div>Hello</div>;
+}
+\`\`\``}
+              </pre>
+            </div>
+
+            {/* AI Prompt Section */}
+            <div className="border-border/50 rounded-lg border">
+              <button
+                type="button"
+                onClick={() => setShowPrompt(!showPrompt)}
+                className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium"
+              >
+                <span>AI Prompt (Click to expand)</span>
+                <span>{showPrompt ? '▲' : '▼'}</span>
+              </button>
+
+              {showPrompt && (
+                <div className="border-border/50 border-t p-4">
+                  <textarea
+                    readOnly
+                    value={prompt}
+                    className="bg-input/20 w-full rounded-lg border px-3 py-2 font-mono text-xs"
+                    rows={8}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={copyPrompt}
+                    className="mt-3 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-400"
+                  >
+                    Copy Prompt
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Your original textarea */}
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="content"
+                className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
+              >
+                Main Content (Markdown)
+              </label>
+
+              <textarea
+                id="content"
+                name="content"
+                required
+                rows={12}
+                value={formData.content}
+                onChange={handleChange}
+                className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 resize-y rounded-lg border px-4 py-3 font-mono text-sm transition-all focus:ring-2 focus:ring-emerald-500/50 focus:outline-none"
+                placeholder="## Write your amazing content here..."
+              />
+            </div>
           </div>
 
           <div className="flex flex-col gap-2">

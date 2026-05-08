@@ -17,6 +17,7 @@ export const BlogCard = ({ title, slug, category, excerpt, tags }: BlogCardProps
   const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    console.log(excerpt);
     const card = cardRef.current;
     if (!card) return;
 
@@ -88,7 +89,7 @@ export const BlogCard = ({ title, slug, category, excerpt, tags }: BlogCardProps
           </span>
         </div>
 
-        <h3 className="font-display mt-2 text-xl font-bold transition-colors group-hover:text-blue-400">
+        <h3 className="mt-2 text-xl font-bold transition-colors group-hover:text-blue-400">
           {title}
         </h3>
 

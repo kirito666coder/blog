@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import GitHub from 'next-auth/providers/github';
-import { connectDb } from './lib/mongodb';
+import { connectDb } from './db/mongodb';
 import { userSchema } from './models/user.schema';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
