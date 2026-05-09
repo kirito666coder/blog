@@ -725,4 +725,204 @@ Testing improves confidence in code.
       keywords: ['jest', 'testing'],
     },
   },
+  {
+    title: 'The Day Git Saved My 2 Hours of Work',
+    slug: 'git-stash-saved-my-work-after-husky-failed',
+    category: 'Git',
+    excerpt:
+      'A failed Husky pre-commit hook made me think I lost 18 files and 2 hours of work — until I discovered how Git stash saved everything.',
+    status: 'published',
+
+    content: `
+
+# The Day Git Saved My 2 Hours of Work
+
+A few days ago, I had one of the scariest moments in my development journey.
+
+I was working on a project where I had configured Husky with lint-staged to automatically run ESLint before every commit. Everything looked perfect — better code quality, automatic checks, cleaner commits.
+
+Or at least that’s what I thought.
+
+## The Situation
+
+I spent almost 2 hours building a feature.
+
+- Created around 18 new files
+- Wrote all the logic
+- Styled components
+- Refactored some code
+
+After finishing everything, I ran:
+
+\`\`\`bash
+git commit -m "add new feature"
+\`\`\`
+
+Suddenly…
+
+An error appeared.
+
+At first, I thought it was just a normal lint issue. But then I checked Git status and almost had a heart attack.
+
+Only these files were showing:
+
+\`\`\`bash
+pnpm-lock.yaml
+global.css
+\`\`\`
+
+All my other files were gone.
+
+Not hidden.
+
+Not unstaged.
+
+Gone.
+
+## Panic Mode Activated
+
+For a moment, I genuinely believed I had lost 2 hours of work.
+
+I started checking:
+
+- VS Code history
+- Local file search
+- Recently deleted files
+- Git status again and again
+
+Nothing.
+
+I was completely confused.
+
+## Finding the Real Problem
+
+After carefully reading the error logs, I finally noticed the actual issue:
+
+\`\`\`bash
+eslint-plugin-react-hooks is missing
+\`\`\`
+
+Because Husky was running lint-staged during commit, the lint process failed.
+
+And when lint-staged fails, it can temporarily move your staged changes into Git stash to protect your working state.
+
+At that moment, I didn’t know this behavior existed.
+
+## The Discovery That Saved Me
+
+First, I installed the missing package:
+
+\`\`\`bash
+pnpm add -D eslint-plugin-react-hooks
+\`\`\`
+
+Then I started researching what happens when lint-staged fails.
+
+That’s when I discovered this command:
+
+\`\`\`bash
+git stash list
+\`\`\`
+
+And there it was.
+
+My changes.
+
+My 18 files.
+
+My 2 hours of work.
+
+Safe inside a stash created automatically by lint-staged.
+
+## Recovering Everything
+
+I restored the files using:
+
+\`\`\`bash
+git stash apply
+\`\`\`
+
+And instantly, all my files came back.
+
+That feeling was unbelievable.
+
+## What I Learned
+
+That day taught me several important lessons:
+
+### 1. Git Is More Powerful Than I Thought
+
+Before this incident, I only used basic Git commands.
+
+Now I understand how useful stash really is.
+
+### 2. Always Read Error Messages Carefully
+
+The real issue was just one missing package:
+
+\`\`\`bash
+eslint-plugin-react-hooks
+\`\`\`
+
+But panic made me ignore the actual error.
+
+### 3. Husky + lint-staged Is Great — But Know How It Works
+
+Automation is powerful, but you should understand what happens behind the scenes.
+
+Especially when tools modify staged files automatically.
+
+## Useful Commands
+
+### Check existing stashes
+
+\`\`\`bash
+git stash list
+\`\`\`
+
+### Restore latest stash
+
+\`\`\`bash
+git stash apply
+\`\`\`
+
+### Restore and remove stash
+
+\`\`\`bash
+git stash pop
+\`\`\`
+
+## Conclusion
+
+That day I went from:
+
+“I lost everything.”
+
+to
+
+“I love Git.”
+
+And honestly, after understanding stash properly, I trust Git much more now.
+
+Sometimes the best Git lessons come from panic moments.
+
+  `,
+
+    tags: ['git', 'husky', 'lint-staged', 'nextjs', 'developer-story'],
+
+    seo: {
+      metaTitle: 'How Git Stash Saved My Lost Files After Husky Failed',
+      metaDescription:
+        'A real developer story about Husky, lint-staged failure, missing ESLint packages, and how Git stash recovered 18 lost files.',
+      keywords: [
+        'git stash',
+        'husky pre commit',
+        'lint staged failed',
+        'eslint plugin react hooks',
+        'git lost files',
+        'git stash recovery',
+        'developer story',
+      ],
+    },
+  },
 ];

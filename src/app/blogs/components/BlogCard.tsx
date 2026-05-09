@@ -72,16 +72,16 @@ export const BlogCard = ({ title, slug, category, excerpt, tags }: BlogCardProps
     <Link href={`blogs/${slug}`} className="group perspective-1000 block">
       <div
         ref={cardRef}
-        className="glass premium-shadow relative flex flex-col gap-4 overflow-hidden rounded-2xl p-6 transition-colors hover:border-white/20"
+        className="glass premium-shadow relative flex flex-col gap-4 overflow-hidden rounded-2xl border-r border-b p-6 transition-colors hover:border-white"
       >
         {/* Animated Glow Effect */}
         <div
           ref={glowRef}
-          className="pointer-events-none absolute top-1/2 left-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500 opacity-0 blur-[100px]"
+          className="pointer-events-none absolute top-1/2 left-1/2 -z-10 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 blur-[100px]"
         />
 
         <div className="flex items-center justify-between">
-          <span className="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-400">
+          <span className="rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white">
             {category}
           </span>
           <span className="text-muted-foreground text-[10px] tracking-widest uppercase">
@@ -89,9 +89,7 @@ export const BlogCard = ({ title, slug, category, excerpt, tags }: BlogCardProps
           </span>
         </div>
 
-        <h3 className="mt-2 text-xl font-bold transition-colors group-hover:text-blue-400">
-          {title}
-        </h3>
+        <h3 className="mt-2 text-xl font-bold transition-colors group-hover:text-white">{title}</h3>
 
         <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed">{excerpt}</p>
 
