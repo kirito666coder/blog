@@ -28,13 +28,13 @@ export const CategoryFilter = ({
           className={cn(
             'group relative rounded-full px-6 py-2 text-sm font-medium transition-all duration-300',
             activeCategory === category
-              ? 'bg-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]'
+              ? 'border border-white bg-white/10 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]'
               : 'glass text-muted-foreground hover:text-white',
           )}
         >
           {category}
           {activeCategory === category && (
-            <span className="absolute -inset-px rounded-full bg-blue-400 opacity-20 blur-sm" />
+            <span className="absolute -inset-px rounded-full bg-white/10 opacity-20 blur-sm" />
           )}
         </button>
       ))}

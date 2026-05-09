@@ -48,66 +48,69 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
         <div className="absolute top-[20%] left-[50%] h-[50%] w-[50%] -translate-x-1/2 rounded-full bg-blue-500/5 blur-[150px]" />
       </div>
 
-      <div className="w-full max-w-4xl">
-        <Link
-          href="/blogs"
-          className="group text-muted-foreground mb-12 flex items-center gap-2 text-sm font-medium transition-colors hover:text-white"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="transition-transform group-hover:-translate-x-1"
+      <div className="relative w-full max-w-4xl">
+        <div className="sticky top-35">
+          <Link
+            href="/blogs"
+            className="group text-muted-foreground mb-12 flex items-center gap-2 text-sm font-medium transition-colors hover:text-white"
           >
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-          BACK TO BLOGS
-        </Link>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="transition-transform group-hover:-translate-x-1"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+            BACK TO BLOGS
+          </Link>
 
-        <header className="mb-16">
-          <div className="mb-6 flex items-center gap-4">
-            <span className="rounded-full bg-blue-500/10 px-4 py-1 text-xs font-semibold tracking-wider text-blue-400 uppercase">
-              {blog.category}
-            </span>
-            <span className="text-muted-foreground text-xs tracking-widest uppercase">
-              • 5 MIN READ
-            </span>
-          </div>
-
-          <h1 className="font-ops mb-8 text-4xl leading-tight font-extrabold tracking-tighter md:text-6xl lg:text-7xl">
-            {blog.title}
-          </h1>
-
-          <p className="text-muted-foreground border-l-4 border-blue-500/30 py-2 pl-6 text-xl leading-relaxed italic">
-            {blog.excerpt}
-          </p>
-        </header>
-
-        <div className="prose prose-invert max-w-none">
-          <BlogContent>
-            <ReactMarkdown components={markdownComponents}>
-              {blog.content.replace(/\\`\\`\\`/g, '```').replace(/\\n/g, '\n')}
-            </ReactMarkdown>
-          </BlogContent>
-        </div>
-
-        <footer className="mt-20 border-t border-white/5 pt-10">
-          <div className="flex flex-wrap gap-3">
-            {blog.tags.map((tag) => (
-              <span
-                key={tag}
-                className="glass text-muted-foreground rounded-lg px-3 py-1 font-mono text-xs"
-              >
-                #{tag}
+          <header className="mb-16">
+            <div className="mb-6 flex items-center gap-4">
+              <span className="rounded-full bg-white/10 px-4 py-1 text-xs font-semibold tracking-wider text-white/80 uppercase">
+                {blog.category}
               </span>
-            ))}
+              <span className="text-muted-foreground text-xs tracking-widest uppercase">
+                • 5 MIN READ
+              </span>
+            </div>
+
+            <h1 className="font-ops mb-8 ml-0.5 text-4xl leading-tight font-extrabold tracking-tighter md:text-6xl lg:text-7xl">
+              {blog.title}
+            </h1>
+
+            <p className="text-muted-foreground border-l-4 border-gray-400 py-2 pl-6 text-xl leading-relaxed italic">
+              {blog.excerpt}
+            </p>
+          </header>
+        </div>
+        <div className="relative border-t border-white/50 bg-black">
+          <div className="prose prose-invert max-w-none">
+            <BlogContent>
+              <ReactMarkdown components={markdownComponents}>
+                {blog.content.replace(/\\`\\`\\`/g, '```').replace(/\\n/g, '\n')}
+              </ReactMarkdown>
+            </BlogContent>
           </div>
-        </footer>
+
+          <footer className="mt-20 border-t border-white/5 pt-10">
+            <div className="flex flex-wrap gap-3">
+              {blog.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="glass text-muted-foreground rounded-lg px-3 py-1 font-mono text-xs"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          </footer>
+        </div>
       </div>
     </article>
   );

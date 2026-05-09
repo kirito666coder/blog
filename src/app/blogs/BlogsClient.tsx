@@ -73,13 +73,13 @@ export default function BlogsClient({ initialBlogs }: { initialBlogs: Blog[] }) 
       {/* Background Decorative Elements */}
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
         <div className="absolute -top-[10%] -left-[10%] h-[40%] w-[40%] rounded-full bg-blue-500/5 blur-[120px]" />
-        <div className="absolute -right-[10%] -bottom-[10%] h-[40%] w-[40%] rounded-full bg-blue-500/5 blur-[120px]" />
+        <div className="absolute -right-[10%] -bottom-[10%] h-[40%] w-[40%] rounded-full bg-white blur-[120px]" />
       </div>
 
       {/* Hero Section */}
       <section ref={heroRef} className="mb-16 flex max-w-4xl flex-col items-center text-center">
-        <h1 className="font-ops mb-6 text-5xl font-extrabold tracking-tighter md:text-7xl">
-          THE <span className="text-blue-500">BL&lt;G&gt;</span>
+        <h1 className="font-ops mb-6 text-5xl font-extrabold tracking-tighter text-white/50 md:text-7xl">
+          THE <span className="text-white">BL&lt;G&gt;</span>
         </h1>
         <p className="text-muted-foreground max-w-2xl text-lg">
           Deep dives into modern web technologies, architectural patterns, and the ever-evolving
