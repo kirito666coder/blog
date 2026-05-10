@@ -1,50 +1,21 @@
 {
-  "name": "blog",
-  "version": "0.1.0",
+  "name": "expo-ecommerce",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "prepare": "husky"
-  },
-  "dependencies": {
-    "@gsap/react": "^2.1.2",
-    "@react-spring/three": "^10.0.3",
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.0",
-    "clsx": "^2.1.1",
-    "gsap": "^3.15.0",
-    "leva": "^0.10.1",
-    "mongodb": "^7.1.1",
-    "next": "16.2.3",
-    "next-auth": "5.0.0-beta.31",
-    "react": "19.2.4",
-    "react-dom": "19.2.4",
-    "react-markdown": "^10.1.0",
-    "react-responsive": "^10.0.1",
-    "react-syntax-highlighter": "^16.1.1",
-    "react-toastify": "^11.1.0",
-    "shiki": "^4.0.2",
-    "tailwind-merge": "^3.5.0",
-    "three": "^0.183.2",
-    "zod": "^4.3.6"
+    "prepare": "husky",
+    "lint": "eslint . --ext .js,.ts,.tsx,.jsx",
+    "lint:fix": "eslint . --fix --ext .js,.ts,.tsx,.jsx",
+    "lint:mobile": "eslint ./mobile  --ext .js,.ts,.tsx,.jsx",
+    "lint:web": "eslint ./web --ext .js,.ts,.tsx,.jsx",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@types/react-syntax-highlighter": "^15.5.13",
-    "@types/three": "^0.183.1",
-    "@typescript-eslint/eslint-plugin": "^8.58.2",
-    "@typescript-eslint/parser": "^8.58.2",
-    "eslint": "^9",
-    "eslint-config-next": "16.2.3",
+    "@eslint/js": "^9.39.3",
+    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/parser": "^8.56.1",
+    "eslint": "^9.39.3",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-react": "^7.37.5",
@@ -52,16 +23,14 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.2",
-    "prettier-plugin-tailwindcss": "^0.7.2",
-    "tailwindcss": "^4",
-    "typescript": "^5"
+    "prettier-plugin-tailwindcss": "^0.7.2"
   },
   "lint-staged": {
-    "**/*.{js,ts,jsx,tsx,cjs,mjs}": [
+    "*.{js,ts,tsx,jsx,cjs,mjs}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "**/*.{css,md,json,yml,yaml}": [
+    "*.{json,md,css,yaml.yml}": [
       "prettier --write"
     ]
   }
