@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ScrollSmoother } from '@/lib/gsap';
 import Link from 'next/link';
-import Scene from '@/components/model/Scene';
+import { DisplacementSphere } from '@/components/model/displacement-sphere';
 export default function Home() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isHovered, setisHovered] = useState<boolean | string>(false);
@@ -50,7 +50,7 @@ export default function Home() {
       <div id="smooth-content" className="min-h-screen">
         <main className="relative h-screen">
           <div className="absolute h-screen w-screen">
-            <Scene isHovered={isHovered} />
+            <DisplacementSphere />
           </div>
           <div className="px-6 py-20 lg:py-32">
             <div
