@@ -4,10 +4,10 @@
   "type": "module",
   "scripts": {
     "prepare": "husky",
-    "lint": "eslint . --ext .js,.ts,.tsx,.jsx",
-    "lint:fix": "eslint . --fix --ext .js,.ts,.tsx,.jsx",
-    "lint:mobile": "eslint ./mobile  --ext .js,.ts,.tsx,.jsx",
-    "lint:web": "eslint ./web --ext .js,.ts,.tsx,.jsx",
+    "lint": "pnpm exec eslint . && pnpm --dir web exec eslint . && pnpm --dir mobile exec eslint .",
+    "lint:fix": "pnpm exec eslint . --fix && pnpm --dir web exec eslint . --fix && pnpm --dir mobile exec eslint . --fix",
+    "lint:mobile": "pnpm --dir mobile exec eslint .",
+    "lint:web": "pnpm --dir web exec eslint .",
     "format": "prettier . --write",
     "format:check": "prettier . --check"
   },

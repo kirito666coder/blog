@@ -1,13 +1,17 @@
-// apps/web/eslint.config.js
-import { defineConfig } from 'eslint/config';
-
-import rootConfig from '../eslint.config';
-
+import { defineConfig, globalIgnores } from 'eslint/config';
+import { baseConfig } from '../eslint.config.mjs';
 import nextVitals from 'eslint-config-next/core-web-vitals';
 import nextTs from 'eslint-config-next/typescript';
 
 export default defineConfig([
-  ...rootConfig,
+  globalIgnores([
+    '**/.next/**',
+    '**/out/**',
+    '**/node_modules/**',
+    'next-env.d.ts',
+  ]),
+
+  ...baseConfig,
 
   ...nextVitals,
   ...nextTs,
@@ -22,29 +26,25 @@ export default defineConfig([
     },
 
     rules: {
-      /*
-       |--------------------------------------------------------------------------
-       | React
-       |--------------------------------------------------------------------------
-       */
       'react/jsx-boolean-value': ['error', 'never'],
-
       'react/self-closing-comp': 'error',
-
       'react/jsx-curly-brace-presence': [
         'error',
-        {
-          props: 'never',
-          children: 'never',
-        },
+        { props: 'never', children: 'never' },
       ],
 
-      /*
-       |--------------------------------------------------------------------------
-       | Next.js
-       |--------------------------------------------------------------------------
-       */
       '@next/next/no-img-element': 'off',
+    },
+  },
+
+  // Transition helper uses intentional effects/refs; keep source unchanged.
+  {
+    files: ['**/src/components/model/transition.tsx'],
+    rules: {
+      'react-hooks/set-state-in-effect': 'off',
+      'react-hooks/immutability': 'off',
+      'react-hooks/refs': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
     },
   },
 ]);

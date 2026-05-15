@@ -66,7 +66,7 @@ export default function BlogsClient({
     return activeCategory === 'All'
       ? blogs
       : blogs.filter((blog) => blog.category === activeCategory);
-  }, [activeCategory]);
+  }, [activeCategory, blogs]);
 
   return (
     <main

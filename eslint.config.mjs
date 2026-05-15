@@ -1,5 +1,3 @@
-// root/eslint.config.js
-
 import { defineConfig, globalIgnores } from 'eslint/config';
 import prettierPlugin from 'eslint-plugin-prettier';
 import prettierConfig from 'eslint-config-prettier';
@@ -7,104 +5,112 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 
-export default defineConfig([
-  globalIgnores([
-    '**/node_modules/**',
-    '**/dist/**',
-    '**/build/**',
-    '**/.next/**',
-    '**/out/**',
-    '**/coverage/**',
-    '**/next-env.d.ts',
-  ]),
+/** Paths ignored in every package (keep in sync with web/mobile where needed). */
+export const commonIgnoreGlobs = [
+  '**/node_modules/**',
+  '**/dist/**',
+  '**/build/**',
+  '**/out/**',
+  '**/coverage/**',
+  '**/.next/**',
+  '**/.expo/**',
+];
 
-  {
-    linterOptions: {
-      reportUnusedDisableDirectives: true,
+const linterOptionsBlock = {
+  linterOptions: {
+    reportUnusedDisableDirectives: true,
+  },
+};
+
+const mainLintBlock = {
+  files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
+
+  languageOptions: {
+    parser: tsParser,
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    parserOptions: {
+      ecmaFeatures: { jsx: true },
     },
   },
 
-  {
-    files: ['**/*.{js,jsx,ts,tsx}'],
+  plugins: {
+    prettier: prettierPlugin,
+    '@typescript-eslint': tsPlugin,
+  },
 
-    languageOptions: {
-      parser: tsParser,
-      ecmaVersion: 'latest',
+  rules: {
+    'prettier/prettier': 'error',
 
-      sourceType: 'module',
-
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
       },
-    },
+    ],
 
-    plugins: {
-      prettier: prettierPlugin,
-      'react-hooks': reactHooks,
-      '@typescript-eslint': tsPlugin,
-    },
+    '@typescript-eslint/no-explicit-any': 'warn',
+    'no-unused-vars': 'off',
 
-    rules: {
-      /*
-       |--------------------------------------------------------------------------
-       | Prettier
-       |--------------------------------------------------------------------------
-       */
-      'prettier/prettier': 'error',
+    'prefer-const': 'error',
+    'no-var': 'error',
+    'object-shorthand': 'error',
+    'prefer-arrow-callback': 'error',
 
-      /*
-       |--------------------------------------------------------------------------
-       | TypeScript
-       |--------------------------------------------------------------------------
-       */
-      '@typescript-eslint/no-unused-vars': [
-        'error',
-        {
-          argsIgnorePattern: '^_',
-          varsIgnorePattern: '^_',
-        },
-      ],
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
 
-      '@typescript-eslint/no-explicit-any': 'warn',
+    'import/order': 'off',
+    'sort-imports': 'off',
+  },
+};
 
-      'no-unused-vars': 'off',
+const reactHooksBlock = {
+  files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'],
 
-      /*
-       |--------------------------------------------------------------------------
-       | JavaScript
-       |--------------------------------------------------------------------------
-       */
-      'prefer-const': 'error',
-      'no-var': 'error',
-      'object-shorthand': 'error',
-      'prefer-arrow-callback': 'error',
-
-      'no-console': [
-        'warn',
-        {
-          allow: ['warn', 'error'],
-        },
-      ],
-
-      /*
-       |--------------------------------------------------------------------------
-       | React Hooks
-       |--------------------------------------------------------------------------
-       */
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-
-      /*
-       |--------------------------------------------------------------------------
-       | Imports
-       |--------------------------------------------------------------------------
-       */
-      'import/order': 'off',
-      'sort-imports': 'off',
-    },
+  plugins: {
+    'react-hooks': reactHooks,
   },
 
-  prettierConfig,
+  rules: {
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+  },
+};
+
+const coreTail = [prettierConfig];
+
+/**
+ * Shared TypeScript + Prettier rules. Use with Expo / other stacks that ship
+ * their own `react-hooks` plugin to avoid duplicate plugin registration.
+ */
+export const baseConfigWithoutReactHooks = defineConfig([
+  globalIgnores(commonIgnoreGlobs),
+  linterOptionsBlock,
+  mainLintBlock,
+  ...coreTail,
+]);
+
+/**
+ * Full shared preset (includes `react-hooks`). Safe with Next.js; do not merge
+ * with `eslint-config-expo` in the same run — Expo already registers hooks.
+ */
+export const baseConfig = defineConfig([
+  globalIgnores(commonIgnoreGlobs),
+  linterOptionsBlock,
+  mainLintBlock,
+  reactHooksBlock,
+  ...coreTail,
+]);
+
+/**
+ * Root lint: repo-level files only. Web and mobile each run ESLint in their
+ * own directory so framework plugins resolve paths correctly.
+ */
+export default defineConfig([
+  globalIgnores([...commonIgnoreGlobs, 'web/**', 'mobile/**']),
+  linterOptionsBlock,
+  mainLintBlock,
+  reactHooksBlock,
+  ...coreTail,
 ]);
