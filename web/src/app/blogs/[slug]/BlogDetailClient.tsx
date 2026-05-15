@@ -38,7 +38,7 @@ const markdownComponents: Components = {
           style={oneDark}
           language={match[1]}
           PreTag="div"
-          className="rounded-xl !bg-neutral-900 p-4 text-sm"
+          className="rounded-xl !bg-zinc-900 p-4 text-sm"
         >
           {String(children).replace(/\n$/, '')}
         </SyntaxHighlighter>
@@ -64,7 +64,7 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
         <div className="sticky top-35">
           <Link
             href="/blogs"
-            className="group text-muted-foreground mb-12 flex items-center gap-2 text-sm font-medium transition-colors hover:text-white"
+            className="group text-muted-foreground hover:text-foreground mb-12 flex items-center gap-2 text-sm font-medium transition-colors"
           >
             <svg
               width="16"
@@ -84,7 +84,7 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
 
           <header className="mb-16">
             <div className="mb-6 flex items-center gap-4">
-              <span className="rounded-full bg-white/10 px-4 py-1 text-xs font-semibold tracking-wider text-white/80 uppercase">
+              <span className="bg-foreground text-background rounded-full px-4 py-1 text-xs font-semibold tracking-wider uppercase">
                 {blog.category}
               </span>
               <span className="text-muted-foreground text-xs tracking-widest uppercase">
@@ -101,7 +101,7 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
             </p>
           </header>
         </div>
-        <div className="relative border-t border-white/50 bg-black">
+        <div className="bg-background border-foreground relative border-t">
           <div className="prose prose-invert max-w-none">
             <BlogContent>
               <ReactMarkdown components={markdownComponents}>
@@ -112,7 +112,7 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
             </BlogContent>
           </div>
 
-          <footer className="mt-20 border-t border-white/5 pt-10">
+          <footer className="border-foreground mt-20 border-t pt-10">
             <div className="flex flex-wrap gap-3">
               {blog.tags.map((tag) => (
                 <span
