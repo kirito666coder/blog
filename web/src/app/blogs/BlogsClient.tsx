@@ -61,7 +61,6 @@ export default function BlogsClient({
       );
     }
   }, [activeCategory]);
-  console.log(blogs);
 
   const filteredBlogs = useMemo(() => {
     return activeCategory === 'All'

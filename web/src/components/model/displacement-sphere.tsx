@@ -32,6 +32,7 @@ import { cleanRenderer, cleanScene, removeLights } from './utils/three';
 import fragmentShader from './displacement-sphere-fragment.glsl';
 import vertexShader from './displacement-sphere-vertex.glsl';
 import styles from './displacement-sphere.module.css';
+import { useThemeStore } from '@/store/theme-store';
 
 const springConfig = {
   stiffness: 30,
@@ -41,6 +42,7 @@ const springConfig = {
 
 type Uniforms = {
   time: IUniform<number>;
+  uTheme: IUniform<number>;
 } & Record<string, IUniform>;
 
 type SphereMesh = Mesh<SphereGeometry, MeshPhongMaterial> & {
@@ -50,7 +52,7 @@ type SphereMesh = Mesh<SphereGeometry, MeshPhongMaterial> & {
 type DisplacementSphereProps = CanvasHTMLAttributes<HTMLCanvasElement>;
 
 export const DisplacementSphere = (props: DisplacementSphereProps) => {
-  const theme = 'light';
+  const { theme } = useThemeStore();
 
   const start = useRef<number>(Date.now());
 
@@ -121,12 +123,24 @@ export const DisplacementSphere = (props: DisplacementSphereProps) => {
 
     material.current = new MeshPhongMaterial();
 
+    material.current.color.set(theme === 'dark' ? '#000000' : '#ffffff');
+
+    material.current.specular.set('#222222');
+
+    material.current.shininess = 10;
+
     material.current.onBeforeCompile = (
       shader: WebGLProgramParametersWithUniforms
     ) => {
       uniforms.current = UniformsUtils.merge([
         shader.uniforms,
-        { time: { value: 0 } },
+        {
+          time: { value: 0 },
+
+          uTheme: {
+            value: theme === 'dark' ? 1 : 0,
+          },
+        },
       ]) as Uniforms;
 
       shader.uniforms = uniforms.current;
@@ -159,14 +173,24 @@ export const DisplacementSphere = (props: DisplacementSphereProps) => {
   }, []);
 
   useEffect(() => {
+    if (!uniforms.current) return;
+
+    uniforms.current.uTheme.value = theme === 'dark' ? 1 : 0;
+
+    if (material.current) {
+      material.current.color.set(theme === 'dark' ? '#000000' : '#ffffff');
+    }
+  }, [theme]);
+
+  useEffect(() => {
     const dirLight = new DirectionalLight(
       0xffffff,
-      theme === 'light' ? 1.8 : 2.0
+      theme === 'dark' ? 1.8 : 1.0
     );
 
     const ambientLight = new AmbientLight(
       0xffffff,
-      theme === 'light' ? 1.2 : 0.4
+      theme === 'dark' ? 1.2 : 0.2
     );
 
     dirLight.position.z = 200;
@@ -197,7 +221,6 @@ export const DisplacementSphere = (props: DisplacementSphereProps) => {
       camera.current.updateProjectionMatrix();
     }
 
-    // Render a single frame on resize when not animating
     if (reduceMotion) {
       renderer.current?.render(
         scene.current as Scene,
