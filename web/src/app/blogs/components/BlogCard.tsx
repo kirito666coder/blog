@@ -23,7 +23,6 @@ export const BlogCard = ({
   const glowRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log(excerpt);
     const card = cardRef.current;
     if (!card) return;
 

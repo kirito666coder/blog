@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
 import { ToastContainer } from 'react-toastify';
+import { ThemeProvider } from '@/components/Theme';
 
 const roboto = localFont({
   src: [
@@ -49,7 +50,7 @@ export default function RootLayout({
       className={`${roboto.variable} ${titanOne.variable} ${opsOne.variable} h-full antialiased`}
     >
       <body className="bg-background text-foreground selection:bg-foreground selection:text-background flex min-h-full flex-col">
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
         <ToastContainer />
       </body>
     </html>

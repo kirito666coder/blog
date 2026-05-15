@@ -7,6 +7,8 @@ uniform float shininess;
 uniform float opacity;
 
 uniform float time;
+uniform float uTheme;
+
 varying vec2 vUv;
 varying vec3 newPosition;
 varying float noise;
@@ -41,13 +43,33 @@ void main() {
 
 	#include <clipping_planes_fragment>
 
-  vec3 color = vec3(vUv * (0.2 - 2.0 * noise), 1.0);
+  // LIGHT MODE COLORS
+  vec3 lightBase = vec3(1.0);
+  vec3 lightGlow = vec3(0.5);
 
-  // Black instead of gray/blue
-  vec3 finalColors = vec3(0.0, 0.0, 0.0);
+  // DARK MODE COLORS
+  vec3 darkBase = vec3(0.4);
+  vec3 darkGlow = vec3(2.6);
 
-  // Keep original white highlights/effect
-  vec4 diffuseColor = vec4(cos(finalColors * noise * 3.0), 1.0);
+  // switch colors by theme
+  vec3 baseColor = mix(darkBase, lightBase, uTheme);
+
+  vec3 glowColor = mix(darkGlow, lightGlow, uTheme);
+
+  // stronger center glow
+  float glowPattern =
+    0.45 +
+    (sin(noise * 8.0 + time * 0.5) * 0.25);
+
+  glowPattern = clamp(glowPattern, 0.0, 1.0);
+
+  vec3 finalColor = mix(
+    baseColor,
+    glowColor,
+    glowPattern
+  );
+
+  vec4 diffuseColor = vec4(finalColor, 1.0);
 
   ReflectedLight reflectedLight = ReflectedLight(
     vec3(0.0),
@@ -69,13 +91,11 @@ void main() {
 	#include <normal_fragment_maps>
 	#include <emissivemap_fragment>
 
-	// accumulation
 	#include <lights_phong_fragment>
 	#include <lights_fragment_begin>
 	#include <lights_fragment_maps>
 	#include <lights_fragment_end>
 
-	// modulation
 	#include <aomap_fragment>
 
 	vec3 outgoingLight =
@@ -85,6 +105,8 @@ void main() {
     reflectedLight.indirectSpecular +
     totalEmissiveRadiance;
 
+  outgoingLight *= finalColor;
+
 	#include <envmap_fragment>
 	#include <opaque_fragment>
 	#include <tonemapping_fragment>
@@ -93,5 +115,5 @@ void main() {
 	#include <premultiplied_alpha_fragment>
 	#include <dithering_fragment>
 
-  gl_FragColor = vec4(outgoingLight, diffuseColor.a);
+  gl_FragColor = vec4(outgoingLight, 1.0);
 }
