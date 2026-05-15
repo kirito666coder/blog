@@ -1,5 +1,5 @@
 'use client';
-import FluidText from './components/FluidText';
+import FluidText from '../components/FluidText';
 import { useBreakpoint } from '@/hooks/useBreakPoint';
 
 export default function ComingSoon() {

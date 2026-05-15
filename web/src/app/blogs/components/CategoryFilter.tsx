@@ -26,15 +26,15 @@ export const CategoryFilter = ({
           key={category}
           onClick={() => onCategoryChange(category)}
           className={cn(
-            'group relative rounded-full px-6 py-2 text-sm font-medium transition-all duration-300',
+            'group relative rounded-full border-2 px-6 py-2 text-sm font-medium transition-all duration-300',
             activeCategory === category
-              ? 'border border-white bg-white/10 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)]'
-              : 'glass text-muted-foreground hover:text-white'
+              ? 'border-foreground'
+              : 'glass text-muted-foreground border-border hover:text-foreground'
           )}
         >
           {category}
           {activeCategory === category && (
-            <span className="absolute -inset-px rounded-full bg-white/10 opacity-20 blur-sm" />
+            <span className="absolute -inset-px rounded-full opacity-20 blur-sm" />
           )}
         </button>
       ))}

@@ -56,10 +56,6 @@
   --radius-sm: calc(0.5rem - 4px);
 }
 
-* {
-  border-color: var(--border);
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
