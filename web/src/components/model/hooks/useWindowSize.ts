@@ -54,10 +54,12 @@ export function useWindowSize(): WindowSize {
     };
   }, [getHeight]);
 
-  const [windowSize, setWindowSize] = useState<WindowSize>({
-    width: dimensions.current.w,
-    height: dimensions.current.h,
+  const getInitialSize = (): WindowSize => ({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1280,
+    height: typeof window !== 'undefined' ? window.innerHeight : 800,
   });
+
+  const [windowSize, setWindowSize] = useState<WindowSize>(getInitialSize);
 
   useEffect(() => {
     const handleResize = (): void => {

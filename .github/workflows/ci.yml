@@ -1,4 +1,4 @@
-name: Next.js CI
+name: Monorepo CI
 
 on:
   push:
@@ -13,22 +13,60 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # -----------------------
+      # Setup PNPM
+      # -----------------------
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10
 
+      # -----------------------
+      # Setup Node
+      # -----------------------
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
+      # -----------------------
+      # Install dependencies
+      # -----------------------
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Lint
+      # -----------------------
+      # ROOT CHECKS
+      # -----------------------
+      - name: Lint (root)
         run: pnpm lint
 
-      - name: Build
+      - name: Format check (root)
+        run: pnpm format
+
+      # -----------------------
+      # WEB (Next.js)
+      # -----------------------
+      - name: Build Web (Next.js)
+        working-directory: web
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_APP_ENV: ${{ secrets.NEXT_PUBLIC_APP_ENV }}
         run: pnpm build
+
+      # -----------------------
+      # MOBILE (Expo)
+      # -----------------------
+      - name: Lint Mobile
+        working-directory: mobile
+        run: pnpm lint
+
+      - name: Typecheck Mobile
+        working-directory: mobile
+        run: pnpm tsc --noEmit
+
+      # Optional: ensure Expo project is valid
+      - name: Expo Doctor
+        working-directory: mobile
+        run: pnpm exec expo doctor

@@ -25,7 +25,7 @@ export default function Home() {
             <DisplacementSphere />
           </div>
           <div className="px-6 py-20 lg:py-32">
-            <div className={`absolute`}>
+            <div className="absolute">
               <Link
                 href="/"
                 className="font-ops text-6xl tracking-tighter transition-opacity"
@@ -45,7 +45,7 @@ export default function Home() {
                 </ButtonHoverLineEffect>
               </div>
             </div>
-            <h1 className={`absolute bottom-0`}>
+            <h1 className="absolute bottom-0">
               <div className="text-2xl leading-20 font-bold uppercase">
                 tech blogs 2026
               </div>

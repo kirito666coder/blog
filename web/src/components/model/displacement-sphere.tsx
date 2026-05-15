@@ -51,10 +51,11 @@ type SphereMesh = Mesh<SphereGeometry, MeshPhongMaterial> & {
 
 type DisplacementSphereProps = CanvasHTMLAttributes<HTMLCanvasElement>;
 
+const getStartTime = () => Date.now();
 export const DisplacementSphere = (props: DisplacementSphereProps) => {
   const { theme } = useThemeStore();
 
-  const start = useRef<number>(Date.now());
+  const start = useRef<number>(getStartTime());
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -170,7 +171,7 @@ export const DisplacementSphere = (props: DisplacementSphereProps) => {
 
       cleanRenderer(renderer.current);
     };
-  }, []);
+  }, [theme]);
 
   useEffect(() => {
     if (!uniforms.current) return;
