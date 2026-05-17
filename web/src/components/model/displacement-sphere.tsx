@@ -171,7 +171,7 @@ export const DisplacementSphere = (props: DisplacementSphereProps) => {
 
       cleanRenderer(renderer.current);
     };
-  }, [theme]);
+  }, []);
 
   useEffect(() => {
     if (!uniforms.current) return;
