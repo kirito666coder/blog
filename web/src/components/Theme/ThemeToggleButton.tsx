@@ -1,6 +1,6 @@
-import { useThemeStore } from '@/store/theme-store';
+import { useAppStore } from '@/store/app-store';
 
 export default function ThemeToggleButton() {
-  const { theme, toggleTheme } = useThemeStore();
+  const { theme, toggleTheme } = useAppStore();
   return <div onClick={toggleTheme}>{theme === 'dark' ? 'light' : 'dark'}</div>;
 }

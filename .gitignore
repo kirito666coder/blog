@@ -95,3 +95,5 @@ Thumbs.db
 # Turbo / Monorepo (optional)
 # =========================================================
 .turbo/
+
+web/src/app/admin

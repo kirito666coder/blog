@@ -81,3 +81,30 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+@keyframes wave {
+  0%,
+  100% {
+    transform: scaleY(0.5);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: scaleY(1.4);
+    opacity: 1;
+  }
+}
+
+@keyframes spin-reverse {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin-reverse {
+  animation: spin-reverse 4s linear infinite;
+}

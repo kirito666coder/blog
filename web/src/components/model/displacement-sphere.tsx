@@ -32,7 +32,7 @@ import { cleanRenderer, cleanScene, removeLights } from './utils/three';
 import fragmentShader from './displacement-sphere-fragment.glsl';
 import vertexShader from './displacement-sphere-vertex.glsl';
 import styles from './displacement-sphere.module.css';
-import { useThemeStore } from '@/store/theme-store';
+import { useAppStore } from '@/store/app-store';
 
 const springConfig = {
   stiffness: 30,
@@ -49,11 +49,16 @@ type SphereMesh = Mesh<SphereGeometry, MeshPhongMaterial> & {
   modifier?: number;
 };
 
-type DisplacementSphereProps = CanvasHTMLAttributes<HTMLCanvasElement>;
+type DisplacementSphereProps = CanvasHTMLAttributes<HTMLCanvasElement> & {
+  onReady?: () => void;
+};
 
 const getStartTime = () => Date.now();
-export const DisplacementSphere = (props: DisplacementSphereProps) => {
-  const { theme } = useThemeStore();
+export const DisplacementSphere = ({
+  onReady,
+  ...props
+}: DisplacementSphereProps) => {
+  const { theme } = useAppStore();
 
   const start = useRef<number>(getStartTime());
 
@@ -164,6 +169,10 @@ export const DisplacementSphere = (props: DisplacementSphereProps) => {
       sphere.current.modifier = Math.random();
 
       scene.current?.add(sphere.current);
+
+      if (onReady) {
+        onReady();
+      }
     });
 
     return () => {
