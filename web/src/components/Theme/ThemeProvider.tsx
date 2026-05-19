@@ -1,14 +1,14 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useThemeStore } from '@/store/theme-store';
+import { useAppStore } from '@/store/app-store';
 
 export default function ThemeProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { theme } = useThemeStore();
+  const { theme } = useAppStore();
 
   useEffect(() => {
     document.documentElement.classList.remove('light', 'dark');

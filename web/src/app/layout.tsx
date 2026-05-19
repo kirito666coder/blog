@@ -3,6 +3,7 @@ import './globals.css';
 import localFont from 'next/font/local';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from '@/components/Theme';
+import { GlobalMusic } from '@/components/global-music';
 
 const roboto = localFont({
   src: [
@@ -52,6 +53,7 @@ export default function RootLayout({
       <body className="bg-background text-foreground selection:bg-foreground selection:text-background flex min-h-full flex-col">
         <ThemeProvider>{children}</ThemeProvider>
         <ToastContainer />
+        <GlobalMusic />
       </body>
     </html>
   );
