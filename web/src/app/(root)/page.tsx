@@ -14,10 +14,15 @@ import { ButtonHoverLineEffect } from '@/components/buttonHover';
 
 import { IntroLoader } from '@/components/Loader';
 import { useAppStore } from '@/store/app-store';
+import SignIn from '@/components/sign-in';
+import { useSession } from 'next-auth/react';
+import Logo from '@/components/Logo';
 
 let introAlreadyPlayed = false;
 
 export default function Home() {
+  const { data: session, status } = useSession();
+
   const [sphereReady, setSphereReady] = useState(false);
 
   const [timerDone, setTimerDone] = useState(introAlreadyPlayed);
@@ -74,15 +79,9 @@ export default function Home() {
               />
             </div>
 
-            <div className="px-6 py-20 lg:py-32">
+            <div className="sm:text-foreground px-6 py-20 text-white lg:py-32">
               <div className="absolute">
-                <Link
-                  href="/"
-                  className="font-ops text-6xl tracking-tighter transition-opacity"
-                >
-                  KIRITO
-                  <div className="leading-7">BLOG</div>
-                </Link>
+                <Logo className="text-6xl" />
 
                 <div className="mt-8 ml-2 flex items-center gap-5">
                   <ButtonHoverLineEffect>
@@ -96,7 +95,16 @@ export default function Home() {
                   <ButtonHoverLineEffect>
                     <ThemeToggleButton />
                   </ButtonHoverLineEffect>
+
+                  <ButtonHoverLineEffect>
+                    <SignIn session={session} status={status} />
+                  </ButtonHoverLineEffect>
                 </div>
+                {session && (
+                  <p className="text-background bg-foreground mt-1 ml-2 w-fit p-0.5">
+                    Logged in as {session.user.name}
+                  </p>
+                )}
               </div>
 
               <h1 className="absolute bottom-0">

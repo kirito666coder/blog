@@ -7,6 +7,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 
 import type { Blog } from '@/models/blog.schema';
+import Logo from '@/components/Logo';
 
 const CATEGORIES = ['All', 'Frontend', 'Backend', 'DevOps'];
 
@@ -73,6 +74,9 @@ export default function BlogsClient({
       ref={containerRef}
       className="bg-background flex min-h-screen flex-col items-center px-6 pt-24 pb-20"
     >
+      <div className="fixed top-[5%] left-[3%] z-50">
+        <Logo className="text-3xl" />
+      </div>
       {/* Hero Section */}
       <section
         ref={heroRef}
