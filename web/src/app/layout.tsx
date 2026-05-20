@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from '@/components/Theme';
 import { GlobalMusic } from '@/components/global-music';
+import { SessionProvider } from 'next-auth/react';
 
 const roboto = localFont({
   src: [
@@ -51,7 +52,9 @@ export default function RootLayout({
       className={`${roboto.variable} ${titanOne.variable} ${opsOne.variable} h-full antialiased`}
     >
       <body className="bg-background text-foreground selection:bg-foreground selection:text-background flex min-h-full flex-col">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <SessionProvider>{children}</SessionProvider>
+        </ThemeProvider>
         <ToastContainer />
         <GlobalMusic />
       </body>
