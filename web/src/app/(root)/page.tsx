@@ -66,12 +66,12 @@ export default function Home() {
 
   return (
     <>
-      <IntroLoader visible={loading} />
+      {/* <IntroLoader visible={loading} /> */}
 
       <div id="smooth-wrapper">
         <div id="smooth-content" className="min-h-screen">
-          <main className="relative h-screen overflow-hidden">
-            <div className="absolute h-screen w-screen">
+          <main className="relative overflow-hidden">
+            <div className="fixed inset-0 h-screen w-screen">
               <DisplacementSphere
                 onReady={() => {
                   setSphereReady(true);
@@ -79,7 +79,7 @@ export default function Home() {
               />
             </div>
 
-            <div className="sm:text-foreground px-6 py-20 text-white lg:py-32">
+            <div className="sm:text-foreground relative h-screen px-6 py-20 text-white lg:py-32">
               <div className="absolute">
                 <Logo className="text-6xl" />
 
@@ -106,7 +106,6 @@ export default function Home() {
                   </p>
                 )}
               </div>
-
               <h1 className="absolute bottom-0">
                 <div className="text-2xl leading-20 font-bold uppercase">
                   tech blogs 2026
