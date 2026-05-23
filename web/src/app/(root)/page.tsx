@@ -66,7 +66,7 @@ export default function Home() {
 
   return (
     <>
-      {/* <IntroLoader visible={loading} /> */}
+      <IntroLoader visible={loading} />
 
       <div id="smooth-wrapper">
         <div id="smooth-content" className="min-h-screen">
