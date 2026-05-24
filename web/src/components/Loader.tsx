@@ -1,11 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-
 import gsap from 'gsap';
-
 import { Volume2, VolumeX } from 'lucide-react';
-
 import { useAppStore } from '@/store/app-store';
 
 type IntroLoaderProps = {
@@ -18,6 +15,8 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
   const reactorRef = useRef<HTMLDivElement | null>(null);
   const coreRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const buttonContainerRef = useRef<HTMLDivElement | null>(null);
+  const magneticTextRef = useRef<HTMLDivElement | null>(null);
   const ringsRef = useRef<(HTMLDivElement | null)[]>([]);
   const modulesRef = useRef<(HTMLDivElement | null)[]>([]);
   const textsRef = useRef<(HTMLDivElement | null)[]>([]);
@@ -28,21 +27,25 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
   const musicEnabled = useAppStore((s) => s.musicEnabled);
   const setMusicEnabled = useAppStore((s) => s.setMusicEnabled);
 
-  // Deterministic particles
-  const particles = useMemo(
-    () =>
-      Array.from({ length: 180 }).map((_, i) => ({
-        id: i,
-        x: (i * 7) % 100,
-        y: (i * 13) % 100,
-        size: (i % 3) + 1,
-        speedX: (Math.sin(i) * 0.1 + 0.1) % 0.3,
-        speedY: (Math.cos(i * 1.3) * 0.1 + 0.1) % 0.3,
-      })),
-    []
-  );
+  const [isButtonHovered, setIsButtonHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [showMagneticText, setShowMagneticText] = useState(false);
 
-  // Deterministic data streams
+  // Hydration-safe time
+  const [currentTime, setCurrentTime] = useState<string>('');
+
+  // Deterministic particles
+  const particles = useMemo(() => {
+    const count = 180;
+    return Array.from({ length: count }).map((_, i) => ({
+      id: i,
+      x: (i * 7) % 100,
+      y: (i * 13) % 100,
+      size: (i % 3) + 1,
+      speedX: (Math.sin(i) * 0.1 + 0.1) % 0.3,
+    }));
+  }, []);
+
   const dataStreams = useMemo(
     () =>
       Array.from({ length: 28 }).map((_, i) => ({
@@ -54,13 +57,26 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
     []
   );
 
-  // System stats – live terminal
   const [systemStats, setSystemStats] = useState({
     access: 94,
     decrypt: 87,
     handshake: 99,
     rootkit: 72,
   });
+
+  // Client-only time updates – deferred first tick
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 0);
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toLocaleTimeString());
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -86,7 +102,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
     return () => clearInterval(interval);
   }, []);
 
-  // Glitch effect on HUD text
   useEffect(() => {
     glitchIntervalRef.current = setInterval(() => {
       const elements = document.querySelectorAll('.glitch-text');
@@ -102,14 +117,13 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
     };
   }, []);
 
-  // GSAP animations – core is always visible, reactor fades in independently
+  // GSAP animations
   useEffect(() => {
     gsap.set(cameraRef.current, {
       transformPerspective: 6000,
       transformStyle: 'preserve-3d',
     });
 
-    // Reactor starts hidden (opacity 0) but core remains visible
     gsap.set(reactorRef.current, {
       rotateX: 12,
       rotateY: -8,
@@ -119,7 +133,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
       transformOrigin: 'center center',
     });
 
-    // Core is always fully visible – no opacity or scale animation on entrance
     gsap.set(coreRef.current, {
       opacity: 1,
       scale: 1,
@@ -129,7 +142,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
 
     const tl = gsap.timeline();
 
-    // Reactor emerges (fades in and rotates)
     tl.to(reactorRef.current, {
       rotateX: 5,
       rotateY: 0,
@@ -139,7 +151,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
       ease: 'back.out(0.6)',
     });
 
-    // Rings appear with stagger (they are inside reactor)
     ringsRef.current.forEach((ring, i) => {
       if (!ring) return;
       tl.fromTo(
@@ -160,7 +171,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
       );
     });
 
-    // Continuous ring rotation
     ringsRef.current.forEach((ring, i) => {
       if (!ring) return;
       gsap.to(ring, {
@@ -171,7 +181,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
       });
     });
 
-    // Floating modules
     modulesRef.current.forEach((module, i) => {
       if (!module) return;
       gsap.to(module, {
@@ -186,7 +195,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
       });
     });
 
-    // Hologram ring motion
     gsap.to(hologramRef.current, {
       y: 10,
       rotateY: 6,
@@ -196,7 +204,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
       ease: 'sine.inOut',
     });
 
-    // Scan line rotation
     gsap.to(scanRef.current, {
       rotate: 360,
       duration: 8,
@@ -205,7 +212,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
       transformOrigin: 'center center',
     });
 
-    // Gentle core pulse – no pop
     gsap.to(coreRef.current, {
       scale: 1.015,
       duration: 1.8,
@@ -219,7 +225,6 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
     };
   }, []);
 
-  // Mouse interaction – smooth 3D tracking (core moves independently)
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!sceneRef.current || !cameraRef.current || !reactorRef.current) return;
 
@@ -259,6 +264,17 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
   };
 
   const handleButtonLeave = () => {
+    setIsButtonHovered(false);
+    // Smooth exit for magnetic text
+    if (magneticTextRef.current) {
+      gsap.to(magneticTextRef.current, {
+        opacity: 0,
+        scale: 0.8,
+        duration: 0.3,
+        ease: 'back.in(1.2)',
+        onComplete: () => setShowMagneticText(false),
+      });
+    }
     gsap.to(buttonRef.current, {
       scale: 1,
       boxShadow:
@@ -267,22 +283,69 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
     });
   };
 
+  const handleButtonMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!buttonContainerRef.current) return;
+    const rect = buttonContainerRef.current.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    setMousePos({ x: mouseX, y: mouseY });
+  };
+
+  // Show magnetic text with entry animation
+  const handleMouseEnterButton = () => {
+    setIsButtonHovered(true);
+    setShowMagneticText(true);
+    handleButtonHover();
+    // Entry animation
+    setTimeout(() => {
+      if (magneticTextRef.current) {
+        gsap.fromTo(
+          magneticTextRef.current,
+          { opacity: 0, scale: 0.8 },
+          { opacity: 1, scale: 1, duration: 0.3, ease: 'back.out(1.2)' }
+        );
+      }
+    }, 10);
+  };
+
+  // Update magnetic text position
+  useEffect(() => {
+    if (!magneticTextRef.current || !showMagneticText) return;
+    gsap.to(magneticTextRef.current, {
+      left: mousePos.x,
+      top: mousePos.y,
+      duration: 0.15,
+      ease: 'power2.out',
+      overwrite: true,
+    });
+  }, [mousePos, showMagneticText]);
+
   return (
     <div
       ref={sceneRef}
       onMouseMove={handleMouseMove}
-      className={`fixed inset-0 z-[999999] overflow-hidden bg-black transition-all duration-1000 ${
+      className={`fixed inset-0 z-[999999] overflow-hidden bg-black transition-all duration-1000 will-change-transform ${
         visible
           ? 'pointer-events-auto opacity-100'
           : 'pointer-events-none opacity-0'
       }`}
     >
+      {/* Top loading title */}
+      <div className="absolute top-5 left-1/2 z-[999999] -translate-x-1/2 text-center md:top-8">
+        <div className="flex items-center gap-2 font-mono text-xs tracking-widest text-white/80 md:text-sm">
+          <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-white/80" />
+          <span className="tracking-[0.2em]">SYSTEM INITIALIZATION</span>
+          <span className="animate-pulse">_</span>
+        </div>
+        <div className="mt-1 h-px w-32 bg-gradient-to-r from-transparent via-white/40 to-transparent md:w-48" />
+      </div>
+
       {/* Background layers */}
       <div className="absolute inset-0 bg-black" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_70%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(255,255,255,0.04),transparent_50%)]" />
 
-      {/* Holographic grid – desktop only */}
+      {/* Holographic grid */}
       <div
         className="absolute inset-0 hidden md:block"
         style={{
@@ -312,22 +375,24 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
       ))}
 
       {/* Floating particles */}
-      {particles.map((particle) => (
-        <div
-          key={particle.id}
-          className="absolute rounded-full bg-white/30"
-          style={{
-            width: particle.size,
-            height: particle.size,
-            left: `${particle.x}%`,
-            top: `${particle.y}%`,
-            boxShadow: `0 0 ${particle.size * 1.5}px rgba(255,255,255,0.4)`,
-            animation: `floatParticle ${6 / particle.speedX}s infinite alternate ease-in-out`,
-          }}
-        />
-      ))}
+      <div suppressHydrationWarning>
+        {particles.map((particle) => (
+          <div
+            key={particle.id}
+            className="absolute rounded-full bg-white/30 will-change-transform"
+            style={{
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              boxShadow: `0 0 ${particle.size * 1.5}px rgba(255,255,255,0.4)`,
+              animation: `floatParticle ${6 / particle.speedX}s infinite alternate ease-in-out`,
+            }}
+          />
+        ))}
+      </div>
 
-      {/* Left terminal panel – hacker stats */}
+      {/* Left terminal panel */}
       <div className="absolute top-1/2 left-3 z-[99999] w-48 -translate-y-1/2 rounded-md border border-white/20 bg-black/80 p-2 font-mono text-[8px] tracking-wider uppercase backdrop-blur-md sm:left-5 sm:w-64 sm:p-3 sm:text-[10px]">
         <div className="mb-2 flex items-center gap-2 border-b border-white/20 pb-1">
           <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-white/80" />
@@ -372,11 +437,11 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
           </div>
         </div>
         <div className="mt-2 border-t border-white/10 pt-1 text-[7px] tracking-wider text-white/40 sm:text-[8px]">
-          {`[${new Date().toLocaleTimeString()}] SYSTEM BREACH`}
+          {currentTime && `[${currentTime}] SYSTEM BREACH`}
         </div>
       </div>
 
-      {/* Right terminal panel – target info */}
+      {/* Right terminal panel */}
       <div className="absolute top-1/2 right-3 z-[99999] w-48 -translate-y-1/2 rounded-md border border-white/20 bg-black/80 p-2 font-mono text-[8px] tracking-wider uppercase backdrop-blur-md sm:right-5 sm:w-64 sm:p-3 sm:text-[10px]">
         <div className="mb-2 flex items-center gap-2 border-b border-white/20 pb-1">
           <span className="inline-block h-2 w-2 rounded-full bg-white/80" />
@@ -409,10 +474,7 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
       <div
         ref={cameraRef}
         className="relative flex h-full items-center justify-center"
-        style={{
-          transformStyle: 'preserve-3d',
-          perspective: '6000px',
-        }}
+        style={{ transformStyle: 'preserve-3d', perspective: '6000px' }}
       >
         {/* HUD text overlay */}
         <div className="absolute top-3 left-3 z-[99999] space-y-1 font-mono text-[7px] tracking-[0.3em] text-white/60 uppercase sm:top-6 sm:left-6 sm:text-[9px]">
@@ -439,7 +501,7 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
           ))}
         </div>
 
-        {/* Main Reactor (rings, modules, scan) – fades in */}
+        {/* Main Reactor */}
         <div
           ref={reactorRef}
           className="relative flex h-[600px] w-[600px] scale-75 items-center justify-center md:h-[1100px] md:w-[1100px] md:scale-100"
@@ -534,7 +596,7 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
           </div>
         </div>
 
-        {/* Main Core – always visible, separate from reactor */}
+        {/* Main Core */}
         <div
           ref={coreRef}
           className="absolute flex h-[300px] w-[300px] items-center justify-center rounded-full border border-white/10 bg-gradient-to-b from-white/[0.03] to-transparent backdrop-blur-2xl md:h-[500px] md:w-[500px]"
@@ -602,35 +664,56 @@ export const IntroLoader = ({ visible }: IntroLoaderProps) => {
           <div className="absolute h-[100px] w-[100px] rounded-full bg-white/10 blur-2xl md:h-[160px] md:w-[160px]" />
           <div className="absolute h-[60px] w-[60px] rounded-full bg-white/20 blur-xl md:h-[100px] md:w-[100px]" />
 
-          {/* Volume control button */}
-          <button
-            ref={buttonRef}
-            onClick={() => setMusicEnabled(!musicEnabled)}
-            onMouseEnter={handleButtonHover}
-            onMouseLeave={handleButtonLeave}
-            className="absolute z-[999999] flex h-[90px] w-[90px] items-center justify-center rounded-full border border-white/20 bg-gradient-to-b from-black to-neutral-950 transition-all duration-300 md:h-[150px] md:w-[150px]"
-            style={{
-              transform: 'translateZ(320px)',
-              isolation: 'isolate',
-              boxShadow:
-                '0 0 50px rgba(255,255,255,0.1), inset 0 0 25px rgba(255,255,255,0.02)',
-            }}
+          {/* Volume control button with magnetic text */}
+          <div
+            ref={buttonContainerRef}
+            className="absolute z-[999999]"
+            style={{ transform: 'translateZ(320px)' }}
           >
-            <div className="absolute inset-2 rounded-full border border-white/15 md:inset-3" />
-            <div className="absolute inset-4 rounded-full border border-white/10 md:inset-6" />
-            <div className="absolute h-8 w-8 rounded-full border border-white/30 bg-white/10 shadow-[0_0_25px_rgba(255,255,255,0.3)] md:h-14 md:w-14" />
-            {!musicEnabled ? (
-              <VolumeX
-                strokeWidth={1.5}
-                className="relative z-[9999999] h-5 w-5 text-white/90 md:h-8 md:w-8"
-              />
-            ) : (
-              <Volume2
-                strokeWidth={1.5}
-                className="relative z-[9999999] h-5 w-5 text-white/90 md:h-8 md:w-8"
-              />
+            <button
+              ref={buttonRef}
+              onClick={() => setMusicEnabled(!musicEnabled)}
+              onMouseEnter={handleMouseEnterButton}
+              onMouseLeave={handleButtonLeave}
+              onMouseMove={handleButtonMouseMove}
+              className="flex h-[90px] w-[90px] cursor-pointer items-center justify-center rounded-full border border-white/20 bg-gradient-to-b from-black to-neutral-950 transition-all duration-300 md:h-[150px] md:w-[150px]"
+              style={{
+                boxShadow:
+                  '0 0 50px rgba(255,255,255,0.1), inset 0 0 25px rgba(255,255,255,0.02)',
+              }}
+            >
+              <div className="absolute inset-2 rounded-full border border-white/15 md:inset-3" />
+              <div className="absolute inset-4 rounded-full border border-white/10 md:inset-6" />
+              <div className="absolute h-8 w-8 rounded-full border border-white/30 bg-white/10 shadow-[0_0_25px_rgba(255,255,255,0.3)] md:h-14 md:w-14" />
+              {!musicEnabled ? (
+                <VolumeX
+                  strokeWidth={1.5}
+                  className="relative z-[9999999] h-5 w-5 text-white/90 md:h-8 md:w-8"
+                />
+              ) : (
+                <Volume2
+                  strokeWidth={1.5}
+                  className="relative z-[9999999] h-5 w-5 text-white/90 md:h-8 md:w-8"
+                />
+              )}
+            </button>
+
+            {/* Magnetic text – shown with smooth entry/exit */}
+            {showMagneticText && (
+              <div
+                ref={magneticTextRef}
+                className="pointer-events-none absolute rounded-full border border-white/20 bg-white/10 px-4 py-2 font-mono text-sm tracking-wider whitespace-nowrap text-white backdrop-blur-md"
+                style={{
+                  left: 0,
+                  top: 0,
+                  transform: 'translate(-50%, -50%)',
+                  opacity: 0,
+                }}
+              >
+                ENTER WITH MUSIC
+              </div>
             )}
-          </button>
+          </div>
         </div>
       </div>
 
