@@ -247,6 +247,9 @@ importers:
       '@types/three':
         specifier: ^0.183.1
         version: 0.183.1
+      cross-env:
+        specifier: ^7.0.3
+        version: 7.0.3
       eslint-config-next:
         specifier: 16.2.3
         version: 16.2.3(@typescript-eslint/parser@8.59.3(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3))(eslint@9.39.4(jiti@2.7.0))(typescript@5.9.3)
