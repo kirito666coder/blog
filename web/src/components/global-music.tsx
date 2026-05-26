@@ -18,7 +18,7 @@ export const GlobalMusic = () => {
 
     audio.loop = true;
 
-    audio.volume = 1;
+    audio.volume = 0.6;
 
     audioRef.current = audio;
 

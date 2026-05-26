@@ -4,7 +4,13 @@ import { gsap, SplitText } from '@/lib/gsap';
 import { useGSAP } from '@gsap/react';
 import { useRef } from 'react';
 
-export default function TextIntro({ children }: { children: React.ReactNode }) {
+export default function TextIntro({
+  children,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
   const textRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
 
@@ -17,6 +23,7 @@ export default function TextIntro({ children }: { children: React.ReactNode }) {
     const tl = gsap.timeline();
 
     tl.to(overlayRef.current, {
+      delay,
       clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
       duration: 0.8,
       ease: 'power2.inOut',
@@ -55,7 +62,7 @@ export default function TextIntro({ children }: { children: React.ReactNode }) {
         }}
       />
 
-      <div ref={textRef} className="relative z-0">
+      <div ref={textRef} className="relative z-0 overflow-visible">
         {children}
       </div>
     </div>
