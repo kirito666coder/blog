@@ -1,9 +1,6 @@
 import Link from 'next/link';
 import { ComponentType, ReactNode, SVGProps } from 'react';
 
-/** Admin pages read MongoDB; skip static prerender at build time. */
-// export const dynamic = 'force-dynamic';
-
 type IconProps = SVGProps<SVGSVGElement>;
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
@@ -35,7 +32,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         <div className="border-border/50 mt-auto border-t pt-8">
           <Link
             href="/"
-            className="text-muted-foreground hover:text-foreground flex items-center gap-3 rounded-lg px-4 py-2 transition-colors hover:bg-white/5"
+            className="text-muted-foreground hover:text-foreground hover:bg-foreground/5 flex items-center gap-3 rounded-lg px-4 py-2 transition-colors"
           >
             <svg
               width="20"

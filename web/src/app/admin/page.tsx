@@ -10,49 +10,115 @@ export default async function AdminDashboardPage() {
   const blogsCollection = await getCollection('blogs');
 
   const usersCount = await usersCollection.countDocuments();
+
   const totalBlogs = await blogsCollection.countDocuments();
+
   const publishedBlogs = await blogsCollection.countDocuments({
     status: 'published',
   });
-  const drafts = await blogsCollection.countDocuments({ status: 'draft' });
+
+  const drafts = await blogsCollection.countDocuments({
+    status: 'draft',
+  });
 
   return (
-    <div className="p-8 md:p-12">
-      <header className="mb-12">
-        <h1 className="font-display text-3xl font-bold tracking-tight md:text-5xl">
-          Dashboard Overview
-        </h1>
-        <p className="text-muted-foreground mt-2 text-lg">
-          Welcome to the admin panel. Here is a summary of your platform.
-        </p>
-      </header>
+    <div className="space-y-10 p-8">
+      {/* Header */}
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <h1 className="text-foreground text-4xl font-bold tracking-tight">
+          Dashboard
+        </h1>
+
+        <p className="text-muted-foreground mt-2">
+          Monitor content, users and platform activity.
+        </p>
+      </div>
+
+      {/* Stats */}
+
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          title="Total Users"
-          value={usersCount.toString()}
+          title="Users"
+          value={usersCount}
           href="/admin/users"
-          color="bg-blue-500/10 text-blue-500 border-blue-500/20"
+          icon={<UsersIcon />}
         />
+
         <StatCard
-          title="Total Blogs"
-          value={totalBlogs.toString()}
+          title="Articles"
+          value={totalBlogs}
           href="/admin/blogs"
-          color="bg-purple-500/10 text-purple-500 border-purple-500/20"
+          icon={<ArticleIcon />}
         />
+
         <StatCard
           title="Published"
-          value={publishedBlogs.toString()}
+          value={publishedBlogs}
           href="/admin/blogs?status=published"
-          color="bg-green-500/10 text-green-500 border-green-500/20"
+          icon={<PublishedIcon />}
         />
+
         <StatCard
           title="Drafts"
-          value={drafts.toString()}
+          value={drafts}
           href="/admin/blogs?status=draft"
-          color="bg-orange-500/10 text-orange-500 border-orange-500/20"
+          icon={<DraftIcon />}
         />
-      </div>
+      </section>
+
+      {/* Quick Actions */}
+
+      <section>
+        <h2 className="mb-4 text-lg font-semibold">Quick Actions</h2>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <ActionCard
+            href="/admin/blogs/create"
+            title="Create Article"
+            description="Write and publish new content."
+          />
+
+          <ActionCard
+            href="/admin/blogs"
+            title="Manage Content"
+            description="Edit existing articles."
+          />
+
+          <ActionCard
+            href="/admin/users"
+            title="Manage Users"
+            description="View and manage members."
+          />
+        </div>
+      </section>
+
+      {/* Platform Overview */}
+
+      <section>
+        <h2 className="mb-4 text-lg font-semibold">Platform Overview</h2>
+
+        <div className="border-border bg-card rounded-2xl border">
+          <div className="divide-border grid divide-y md:grid-cols-3 md:divide-x md:divide-y-0">
+            <OverviewItem
+              label="Published Ratio"
+              value={`${Math.round(
+                (publishedBlogs / Math.max(totalBlogs, 1)) * 100
+              )}%`}
+            />
+
+            <OverviewItem
+              label="Draft Ratio"
+              value={`${Math.round((drafts / Math.max(totalBlogs, 1)) * 100)}%`}
+            />
+
+            <OverviewItem
+              label="Users per Post"
+              value={totalBlogs ? (usersCount / totalBlogs).toFixed(1) : '0'}
+            />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
@@ -61,22 +127,115 @@ function StatCard({
   title,
   value,
   href,
-  color,
+  icon,
 }: {
   title: string;
-  value: string;
+  value: number;
   href: string;
-  color: string;
+  icon: React.ReactNode;
 }) {
   return (
     <Link
       href={href}
-      className={`flex flex-col gap-4 rounded-2xl border p-6 backdrop-blur-md transition-all hover:scale-[1.02] ${color}`}
+      className="border-border bg-card hover:border-foreground/20 group rounded-2xl border p-6 transition-all"
     >
-      <h3 className="text-sm font-semibold tracking-wider uppercase opacity-80">
-        {title}
-      </h3>
-      <div className="font-display text-5xl font-bold">{value}</div>
+      <div className="mb-6 flex items-center justify-between">
+        <span className="text-muted-foreground text-sm">{title}</span>
+
+        <div className="text-muted-foreground">{icon}</div>
+      </div>
+
+      <div className="text-foreground text-4xl font-bold">{value}</div>
     </Link>
+  );
+}
+
+function ActionCard({
+  href,
+  title,
+  description,
+}: {
+  href: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <Link
+      href={href}
+      className="border-border bg-card hover:border-foreground/20 rounded-2xl border p-5 transition-all"
+    >
+      <h3 className="font-medium">{title}</h3>
+
+      <p className="text-muted-foreground mt-2 text-sm">{description}</p>
+    </Link>
+  );
+}
+
+function OverviewItem({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="p-6">
+      <p className="text-muted-foreground text-sm">{label}</p>
+
+      <p className="mt-2 text-3xl font-bold">{value}</p>
+    </div>
+  );
+}
+
+function UsersIcon() {
+  return (
+    <svg
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+    </svg>
+  );
+}
+
+function ArticleIcon() {
+  return (
+    <svg
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5V4.5A2.5 2.5 0 0 1 6.5 2Z" />
+    </svg>
+  );
+}
+
+function PublishedIcon() {
+  return (
+    <svg
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="m5 12 5 5L20 7" />
+    </svg>
+  );
+}
+
+function DraftIcon() {
+  return (
+    <svg
+      className="h-5 w-5"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+    >
+      <path d="M12 20h9" />
+      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" />
+    </svg>
   );
 }
