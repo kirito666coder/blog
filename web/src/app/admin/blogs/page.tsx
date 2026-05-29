@@ -8,144 +8,204 @@ export const metadata = {
 export default async function AdminBlogsPage({
   searchParams,
 }: {
-  searchParams: { status?: string };
+  searchParams: Promise<{
+    status?: string;
+  }>;
 }) {
-  const filter = searchParams.status ? { status: searchParams.status } : {};
+  const params = await searchParams;
+
+  const status = params.status;
+
+  const filter =
+    status && ['published', 'draft'].includes(status) ? { status } : {};
+
   const blogsCollection = await getCollection('blogs');
+
   const blogs = await blogsCollection
     .find(filter)
     .sort({ createdAt: -1 })
     .toArray();
 
   return (
-    <div className="mx-auto max-w-7xl p-8 md:p-12">
-      <header className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+    <div className="mx-auto max-w-7xl p-8">
+      {/* Header */}
+      <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h1 className="font-display text-3xl font-bold tracking-tight md:text-5xl">
-            Manage Blogs
+          <h1 className="text-4xl font-bold tracking-tight">
+            Content Management
           </h1>
-          <p className="text-muted-foreground mt-2 text-lg">
-            Review, publish, draft, or delete blogs from all users.
+
+          <p className="text-muted-foreground mt-2">
+            Review, publish, update and manage articles across the platform.
           </p>
         </div>
-        <div className="flex gap-2">
-          <Link
-            href="/admin/blogs"
-            className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${!searchParams.status ? 'bg-primary text-primary-foreground' : 'bg-muted/50 text-muted-foreground hover:bg-muted'}`}
-          >
-            All
-          </Link>
-          <Link
-            href="/admin/blogs?status=published"
-            className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${searchParams.status === 'published' ? 'bg-primary text-primary-foreground' : 'bg-muted/50 text-muted-foreground hover:bg-muted'}`}
-          >
-            Published
-          </Link>
-          <Link
-            href="/admin/blogs?status=draft"
-            className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${searchParams.status === 'draft' ? 'bg-primary text-primary-foreground' : 'bg-muted/50 text-muted-foreground hover:bg-muted'}`}
-          >
-            Drafts
-          </Link>
-        </div>
-      </header>
 
-      <div className="border-border/50 bg-background/50 overflow-hidden rounded-xl border backdrop-blur-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-left">
-            <thead>
-              <tr className="border-border/50 bg-muted/20 border-b">
-                <th className="text-muted-foreground p-4 font-medium">
-                  Blog Details
-                </th>
-                <th className="text-muted-foreground p-4 font-medium">
-                  Author
-                </th>
-                <th className="text-muted-foreground p-4 font-medium">
-                  Status
-                </th>
-                <th className="text-muted-foreground p-4 font-medium">Stats</th>
-                <th className="text-muted-foreground p-4 text-right font-medium">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {blogs.map((blog) => (
-                <tr
-                  key={blog._id.toString()}
-                  className="border-border/10 hover:bg-muted/10 border-b transition-colors"
-                >
-                  <td className="max-w-[250px] p-4">
-                    <div className="truncate font-semibold">{blog.title}</div>
-                    <div className="text-muted-foreground truncate text-xs">
-                      {blog.slug}
-                    </div>
-                    <div className="text-muted-foreground mt-1 text-xs">
-                      {blog.createdAt
-                        ? new Date(blog.createdAt).toLocaleDateString()
-                        : 'Unknown'}
-                    </div>
-                  </td>
-                  <td className="p-4">
-                    <div className="flex items-center gap-2">
-                      <div className="bg-muted flex h-6 w-6 items-center justify-center overflow-hidden rounded-full text-xs">
-                        {blog.author?.avatar ? (
-                          <img
-                            src={blog.author.avatar}
-                            alt={blog.author.name}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          blog.author?.name?.charAt(0).toUpperCase() || 'A'
-                        )}
-                      </div>
-                      <span className="text-sm font-medium">
-                        {blog.author?.name || 'Unknown'}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="p-4">
+        <Link
+          href="/admin/blogs/create"
+          className="bg-foreground text-background inline-flex items-center rounded-xl px-5 py-3 text-sm font-medium transition-opacity hover:opacity-90"
+        >
+          Create Article
+        </Link>
+      </div>
+
+      {/* Filters */}
+      <div className="mb-8 flex flex-wrap gap-3">
+        <Link
+          href="/admin/blogs"
+          className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${
+            !status
+              ? 'bg-foreground text-background'
+              : 'bg-card border-border border'
+          }`}
+        >
+          All Articles
+        </Link>
+
+        <Link
+          href="/admin/blogs?status=published"
+          className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${
+            status === 'published'
+              ? 'bg-green-500 text-white'
+              : 'bg-card border-border border'
+          }`}
+        >
+          Published
+        </Link>
+
+        <Link
+          href="/admin/blogs?status=draft"
+          className={`rounded-xl px-4 py-2 text-sm font-medium transition-all ${
+            status === 'draft'
+              ? 'bg-orange-500 text-white'
+              : 'bg-card border-border border'
+          }`}
+        >
+          Drafts
+        </Link>
+      </div>
+
+      {/* Stats */}
+      <div className="mb-8 grid gap-4 md:grid-cols-3">
+        <div className="bg-card border-border rounded-2xl border p-5">
+          <p className="text-muted-foreground text-sm">Total Articles</p>
+          <p className="mt-2 text-3xl font-bold">{blogs.length}</p>
+        </div>
+
+        <div className="bg-card border-border rounded-2xl border p-5">
+          <p className="text-muted-foreground text-sm">Current Filter</p>
+          <p className="mt-2 text-3xl font-bold capitalize">
+            {status || 'all'}
+          </p>
+        </div>
+
+        <div className="bg-card border-border rounded-2xl border p-5">
+          <p className="text-muted-foreground text-sm">Latest Update</p>
+          <p className="mt-2 text-lg font-medium">
+            {new Date().toLocaleDateString()}
+          </p>
+        </div>
+      </div>
+
+      {/* Blog Cards */}
+      {blogs.length > 0 ? (
+        <div className="grid gap-4">
+          {blogs.map((blog) => (
+            <article
+              key={blog._id.toString()}
+              className="bg-card border-border hover:border-foreground/20 rounded-2xl border p-6 transition-all"
+            >
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                {/* Left */}
+                <div className="min-w-0 flex-1">
+                  <div className="mb-3 flex flex-wrap items-center gap-3">
                     <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${
+                      className={`rounded-full px-3 py-1 text-xs font-medium capitalize ${
                         blog.status === 'published'
-                          ? 'border border-green-500/20 bg-green-500/10 text-green-500'
-                          : 'border border-orange-500/20 bg-orange-500/10 text-orange-500'
+                          ? 'bg-green-500/10 text-green-500'
+                          : 'bg-orange-500/10 text-orange-500'
                       }`}
                     >
                       {blog.status}
                     </span>
-                  </td>
-                  <td className="text-muted-foreground p-4 text-sm">
-                    <div className="flex flex-col gap-1">
-                      <span>{blog.stats?.views || 0} views</span>
-                      <span>{blog.stats?.likes || 0} likes</span>
+
+                    <span className="text-muted-foreground text-xs">
+                      {blog.createdAt
+                        ? new Date(blog.createdAt).toLocaleDateString()
+                        : 'Unknown Date'}
+                    </span>
+                  </div>
+
+                  <h2 className="mb-2 text-xl font-semibold">{blog.title}</h2>
+
+                  <p className="text-muted-foreground truncate text-sm">
+                    /{blog.slug}
+                  </p>
+                </div>
+
+                {/* Right */}
+                <div className="flex flex-wrap items-center gap-8">
+                  <div>
+                    <p className="text-muted-foreground text-xs uppercase">
+                      Views
+                    </p>
+                    <p className="text-lg font-semibold">
+                      {blog.stats?.views ?? 0}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="text-muted-foreground text-xs uppercase">
+                      Likes
+                    </p>
+                    <p className="text-lg font-semibold">
+                      {blog.stats?.likes ?? 0}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="bg-muted flex h-10 w-10 items-center justify-center overflow-hidden rounded-full">
+                      {blog.author?.avatar ? (
+                        <img
+                          src={blog.author.avatar}
+                          alt={blog.author.name}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sm font-semibold">
+                          {blog.author?.name?.charAt(0).toUpperCase() || 'A'}
+                        </span>
+                      )}
                     </div>
-                  </td>
-                  <td className="p-4 text-right">
-                    <Link
-                      href={`/admin/blogs/${blog._id.toString()}`}
-                      className="focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
-                    >
-                      Review
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-              {blogs.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={5}
-                    className="text-muted-foreground p-8 text-center"
+
+                    <div>
+                      <p className="text-sm font-medium">
+                        {blog.author?.name || 'Unknown'}
+                      </p>
+
+                      <p className="text-muted-foreground text-xs">Author</p>
+                    </div>
+                  </div>
+
+                  <Link
+                    href={`/admin/blogs/${blog._id.toString()}`}
+                    className="border-border hover:bg-muted rounded-xl border px-4 py-2 text-sm font-medium transition-colors"
                   >
-                    No blogs found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                    Review
+                  </Link>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
-      </div>
+      ) : (
+        <div className="bg-card border-border rounded-2xl border py-20 text-center">
+          <h3 className="text-xl font-semibold">No articles found</h3>
+
+          <p className="text-muted-foreground mt-2">
+            No blogs match the selected filter.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
