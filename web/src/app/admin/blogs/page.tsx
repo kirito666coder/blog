@@ -187,7 +187,7 @@ export default async function AdminBlogsPage({
                   </div>
 
                   <Link
-                    href={`/admin/blogs/${blog._id.toString()}`}
+                    href={`/blogs/${blog.slug}`}
                     className="border-border hover:bg-muted rounded-xl border px-4 py-2 text-sm font-medium transition-colors"
                   >
                     Review
