@@ -10,12 +10,13 @@ export const metadata = {
 export default async function AdminUserPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
+  const { id } = await params;
   let userObjectId: ObjectId;
   try {
-    userObjectId = new ObjectId(params.id);
-  } catch (error) {
+    userObjectId = new ObjectId(id);
+  } catch {
     return notFound();
   }
 
@@ -31,9 +32,9 @@ export default async function AdminUserPage({
   const blogs = await blogsCollection
     .find({
       $or: [
-        { 'author.id': params.id },
+        { 'author.id': id },
         { 'author.id': userObjectId },
-        { authorId: params.id },
+        { authorId: id },
         { authorId: userObjectId },
       ],
     })
@@ -77,7 +78,7 @@ export default async function AdminUserPage({
             )}
           </div>
           <div>
-            <h1 className="font-display text-3xl font-bold tracking-tight md:text-5xl">
+            <h1 className="font-ops text-3xl font-bold tracking-tight md:text-5xl">
               {user.name || 'Unnamed User'}
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">{user.email}</p>
@@ -103,7 +104,7 @@ export default async function AdminUserPage({
       </header>
 
       <div className="mt-12">
-        <h2 className="font-display mb-6 text-2xl font-bold">
+        <h2 className="font-ops mb-6 text-2xl font-bold">
           User&apos;s Blogs ({blogs.length})
         </h2>
 
@@ -158,7 +159,7 @@ export default async function AdminUserPage({
                     </td>
                     <td className="p-4 text-right">
                       <Link
-                        href={`/admin/blogs/${blog._id.toString()}`}
+                        href={`/blogs/${blog.slug}`}
                         className="focus-visible:ring-ring border-input bg-background hover:bg-accent hover:text-accent-foreground inline-flex h-9 items-center justify-center rounded-md border px-4 py-2 text-sm font-medium shadow-sm transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                       >
                         Review
