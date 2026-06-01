@@ -14,11 +14,11 @@ export const GlobalMusic = () => {
   const loading = useAppStore((s) => s.loading);
 
   useEffect(() => {
-    const audio = new Audio('/DirtySprite.mp3');
+    const audio = new Audio('/Nico on the Beat.mp3');
 
     audio.loop = true;
 
-    audio.volume = 0.4;
+    audio.volume = 0.6;
 
     audioRef.current = audio;
 

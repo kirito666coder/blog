@@ -7,6 +7,7 @@ import type { Components } from 'react-markdown';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import type { Blog } from '@/models/blog.schema';
+import { BackButton } from './components/BackButton';
 
 const markdownComponents: Components = {
   h1: ({ children }) => (
@@ -62,34 +63,52 @@ export default function BlogDetailClient({ blog }: { blog: Blog }) {
 
       <div className="relative w-full max-w-4xl">
         <div className="sticky top-35">
-          <Link
-            href="/blogs"
-            className="group text-muted-foreground hover:text-foreground mb-12 flex items-center gap-2 text-sm font-medium transition-colors"
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="transition-transform group-hover:-translate-x-1"
-            >
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-            BACK TO BLOGS
-          </Link>
+          <BackButton />
 
           <header className="mb-16">
             <div className="mb-6 flex items-center gap-4">
               <span className="bg-foreground text-background rounded-full px-4 py-1 text-xs font-semibold tracking-wider uppercase">
                 {blog.category}
               </span>
+
               <span className="text-muted-foreground text-xs tracking-widest uppercase">
                 • 5 MIN READ
               </span>
+            </div>
+
+            {/* Author */}
+            <div className="border-border/50 mb-8 flex items-center gap-4 border-b pb-6">
+              <div className="bg-muted flex h-14 w-14 items-center justify-center overflow-hidden rounded-full">
+                {blog.author?.avatar ? (
+                  <img
+                    src={blog.author.avatar}
+                    alt={blog.author.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <span className="font-bold">
+                    {blog.author?.name?.charAt(0).toUpperCase() ?? 'A'}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <p className="text-foreground text-base font-semibold">
+                  {blog.author?.name || 'Anonymous'}
+                </p>
+
+                <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                  <span>
+                    {blog.createdAt
+                      ? new Date(blog.createdAt).toLocaleDateString()
+                      : 'Unknown Date'}
+                  </span>
+
+                  <span>•</span>
+
+                  <span>5 min read</span>
+                </div>
+              </div>
             </div>
 
             <h1 className="font-ops mb-8 ml-0.5 text-4xl leading-tight font-extrabold tracking-tighter md:text-6xl lg:text-7xl">

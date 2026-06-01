@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from '@/components/Theme';
 import { GlobalMusic } from '@/components/global-music';
 import { SessionProvider } from 'next-auth/react';
+import { RouteReveal } from '@/components/Navigation';
 
 const roboto = localFont({
   src: [
@@ -53,7 +54,10 @@ export default function RootLayout({
     >
       <body className="bg-background text-foreground selection:bg-foreground selection:text-background flex min-h-full flex-col">
         <ThemeProvider>
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <RouteReveal />
+            {children}
+          </SessionProvider>
         </ThemeProvider>
         <ToastContainer />
         <GlobalMusic />

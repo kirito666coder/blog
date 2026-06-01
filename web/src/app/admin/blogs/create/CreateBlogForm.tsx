@@ -165,313 +165,215 @@ Topic: [Replace with your topic]
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+    <form onSubmit={handleSubmit} className="space-y-8">
       {/* Basic Info Section */}
-      <section className="glass premium-shadow relative flex flex-col gap-6 overflow-hidden rounded-2xl p-6 md:p-8">
-        <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-blue-500 to-indigo-500" />
+      <section className="bg-card border-border rounded-2xl border">
+        <div className="border-border border-b px-6 py-5">
+          <h2 className="text-xl font-semibold">General Details</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Basic information about the blog post.
+          </p>
+        </div>
 
-        <h2 className="font-display flex items-center gap-3 text-2xl font-bold tracking-tight">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500/10 text-sm text-blue-500">
-            1
-          </span>
-          General Details
-        </h2>
+        <div className="grid gap-6 p-6 md:grid-cols-2">
+          {/* Title */}
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="title"
-              className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-            >
+          <div className="space-y-2">
+            <label htmlFor="title" className="text-sm font-medium">
               Title
             </label>
+
             <input
-              type="text"
               id="title"
               name="title"
               required
               value={formData.title}
               onChange={handleChange}
-              className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-              placeholder="The Future of React..."
+              placeholder="The Future of React"
+              className="bg-background border-border focus:border-foreground h-11 w-full rounded-lg border px-4 outline-none"
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="slug"
-              className="text-muted-foreground flex items-center justify-between text-sm font-medium tracking-wider uppercase"
-            >
-              <span>Slug</span>
+          {/* Slug */}
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label htmlFor="slug" className="text-sm font-medium">
+                Slug
+              </label>
+
               <button
                 type="button"
                 onClick={generateSlug}
-                className="text-xs text-blue-500 transition-colors hover:text-blue-400"
+                className="text-muted-foreground hover:text-foreground text-xs"
               >
-                Auto-generate
+                Generate
               </button>
-            </label>
+            </div>
+
             <input
-              type="text"
               id="slug"
               name="slug"
               required
               value={formData.slug}
               onChange={handleChange}
-              className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 rounded-lg border px-4 py-3 font-mono text-sm transition-all focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-              placeholder="the-future-of-react"
+              className="bg-background border-border focus:border-foreground h-11 w-full rounded-lg border px-4 font-mono outline-none"
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="category"
-              className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-            >
+          {/* Category */}
+
+          <div className="space-y-2">
+            <label htmlFor="category" className="text-sm font-medium">
               Category
             </label>
+
             <input
-              type="text"
               id="category"
               name="category"
               required
               value={formData.category}
               onChange={handleChange}
-              className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-              placeholder="Engineering"
+              className="bg-background border-border focus:border-foreground h-11 w-full rounded-lg border px-4 outline-none"
             />
           </div>
 
-          <div className="flex gap-6">
-            <div className="flex flex-1 flex-col gap-2">
-              <label
-                htmlFor="status"
-                className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-              >
-                Status
-              </label>
-              <select
-                id="status"
-                name="status"
-                value={formData.status}
-                onChange={handleChange}
-                className="bg-input/20 border-border/50 text-foreground cursor-pointer appearance-none rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:ring-blue-500/50 focus:outline-none"
-              >
-                <option value="draft" className="bg-background">
-                  Draft
-                </option>
-                <option value="published" className="bg-background">
-                  Published
-                </option>
-              </select>
-            </div>
+          {/* Status */}
+
+          <div className="space-y-2">
+            <label htmlFor="status" className="text-sm font-medium">
+              Status
+            </label>
+
+            <select
+              id="status"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+              className="bg-background border-border focus:border-foreground h-11 w-full rounded-lg border px-4 outline-none"
+            >
+              <option value="draft">Draft</option>
+              <option value="published">Published</option>
+            </select>
           </div>
         </div>
       </section>
 
       {/* Content Section */}
-      <section className="glass premium-shadow relative flex flex-col gap-6 overflow-hidden rounded-2xl p-6 md:p-8">
-        <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-emerald-500 to-teal-500" />
+      <section className="bg-card border-border rounded-2xl border">
+        <div className="border-border border-b px-6 py-5">
+          <h2 className="text-xl font-semibold">Content</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Write your article content using Markdown.
+          </p>
+        </div>
 
-        <h2 className="font-display flex items-center gap-3 text-2xl font-bold tracking-tight">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/10 text-sm text-emerald-500">
-            2
-          </span>
-          Content
-        </h2>
-
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="excerpt"
-              className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-            >
+        <div className="space-y-6 p-6">
+          <div className="space-y-2">
+            <label htmlFor="excerpt" className="text-sm font-medium">
               Excerpt
             </label>
+
             <textarea
               id="excerpt"
               name="excerpt"
-              required
-              rows={2}
+              rows={3}
               value={formData.excerpt}
               onChange={handleChange}
-              className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 resize-none rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:ring-emerald-500/50 focus:outline-none"
-              placeholder="A short, catchy summary of the post..."
+              className="bg-background border-border focus:border-foreground w-full rounded-lg border p-4 outline-none"
             />
           </div>
 
-          <div className="flex flex-col gap-6">
-            <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-4 text-sm">
-              <p className="mb-2 font-semibold text-emerald-400">
-                How to write content:
-              </p>
-              <ul className="text-muted-foreground list-disc space-y-1 pl-5">
-                <li>Use Markdown format</li>
-                <li>
-                  Use <code>##</code> for headings
-                </li>
-                <li>Use triple backticks for code blocks</li>
-                <li>Example:</li>
-              </ul>
+          <div className="bg-muted/30 border-border rounded-xl border p-4">
+            <h3 className="mb-3 text-sm font-semibold">Markdown Tips</h3>
 
-              <pre className="mt-2 rounded bg-black/40 p-3 text-xs">
-                {`## Example Code
+            <pre className="text-muted-foreground overflow-x-auto text-xs">
+              {`## Heading
 
 \`\`\`tsx
 function App() {
   return <div>Hello</div>;
 }
-\`\`\``}
-              </pre>
-            </div>
-
-            {/* AI Prompt Section */}
-            <div className="border-border/50 rounded-lg border">
-              <button
-                type="button"
-                onClick={() => setShowPrompt(!showPrompt)}
-                className="flex w-full items-center justify-between px-4 py-3 text-sm font-medium"
-              >
-                <span>AI Prompt (Click to expand)</span>
-                <span>{showPrompt ? '▲' : '▼'}</span>
-              </button>
-
-              {showPrompt && (
-                <div className="border-border/50 border-t p-4">
-                  <textarea
-                    readOnly
-                    value={prompt}
-                    className="bg-input/20 w-full rounded-lg border px-3 py-2 font-mono text-xs"
-                    rows={8}
-                  />
-
-                  <button
-                    type="button"
-                    onClick={copyPrompt}
-                    className="mt-3 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-black hover:bg-emerald-400"
-                  >
-                    Copy Prompt
-                  </button>
-                </div>
-              )}
-            </div>
-
-            {/* Your original textarea */}
-            <div className="flex flex-col gap-2">
-              <label
-                htmlFor="content"
-                className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-              >
-                Main Content (Markdown)
-              </label>
-
-              <textarea
-                id="content"
-                name="content"
-                required
-                rows={12}
-                value={formData.content}
-                onChange={handleChange}
-                className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 resize-y rounded-lg border px-4 py-3 font-mono text-sm transition-all focus:ring-2 focus:ring-emerald-500/50 focus:outline-none"
-                placeholder="## Write your amazing content here..."
-              />
-            </div>
+\`\`\`
+`}
+            </pre>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="tags"
-              className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-            >
-              Tags (comma-separated)
+          <div className="space-y-2">
+            <label htmlFor="content" className="text-sm font-medium">
+              Content
             </label>
+
+            <textarea
+              id="content"
+              name="content"
+              rows={18}
+              value={formData.content}
+              onChange={handleChange}
+              className="bg-background border-border focus:border-foreground w-full rounded-lg border p-4 font-mono text-sm outline-none"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="tags" className="text-sm font-medium">
+              Tags
+            </label>
+
             <input
-              type="text"
               id="tags"
               name="tags"
               value={formData.tags}
               onChange={handleChange}
-              className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:ring-emerald-500/50 focus:outline-none"
-              placeholder="react, frontend, architecture"
+              placeholder="react,nextjs,mongodb"
+              className="bg-background border-border focus:border-foreground h-11 w-full rounded-lg border px-4 outline-none"
             />
           </div>
         </div>
       </section>
-
       {/* SEO Section */}
-      <section className="glass premium-shadow relative flex flex-col gap-6 overflow-hidden rounded-2xl p-6 md:p-8">
-        <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-purple-500 to-pink-500" />
+      <section className="bg-card border-border rounded-2xl border">
+        <div className="border-border border-b px-6 py-5">
+          <h2 className="text-xl font-semibold">SEO</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            Search engine optimization settings.
+          </p>
+        </div>
 
-        <h2 className="font-display flex items-center gap-3 text-2xl font-bold tracking-tight">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-purple-500/10 text-sm text-purple-500">
-            3
-          </span>
-          SEO Optimization
-        </h2>
+        <div className="grid gap-6 p-6 md:grid-cols-2">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Meta Title</label>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="metaTitle"
-              className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-            >
-              Meta Title
-            </label>
             <input
-              type="text"
-              id="metaTitle"
               name="seo.metaTitle"
-              required
               value={formData.seo.metaTitle}
               onChange={handleChange}
               maxLength={60}
-              className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:ring-purple-500/50 focus:outline-none"
-              placeholder="The Future of React..."
+              className="bg-background border-border focus:border-foreground h-11 w-full rounded-lg border px-4 outline-none"
             />
-            <span className="text-muted-foreground/60 text-right text-xs">
-              {formData.seo.metaTitle.length}/60
-            </span>
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label
-              htmlFor="keywords"
-              className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-            >
-              Meta Keywords
-            </label>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Keywords</label>
+
             <input
-              type="text"
-              id="keywords"
               name="seo.keywords"
               value={formData.seo.keywords}
               onChange={handleChange}
-              className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:ring-purple-500/50 focus:outline-none"
-              placeholder="react, frontend, js"
+              className="bg-background border-border focus:border-foreground h-11 w-full rounded-lg border px-4 outline-none"
             />
           </div>
 
-          <div className="flex flex-col gap-2 md:col-span-2">
-            <label
-              htmlFor="metaDescription"
-              className="text-muted-foreground text-sm font-medium tracking-wider uppercase"
-            >
-              Meta Description
-            </label>
+          <div className="space-y-2 md:col-span-2">
+            <label className="text-sm font-medium">Meta Description</label>
+
             <textarea
-              id="metaDescription"
               name="seo.metaDescription"
-              required
-              rows={2}
-              maxLength={160}
               value={formData.seo.metaDescription}
               onChange={handleChange}
-              className="bg-input/20 border-border/50 text-foreground placeholder:text-muted-foreground/50 resize-none rounded-lg border px-4 py-3 transition-all focus:ring-2 focus:ring-purple-500/50 focus:outline-none"
-              placeholder="Discover how React's new compiler changes the game..."
+              rows={4}
+              maxLength={160}
+              className="bg-background border-border focus:border-foreground w-full rounded-lg border p-4 outline-none"
             />
-            <span className="text-muted-foreground/60 text-right text-xs">
-              {formData.seo.metaDescription.length}/160
-            </span>
           </div>
         </div>
       </section>

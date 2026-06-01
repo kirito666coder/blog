@@ -1,3 +1,5 @@
+// store/app-store.ts
+
 import { create } from 'zustand';
 
 type Theme = 'dark' | 'light';
@@ -12,6 +14,14 @@ type AppStore = {
 
   musicEnabled: boolean;
   setMusicEnabled: (value: boolean) => void;
+
+  // Route Reveal
+  revealOpen: boolean;
+  revealName: string;
+  revealX: number;
+
+  startReveal: (name: string, x?: number) => void;
+  stopReveal: () => void;
 };
 
 export const useAppStore = create<AppStore>((set) => ({
@@ -33,5 +43,22 @@ export const useAppStore = create<AppStore>((set) => ({
   setMusicEnabled: (value) =>
     set({
       musicEnabled: value,
+    }),
+
+  // Reveal state
+  revealOpen: false,
+  revealName: '',
+  revealX: 3000,
+
+  startReveal: (name, x = 3000) =>
+    set({
+      revealOpen: true,
+      revealName: name,
+      revealX: x,
+    }),
+
+  stopReveal: () =>
+    set({
+      revealOpen: false,
     }),
 }));
