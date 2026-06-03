@@ -42,7 +42,7 @@ export default function Home() {
       introAlreadyPlayed = true;
 
       setTimerDone(true);
-    }, 5000);
+    }, 5500);
 
     return () => clearTimeout(timer);
   }, [shouldRunIntro]);
