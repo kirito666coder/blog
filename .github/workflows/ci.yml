@@ -72,4 +72,4 @@ jobs:
       # Optional: ensure Expo project is valid
       - name: Expo Doctor
         working-directory: mobile
-        run: pnpm exec expo doctor
+        run: pnpm dlx expo doctor
