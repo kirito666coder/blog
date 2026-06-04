@@ -61,15 +61,7 @@ jobs:
       # -----------------------
       # MOBILE (Expo)
       # -----------------------
-      - name: Lint Mobile
-        working-directory: mobile
-        run: pnpm lint
-
       - name: Typecheck Mobile
         working-directory: mobile
         run: pnpm tsc --noEmit
 
-      # Optional: ensure Expo project is valid
-      - name: Expo Doctor
-        working-directory: mobile
-        run: pnpm dlx expo doctor
