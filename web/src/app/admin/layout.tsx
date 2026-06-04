@@ -1,9 +1,16 @@
+import { requireAdmin } from '@/lib/admin';
 import Link from 'next/link';
 import { ComponentType, ReactNode, SVGProps } from 'react';
 
 type IconProps = SVGProps<SVGSVGElement>;
 
-export default function AdminLayout({ children }: { children: ReactNode }) {
+export default async function AdminLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  await requireAdmin();
+
   return (
     <div className="bg-background flex max-h-screen min-h-screen flex-col md:flex-row">
       {/* Sidebar */}

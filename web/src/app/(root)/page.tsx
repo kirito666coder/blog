@@ -117,11 +117,17 @@ export default function Home() {
                         Blogs
                       </TransitionLink>
                     </ButtonHoverLineEffect>
-                    <ButtonHoverLineEffect>
-                      <TransitionLink href="/admin" revealName="admin" x={3000}>
-                        admin
-                      </TransitionLink>
-                    </ButtonHoverLineEffect>
+                    {session?.user.role === 'admin' && (
+                      <ButtonHoverLineEffect>
+                        <TransitionLink
+                          href="/admin"
+                          revealName="Admin"
+                          x={3000}
+                        >
+                          Admin
+                        </TransitionLink>
+                      </ButtonHoverLineEffect>
+                    )}
 
                     <ButtonHoverLineEffect>
                       <Link href="/about">About</Link>
