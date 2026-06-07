@@ -19,6 +19,7 @@ import { useSession } from 'next-auth/react';
 import Logo from '@/components/Logo';
 import { TextIntro } from '@/components/Animations';
 import { TransitionLink } from '@/components/Navigation';
+// import { seedData } from '@/data/seed';
 
 let introAlreadyPlayed = false;
 
@@ -140,6 +141,16 @@ export default function Home() {
                     <ButtonHoverLineEffect>
                       <SignIn session={session} status={status} />
                     </ButtonHoverLineEffect>
+
+                    {/* <ButtonHoverLineEffect>
+                      <button
+                        onClick={() => {
+                          seedData();
+                        }}
+                      >
+                        Seed
+                      </button>
+                    </ButtonHoverLineEffect> */}
                   </div>
                   {session && (
                     <p className="text-background bg-foreground mt-1 ml-2 w-fit p-0.5">
