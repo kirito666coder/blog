@@ -1,15 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity } from 'react-native';
 import { useRouter, Stack } from 'expo-router';
-import { dummyBlogs } from '../../data/blogs';
 import { Ionicons } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getBlogs } from '@/api/blogs';
+import { Blog } from '@/types/blog';
 
 export default function BlogsList() {
   const router = useRouter();
 
-  const renderBlogItem = ({ item }: { item: (typeof dummyBlogs)[0] }) => (
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadBlogs = async () => {
+      try {
+        const data = await getBlogs();
+        setBlogs(data);
+      } catch (error) {
+        console.log('Error fetching blogs', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBlogs();
+  }, []);
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-black">
+        <Text className="text-white">Loading...</Text>
+      </SafeAreaView>
+    );
+  }
+
+  const renderBlogItem = ({ item }: { item: Blog }) => (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() => router.push(`/blogs/${item.slug}`)}
@@ -74,7 +101,7 @@ export default function BlogsList() {
         </View>
 
         <FlatList
-          data={dummyBlogs}
+          data={blogs}
           renderItem={renderBlogItem}
           keyExtractor={(item) => item.slug}
           contentContainerStyle={{ paddingBottom: 60 }}
