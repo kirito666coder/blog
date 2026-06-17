@@ -31,7 +31,6 @@ export default function BlogDetail() {
     );
   }
 
-  // ✅ Markdown customization
   const rules = {
     fence: (node: any) => {
       const code = node.content;
