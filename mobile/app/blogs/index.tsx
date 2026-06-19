@@ -30,9 +30,14 @@ export default function BlogsList() {
 
   if (loading) {
     return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-black">
-        <Text className="text-white">Loading...</Text>
-      </SafeAreaView>
+      <>
+        <Stack.Screen options={{ headerShown: false }} />
+
+        <SafeAreaView className="flex-1 items-center justify-center bg-black">
+          <StatusBar style="light" />
+          <Text className="text-lg text-white">Loading...</Text>
+        </SafeAreaView>
+      </>
     );
   }
 
