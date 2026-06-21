@@ -4,13 +4,19 @@ import { dummyBlogs } from '@/data/blogs';
 
 import BlogDetailClient from './BlogDetailClient';
 import { getBlogBySlug } from './action';
+import { getBlogs } from '../action';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
-  return dummyBlogs.map((blog) => ({
+  const blogs = await getBlogs();
+
+  if (!blogs.data) {
+    return [];
+  }
+  return blogs.data.map((blog) => ({
     slug: blog.slug,
   }));
 }
@@ -19,16 +25,16 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const blog = dummyBlogs.find((b) => b.slug === slug);
+  const blog = await getBlogBySlug(slug);
 
-  if (!blog) {
+  if (!blog.data) {
     return { title: 'Blog Not Found' };
   }
 
   return {
-    title: `${blog.seo.metaTitle} | Kirito Blog`,
-    description: blog.seo.metaDescription,
-    keywords: blog.seo.keywords,
+    title: `${blog.data.seo.metaTitle} | Kirito Blog`,
+    description: blog.data.seo.metaDescription,
+    keywords: blog.data.seo.keywords,
   };
 }
 
