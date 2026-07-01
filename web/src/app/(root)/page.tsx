@@ -131,7 +131,9 @@ export default function Home() {
                     )}
 
                     <ButtonHoverLineEffect>
-                      <Link href="/about">About</Link>
+                      <TransitionLink href="/about" revealName="About" x={100}>
+                        About
+                      </TransitionLink>
                     </ButtonHoverLineEffect>
 
                     <ButtonHoverLineEffect>
