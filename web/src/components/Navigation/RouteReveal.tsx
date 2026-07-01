@@ -17,6 +17,10 @@ export function RouteReveal() {
   const blackTextRef = useRef<SVGTextElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
+  const { theme } = useAppStore();
+
+  const isDark = theme === 'dark';
+
   useEffect(() => {
     if (!revealOpen) return;
 
@@ -110,58 +114,113 @@ export function RouteReveal() {
       className="pointer-events-none fixed inset-0 z-[99999]"
       style={{ display: 'none' }}
     >
-      <svg
-        className="absolute inset-0 h-full w-full"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <mask id="global-route-mask">
-            <rect x="0" y="0" width="100" height="100" fill="white" />
-            <g ref={maskGroupRef}>
-              <text
-                x="50"
-                y="50"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="black"
-                fontSize="16"
-                fontWeight="900"
-                style={{
-                  fontFamily: 'var(--font-ops)',
-                }}
-              >
-                {revealName}
-              </text>
-            </g>
-          </mask>
-        </defs>
-
-        <rect
-          x="0"
-          y="0"
-          width="100"
-          height="100"
-          fill="white"
-          mask="url(#global-route-mask)"
-        />
-
-        <text
-          ref={blackTextRef}
-          x="50"
-          y="50"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="black"
-          fontSize="16"
-          fontWeight="900"
-          style={{
-            fontFamily: 'var(--font-ops)',
-          }}
+      {isDark ? (
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
         >
-          {revealName}
-        </text>
-      </svg>
+          <defs>
+            <mask id="global-route-mask">
+              <rect x="0" y="0" width="100" height="100" fill="white" />
+              <g ref={maskGroupRef}>
+                <text
+                  x="50"
+                  y="50"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill="black"
+                  fontSize="16"
+                  fontWeight="900"
+                  style={{
+                    fontFamily: 'var(--font-ops)',
+                  }}
+                >
+                  {revealName}
+                </text>
+              </g>
+            </mask>
+          </defs>
+
+          <rect
+            x="0"
+            y="0"
+            width="100"
+            height="100"
+            fill="white"
+            mask="url(#global-route-mask)"
+          />
+
+          <text
+            ref={blackTextRef}
+            x="50"
+            y="50"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="black"
+            fontSize="16"
+            fontWeight="900"
+            style={{
+              fontFamily: 'var(--font-ops)',
+            }}
+          >
+            {revealName}
+          </text>
+        </svg>
+      ) : (
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <mask id="global-route-mask">
+              <rect x="0" y="0" width="100" height="100" fill="white" />
+              <g ref={maskGroupRef}>
+                <text
+                  x="50"
+                  y="50"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill="black"
+                  fontSize="16"
+                  fontWeight="900"
+                  style={{
+                    fontFamily: 'var(--font-ops)',
+                  }}
+                >
+                  {revealName}
+                </text>
+              </g>
+            </mask>
+          </defs>
+
+          <rect
+            x="0"
+            y="0"
+            width="100"
+            height="100"
+            fill="black"
+            mask="url(#global-route-mask)"
+          />
+
+          <text
+            ref={blackTextRef}
+            x="50"
+            y="50"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="white"
+            fontSize="16"
+            fontWeight="900"
+            style={{
+              fontFamily: 'var(--font-ops)',
+            }}
+          >
+            {revealName}
+          </text>
+        </svg>
+      )}
     </div>
   );
 }
