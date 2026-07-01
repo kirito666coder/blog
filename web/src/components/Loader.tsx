@@ -1,5 +1,6 @@
 'use client';
 
+import { useAppStore } from '@/store/app-store';
 import { gsap } from 'gsap';
 import { useEffect, useRef, useState } from 'react';
 
@@ -14,7 +15,11 @@ export function IntroLoader({ visible }: IntroLoaderProps) {
   const loadingRef = useRef<HTMLDivElement>(null);
 
   const maskGroupRef = useRef<SVGGElement>(null);
-  const blackTextRef = useRef<SVGTextElement>(null); // ✅ ADD THIS
+  const blackTextRef = useRef<SVGTextElement>(null);
+
+  const { theme } = useAppStore();
+
+  const isDark = theme === 'dark';
 
   // Loading Counter
   useEffect(() => {
@@ -108,57 +113,108 @@ export function IntroLoader({ visible }: IntroLoaderProps) {
   return (
     <div ref={rootRef} className="fixed inset-0 z-[99999]">
       {/* SVG LAYER */}
-      <svg
-        className="absolute inset-0 h-full w-full"
-        viewBox="0 0 100 100"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <mask id="kirito-mask">
-            <rect x="0" y="0" width="100" height="100" fill="white" />
 
-            <g ref={maskGroupRef}>
-              <text
-                x="50"
-                y="50"
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="black"
-                fontSize="16"
-                fontWeight="900"
-                style={{ fontFamily: 'var(--font-ops)' }}
-              >
-                KIRITO
-              </text>
-            </g>
-          </mask>
-        </defs>
-
-        {/* White background WITH MASK */}
-        <rect
-          x="0"
-          y="0"
-          width="100"
-          height="100"
-          fill="white"
-          mask="url(#kirito-mask)"
-        />
-
-        {/* ✅ BLACK TEXT LAYER (this is the missing part) */}
-        <text
-          ref={blackTextRef}
-          x="50"
-          y="50"
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fill="black"
-          fontSize="16"
-          fontWeight="900"
-          style={{ fontFamily: 'var(--font-ops)' }}
+      {isDark ? (
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
         >
-          KIRITO
-        </text>
-      </svg>
+          <defs>
+            <mask id="kirito-mask">
+              <rect x="0" y="0" width="100" height="100" fill="white" />
+
+              <g ref={maskGroupRef}>
+                <text
+                  x="50"
+                  y="50"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill="black"
+                  fontSize="16"
+                  fontWeight="900"
+                  style={{ fontFamily: 'var(--font-ops)' }}
+                >
+                  KIRITO
+                </text>
+              </g>
+            </mask>
+          </defs>
+
+          <rect
+            x="0"
+            y="0"
+            width="100"
+            height="100"
+            fill="white"
+            mask="url(#kirito-mask)"
+          />
+
+          <text
+            ref={blackTextRef}
+            x="50"
+            y="50"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="black"
+            fontSize="16"
+            fontWeight="900"
+            style={{ fontFamily: 'var(--font-ops)' }}
+          >
+            KIRITO
+          </text>
+        </svg>
+      ) : (
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <mask id="kirito-mask">
+              <rect x="0" y="0" width="100" height="100" fill="white" />
+
+              <g ref={maskGroupRef}>
+                <text
+                  x="50"
+                  y="50"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fill="black"
+                  fontSize="16"
+                  fontWeight="900"
+                  style={{ fontFamily: 'var(--font-ops)' }}
+                >
+                  KIRITO
+                </text>
+              </g>
+            </mask>
+          </defs>
+
+          <rect
+            x="0"
+            y="0"
+            width="100"
+            height="100"
+            fill="black"
+            mask="url(#kirito-mask)"
+          />
+
+          <text
+            ref={blackTextRef}
+            x="50"
+            y="50"
+            textAnchor="middle"
+            dominantBaseline="middle"
+            fill="white"
+            fontSize="16"
+            fontWeight="900"
+            style={{ fontFamily: 'var(--font-ops)' }}
+          >
+            KIRITO
+          </text>
+        </svg>
+      )}
 
       {/* Loading Screen */}
       <div
