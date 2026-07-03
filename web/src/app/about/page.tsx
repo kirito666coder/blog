@@ -1,24 +1,33 @@
-import { SpanBox } from './components/SpanBox';
+import { ScrollMarquee } from './components/ScrollMarquee';
+import { Footer } from './components/Footer';
+import HeroSection from './components/HeroSection';
+import { JourneyTimeline } from './components/JourneyTimeline';
+import { SkillsConstellation } from './components/SkillsConstellation';
+import { PremiumBentoGrid } from './components/PremiumBentoGrid';
 
 export default function About() {
   return (
-    <div className="flex h-screen w-screen items-center justify-center">
-      <div className="border-foreground/50 flex h-[95%] w-[95%] border-2">
-        <div className="h-full w-1/2">
-          <div className="relative ml-6 uppercase">
-            <SpanBox className="mt-10 ml-4 text-9xl">a</SpanBox>
-            <SpanBox className="mt-40 text-8xl">b</SpanBox>
-            <SpanBox className="mt-60 ml-20 text-8xl">o</SpanBox>
-            <SpanBox className="mt-80 text-7xl">u</SpanBox>
-            <SpanBox className="mt-100 text-9xl">t</SpanBox>
-          </div>
-        </div>
-        <div className="flex h-full w-1/2 justify-end">
-          <div className="font-ops flex h-full w-50 items-center justify-center text-9xl">
-            <span className="rotate-90">KIRITO</span>
-          </div>
-        </div>
-      </div>
+    <div className="bg-background text-foreground selection:bg-foreground selection:text-background min-h-screen w-full">
+      {/* HERO */}
+      <HeroSection />
+
+      {/* MARQUEE */}
+      <section className="border-border/20 bg-background w-full overflow-hidden border-y py-12 md:py-20">
+        <ScrollMarquee
+          text="KIRITO"
+          direction={-1}
+          textClassName="text-[6rem] sm:text-[8rem] md:text-[10rem] lg:text-[15rem]"
+        />
+      </section>
+
+      {/* ABOUT */}
+      <PremiumBentoGrid />
+
+      <JourneyTimeline />
+
+      <SkillsConstellation />
+
+      <Footer />
     </div>
   );
 }
