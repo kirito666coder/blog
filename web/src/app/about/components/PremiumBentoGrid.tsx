@@ -1,120 +1,138 @@
 'use client';
 
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 import { useEffect, useRef } from 'react';
-
-const cards = [
-  {
-    title: 'Philosophy',
-    description:
-      'Design should feel invisible. Every interaction must reduce friction while creating emotion.',
-    large: true,
-  },
-
-  {
-    title: 'Tech Stack',
-    description: 'Next.js • React • TypeScript • GSAP • Three.js',
-  },
-
-  {
-    title: 'Design',
-    description: 'UI/UX • Motion • Typography • Systems',
-  },
-
-  {
-    title: 'Collaboration',
-    description: 'Open for freelance projects and creative partnerships.',
-    large: true,
-  },
-];
+import { MagneticButton } from './MagneticButton';
 
 export function PremiumBentoGrid() {
-  return (
-    <div>
-      <div className="mb-20">
-        <h2 className="mb-5 text-[clamp(2.5rem,6vw,5rem)] leading-none font-bold tracking-[-0.05em]">
-          Crafting
-          <span className="text-white/40"> Digital </span>
-          Experiences
-        </h2>
-
-        <p className="max-w-2xl text-lg leading-relaxed text-white/60">
-          A balance of engineering precision and visual storytelling, focused on
-          creating memorable products.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-        {cards.map((card, index) => (
-          <SpotlightCard
-            key={index}
-            title={card.title}
-            description={card.description}
-            large={card.large}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-type CardProps = {
-  title: string;
-  description: string;
-  large?: boolean;
-};
-
-function SpotlightCard({ title, description, large }: CardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
+  const bentoCardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    const card = cardRef.current;
+    const ctx = gsap.context(() => {
+      const cards = bentoCardsRef.current.filter(
+        (card): card is HTMLDivElement => card !== null
+      );
 
-    if (!card) return;
+      if (!cards.length) return;
 
-    const handleMove = (e: MouseEvent) => {
-      const rect = card.getBoundingClientRect();
+      // Ensure cards are visible initially
+      gsap.set(cards, {
+        opacity: 1,
+        y: 0,
+      });
 
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+      // Simple animation
+      cards.forEach((card) => {
+        gsap.from(card, {
+          opacity: 0,
+          y: 50,
+          duration: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 90%',
+            toggleActions: 'play none none none',
+          },
+        });
+      });
 
-      card.style.setProperty('--x', `${x}px`);
+      ScrollTrigger.refresh();
+    });
 
-      card.style.setProperty('--y', `${y}px`);
-    };
-
-    card.addEventListener('mousemove', handleMove);
-
-    return () => {
-      card.removeEventListener('mousemove', handleMove);
-    };
+    return () => ctx.revert();
   }, []);
-
   return (
-    <div
-      ref={cardRef}
-      className={`group relative overflow-hidden rounded-[36px] border border-white/[0.08] bg-white/[0.03] p-10 shadow-[0_0_40px_rgba(255,255,255,0.03)] backdrop-blur-xl transition-all duration-700 hover:-translate-y-2 hover:scale-[1.02] hover:border-white/20 ${large ? 'min-h-[300px] md:col-span-2' : 'min-h-[300px]'} `}
-    >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_var(--x)_var(--y),rgba(255,255,255,.18),transparent_40%)] opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
+    <section className="bg-background relative z-40 flex w-full flex-col gap-24 overflow-hidden px-6 py-24 md:px-20 lg:px-40">
+      {/* Background Grid */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
 
-      <div className="absolute top-0 right-0 h-48 w-48 rounded-full bg-white/[0.04] blur-3xl" />
+      <div className="relative flex flex-col items-start justify-between gap-16 md:flex-row">
+        <h2 className="font-display w-full text-5xl leading-[1.1] tracking-tighter md:w-1/3 md:text-7xl lg:text-8xl">
+          Crafting{' '}
+          <span className="text-muted-foreground font-sans font-light italic">
+            digital
+          </span>{' '}
+          realms.
+        </h2>
 
-      <div className="relative z-10 flex h-full flex-col justify-between">
-        <div>
-          <h3 className="mb-6 text-3xl font-bold tracking-tight">{title}</h3>
+        <div className="text-foreground/70 flex w-full flex-col gap-8 text-lg leading-relaxed font-light md:w-1/2 md:text-2xl">
+          <p>
+            I bridge the gap between exceptional design and robust engineering.
+          </p>
 
-          <p className="max-w-lg text-lg leading-relaxed text-white/60">
-            {description}
+          <p>
+            Specializing in immersive, interactive and highly performant
+            applications.
+          </p>
+        </div>
+      </div>
+
+      {/* BENTO GRID */}
+      <div className="relative grid w-full grid-cols-1 items-stretch gap-6 md:grid-cols-3">
+        {/* CARD 1 */}
+        <div
+          ref={(el) => {
+            bentoCardsRef.current[0] = el;
+          }}
+          className="from-border/40 to-border/10 border-border/50 group hover:border-foreground/30 relative flex flex-col justify-between overflow-hidden rounded-3xl border bg-gradient-to-br p-10 transition-all duration-500 md:col-span-2"
+        >
+          <div className="bg-foreground/5 absolute top-0 right-0 h-64 w-64 translate-x-1/4 -translate-y-1/2 rounded-full blur-3xl" />
+
+          <h3 className="font-display relative z-10 mb-10 text-3xl md:text-5xl">
+            Philosophy
+          </h3>
+
+          <p className="text-foreground/70 relative z-10 text-xl">
+            Code is poetry. Design is the emotion it evokes.
           </p>
         </div>
 
-        <div className="mt-10 flex gap-2">
-          <div className="h-[4px] w-12 rounded-full bg-white" />
+        {/* CARD 2 */}
+        <div
+          ref={(el) => {
+            bentoCardsRef.current[1] = el;
+          }}
+          className="bg-border/20 border-border/50 group hover:border-foreground/30 flex flex-col items-center justify-center rounded-3xl border p-8 text-center"
+        >
+          <h4 className="font-ops mb-4 text-4xl">Tech</h4>
 
-          <div className="h-[4px] w-2 rounded-full bg-white/30" />
+          <p className="text-foreground/60">React, Next.js, GSAP, Tailwind</p>
+        </div>
 
-          <div className="h-[4px] w-2 rounded-full bg-white/30" />
+        {/* CARD 3 */}
+        <div
+          ref={(el) => {
+            bentoCardsRef.current[2] = el;
+          }}
+          className="bg-border/20 border-border/50 group hover:border-foreground/30 flex flex-col items-center justify-center rounded-3xl border p-8 text-center"
+        >
+          <h4 className="font-ops mb-4 text-4xl">Design</h4>
+
+          <p className="text-foreground/60">Figma, Motion, UI/UX</p>
+        </div>
+
+        {/* CARD 4 */}
+        <div
+          ref={(el) => {
+            bentoCardsRef.current[3] = el;
+          }}
+          className="bg-foreground text-background relative flex flex-col items-center justify-between rounded-3xl p-10 md:col-span-2 md:flex-row"
+        >
+          <div>
+            <h3 className="font-display mb-2 text-3xl md:text-5xl">
+              Let&apos;s Connect
+            </h3>
+
+            <p className="text-background/70">
+              Open for freelance opportunities.
+            </p>
+          </div>
+
+          <MagneticButton className="bg-background text-foreground mt-8 rounded-full px-8 py-4 md:mt-0">
+            Get in touch
+          </MagneticButton>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
