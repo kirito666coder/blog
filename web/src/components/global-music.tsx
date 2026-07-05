@@ -14,7 +14,7 @@ export const GlobalMusic = () => {
   const loading = useAppStore((s) => s.loading);
 
   useEffect(() => {
-    const audio = new Audio('/Nico on the Beat.mp3');
+    const audio = new Audio('/SLVG.mp3');
 
     audio.loop = true;
 
@@ -37,9 +37,6 @@ export const GlobalMusic = () => {
     }
   }, [musicEnabled]);
 
-  /*
-   * hide during loader
-   */
   if (loading) return null;
 
   return (

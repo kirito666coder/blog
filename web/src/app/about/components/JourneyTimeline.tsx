@@ -57,7 +57,6 @@ export function JourneyTimeline() {
       </div>
 
       <div className="border-border/30 relative ml-4 space-y-16 border-l pl-8 md:ml-6 md:pl-12">
-        {/* Timeline Item 1 */}
         <div
           ref={(el) => {
             timelineNodesRef.current[0] = el;
@@ -70,21 +69,18 @@ export function JourneyTimeline() {
               2024 — PRESENT
             </span>
             <span className="text-foreground/40 hidden md:inline">•</span>
-            <span className="text-xl font-medium">
-              Senior Frontend Engineer
-            </span>
+            <span className="text-xl font-medium">Lorem Ipsum Title</span>
           </div>
           <h3 className="text-foreground/80 mb-4 text-xl">
-            Tech Innovations Inc.
+            Lorem Company Name
           </h3>
           <p className="text-foreground/60 max-w-2xl leading-relaxed">
-            Leading the frontend architecture for next-generation web
-            applications. Spearheading the migration to Next.js 14 and
-            implementing complex WebGL features for immersive user experiences.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam.
           </p>
         </div>
 
-        {/* Timeline Item 2 */}
         <div
           ref={(el) => {
             timelineNodesRef.current[1] = el;
@@ -94,22 +90,19 @@ export function JourneyTimeline() {
           <div className="timeline-dot bg-foreground/50 border-background absolute top-1.5 -left-[2.85rem] h-6 w-6 rounded-full border-4 md:-left-[3.85rem]" />
           <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
             <span className="font-ops text-foreground/70 text-2xl tracking-widest md:text-3xl">
-              2021 — 2024
+              2022 — 2024
             </span>
             <span className="text-foreground/40 hidden md:inline">•</span>
-            <span className="text-xl font-medium">Full Stack Developer</span>
+            <span className="text-xl font-medium">Lorem Ipsum Position</span>
           </div>
-          <h3 className="text-foreground/80 mb-4 text-xl">
-            Creative Digital Agency
-          </h3>
+          <h3 className="text-foreground/80 mb-4 text-xl">Ipsum Studio</h3>
           <p className="text-foreground/60 max-w-2xl leading-relaxed">
-            Developed and maintained multiple high-traffic e-commerce platforms.
-            Specialized in creating fluid animations using GSAP and building
-            robust scalable backends with Node.js.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis
+            aute irure dolor in reprehenderit.
           </p>
         </div>
 
-        {/* Timeline Item 3 */}
         <div
           ref={(el) => {
             timelineNodesRef.current[2] = el;
@@ -119,16 +112,18 @@ export function JourneyTimeline() {
           <div className="timeline-dot bg-foreground/20 border-background absolute top-1.5 -left-[2.85rem] h-6 w-6 rounded-full border-4 md:-left-[3.85rem]" />
           <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:gap-6">
             <span className="font-ops text-foreground/50 text-2xl tracking-widest md:text-3xl">
-              2019 — 2021
+              2020 — 2022
             </span>
             <span className="text-foreground/40 hidden md:inline">•</span>
-            <span className="text-xl font-medium">Junior Web Developer</span>
+            <span className="text-xl font-medium">Dolor Sit Amet</span>
           </div>
-          <h3 className="text-foreground/80 mb-4 text-xl">Startup Studio</h3>
+          <h3 className="text-foreground/80 mb-4 text-xl">
+            Placeholder Organization
+          </h3>
           <p className="text-foreground/60 max-w-2xl leading-relaxed">
-            Began professional journey building responsive landing pages,
-            optimizing web performance, and learning the fundamentals of UI/UX
-            design.
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur
+            sint occaecat cupidatat non proident, sunt in culpa qui officia
+            deserunt.
           </p>
         </div>
       </div>
