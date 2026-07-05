@@ -15,6 +15,9 @@ type AppStore = {
   musicEnabled: boolean;
   setMusicEnabled: (value: boolean) => void;
 
+  homePageHover: string | null;
+  setHomePageHover: (value: string | null) => void;
+
   // Route Reveal
   revealOpen: boolean;
   revealName: string;
@@ -44,6 +47,9 @@ export const useAppStore = create<AppStore>((set) => ({
     set({
       musicEnabled: value,
     }),
+
+  homePageHover: null,
+  setHomePageHover: (value) => set({ homePageHover: value }),
 
   // Reveal state
   revealOpen: false,

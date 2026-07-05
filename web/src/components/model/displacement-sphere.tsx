@@ -200,7 +200,7 @@ export const DisplacementSphere = ({
 
     const ambientLight = new AmbientLight(
       0xffffff,
-      theme === 'dark' ? 1.2 : 0.2
+      theme === 'dark' ? 1.2 : 0.4
     );
 
     dirLight.position.z = 200;

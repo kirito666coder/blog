@@ -44,7 +44,7 @@ export function Footer() {
             Ready to <br /> collaborate?
           </h3>
           <p className="text-background/60 max-w-sm text-lg font-light">
-            I'm currently available for freelance projects and exciting new
+            I&apos;m currently available for freelance projects and exciting new
             opportunities.
           </p>
         </div>
