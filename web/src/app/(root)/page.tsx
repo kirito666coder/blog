@@ -207,15 +207,17 @@ export default function Home() {
                         homePageHover === 'admin' ? 'scale-110' : 'scale-100'
                       }`}
                     >
-                      <ButtonHoverLineEffect>
-                        <TransitionLink
-                          href="/admin"
-                          revealName="Admin"
-                          x={3000}
-                        >
-                          Admin
-                        </TransitionLink>
-                      </ButtonHoverLineEffect>
+                      {session?.user.role === 'admin' && (
+                        <ButtonHoverLineEffect>
+                          <TransitionLink
+                            href="/admin"
+                            revealName="Admin"
+                            x={3000}
+                          >
+                            Admin
+                          </TransitionLink>
+                        </ButtonHoverLineEffect>
+                      )}
                     </div>
                   </div>
                 </div>
