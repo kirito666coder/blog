@@ -31,6 +31,7 @@ export default function Home() {
   const [timerDone, setTimerDone] = useState(introAlreadyPlayed);
 
   const { homePageHover, setHomePageHover } = useAppStore();
+  const [threeDModelBlur, setThreeDModelBlur] = useState<boolean>(false);
 
   const getClass = (id: string) =>
     `transition-all duration-500 ${
@@ -38,6 +39,10 @@ export default function Home() {
         ? 'blur-sm opacity-40'
         : 'blur-0 opacity-100'
     }`;
+
+  useEffect(() => {
+    setHomePageHover(null);
+  }, []);
 
   const shouldRunIntro = useMemo(() => {
     return !introAlreadyPlayed;
@@ -108,7 +113,9 @@ export default function Home() {
       <div id="smooth-wrapper">
         <div id="smooth-content" className="min-h-screen">
           <main className="relative overflow-hidden">
-            <div className="fixed inset-0 h-screen w-screen">
+            <div
+              className={`fixed inset-0 h-screen w-screen transition-all duration-500 ${threeDModelBlur ? 'blur-sm' : ''} opacity-100`}
+            >
               <DisplacementSphere
                 onReady={() => {
                   setSphereReady(true);
@@ -175,8 +182,14 @@ export default function Home() {
                     </div>
 
                     <div
-                      onMouseEnter={() => setHomePageHover('signin')}
-                      onMouseLeave={() => setHomePageHover(null)}
+                      onMouseEnter={() => {
+                        setHomePageHover('signin');
+                        setThreeDModelBlur(true);
+                      }}
+                      onMouseLeave={() => {
+                        setHomePageHover(null);
+                        setThreeDModelBlur(false);
+                      }}
                       className={`${getClass('signin')} ${
                         homePageHover === 'signin' ? 'scale-110' : 'scale-100'
                       }`}

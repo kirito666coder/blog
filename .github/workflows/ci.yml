@@ -64,4 +64,3 @@ jobs:
       - name: Typecheck Mobile
         working-directory: mobile
         run: pnpm tsc --noEmit
-
