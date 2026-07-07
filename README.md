@@ -1,8 +1,38 @@
-# Blog Monorepo
+# Kirito Blog
 
 A full-stack technical blog platform with a **Next.js web app** and an **Expo mobile app**, managed as a **pnpm workspace**.
 
-The web app includes a public blog, GitHub authentication, an admin dashboard, and MongoDB-backed content. The mobile app consumes the web API and renders blog posts with NativeWind styling.
+The web app delivers an immersive landing experience with 3D visuals, a public blog, GitHub authentication, and a MongoDB-backed admin dashboard. The mobile app reads from the same REST API and renders posts with NativeWind styling.
+
+**Live demo:** [kirito-blog.vercel.app](https://kirito-blog.vercel.app
+
+## Preview
+
+<table>
+  <tr>
+    <td align="center"><strong>Light theme</strong></td>
+    <td align="center"><strong>Dark theme</strong></td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="./Demo/web-light.png" alt="Kirito Blog landing page — light theme" width="100%" />
+    </td>
+    <td align="center">
+      <img src="./Demo/web-dark.png" alt="Kirito Blog landing page — dark theme" width="100%" />
+    </td>
+  </tr>
+</table>
+
+The landing page features a displacement-sphere 3D hero, GSAP-powered intro animations, custom stencil typography, and a system-aware light/dark theme toggle.
+
+## Highlights
+
+- **Immersive web experience** — Three.js displacement sphere, scroll animations, ambient audio, and route transitions
+- **Full blog platform** — Category filters, markdown posts with syntax highlighting, SEO metadata, and static generation for published slugs
+- **GitHub authentication** — NextAuth.js v5 sign-in with user sessions stored in MongoDB
+- **Admin dashboard** — Create, edit, review, publish, and draft articles; manage users and view platform stats
+- **Cross-platform mobile reader** — Expo app for iOS, Android, and web that consumes the deployed API
+- **Production-ready tooling** — Shared ESLint flat config, Prettier, Husky pre-commit hooks, and GitHub Actions CI
 
 ## Packages
 
@@ -22,6 +52,7 @@ The web app includes a public blog, GitHub authentication, an admin dashboard, a
 - [NextAuth.js v5](https://authjs.dev/) (GitHub provider)
 - [Three.js](https://threejs.org/) / React Three Fiber for 3D visuals
 - [GSAP](https://gsap.com/) for animations
+- [Shiki](https://shiki.style/) + react-markdown for code blocks
 
 ### Mobile (`mobile/`)
 
@@ -36,10 +67,45 @@ The web app includes a public blog, GitHub authentication, an admin dashboard, a
 - [ESLint 9](https://eslint.org/) flat config (shared base + per-package overrides)
 - [Prettier](https://prettier.io/) + [Husky](https://typicode.github.io/husky/) pre-commit hooks
 
+## Architecture
+
+```mermaid
+flowchart LR
+  subgraph clients [Clients]
+    Web[Next.js Web App]
+    Mobile[Expo Mobile App]
+  end
+
+  subgraph api [API Layer]
+    REST["/api/blogs · /api/auth"]
+  end
+
+  subgraph data [Data]
+    MongoDB[(MongoDB Atlas)]
+  end
+
+  Web --> REST
+  Mobile --> REST
+  REST --> MongoDB
+```
+
+| Route / area    | Purpose                                       |
+| --------------- | --------------------------------------------- |
+| `/`             | Animated landing page with 3D hero            |
+| `/blogs`        | Blog listing with category filters            |
+| `/blogs/[slug]` | Individual post (markdown + syntax highlight) |
+| `/about`        | About page with timeline and skills grid      |
+| `/admin`        | Dashboard — stats, quick actions              |
+| `/admin/blogs`  | Article management (CRUD, publish/draft)      |
+| `/admin/users`  | User management                               |
+| `/api/blogs`    | REST endpoints for blog data                  |
+| `/api/auth/*`   | NextAuth GitHub OAuth                         |
+
 ## Project Structure
 
 ```
 blog/
+├── Demo/                  # Screenshots for README and docs
 ├── eslint.config.mjs      # Shared ESLint base (imported by web & mobile)
 ├── package.json           # Root scripts: lint, format, husky
 ├── pnpm-workspace.yaml
@@ -64,17 +130,23 @@ blog/
 
 ## Getting Started
 
-### 1. Install dependencies
-
-From the repository root:
+### 1. Clone and install
 
 ```bash
+git clone https://github.com/<your-username>/blog.git
+cd blog
 pnpm install
 ```
 
 ### 2. Configure the web app
 
-Create `web/.env.local`:
+Copy the example env file and fill in your values:
+
+```bash
+cp web/.env.example web/.env.local
+```
+
+Or create `web/.env.local` manually:
 
 ```env
 # MongoDB
@@ -92,6 +164,8 @@ Generate `AUTH_SECRET`:
 ```bash
 openssl rand -base64 32
 ```
+
+**GitHub OAuth setup:** Create an OAuth app at [github.com/settings/developers](https://github.com/settings/developers) with callback URL `http://localhost:4000/api/auth/callback/github` (use your production URL when deploying).
 
 ### 3. Run the web app
 
@@ -130,13 +204,35 @@ Run these from the **repository root** unless noted.
 
 ## Web Features
 
-- **Public site** — animated landing page, blog listing, and slug-based blog detail pages
-- **Authentication** — GitHub sign-in via NextAuth; users stored in MongoDB
-- **Admin panel** (`/admin`) — dashboard, user management, blog CRUD (create, review, publish/draft)
-- **API routes** — `/api/blogs`, `/api/blogs/[slug]`, `/api/auth/[...nextauth]`
-- **Static generation** — blog slugs pre-rendered via `generateStaticParams`; admin routes are dynamic
+### Public site
 
-Admin routes use `export const dynamic = 'force-dynamic'` so they are not pre-rendered at build time and do not require a live database during `next build`.
+- Animated landing page with displacement-sphere 3D hero and intro loader
+- Blog listing with category filters and card layout
+- Slug-based detail pages with markdown rendering and Shiki syntax highlighting
+- About page with journey timeline, skills constellation, and bento grid
+- Light/dark theme with system preference support
+- Ambient background music and hover sound effects
+
+### Authentication & admin
+
+- GitHub sign-in via NextAuth; users persisted in MongoDB
+- Admin panel at `/admin` — dashboard stats, user management, blog CRUD
+- Draft and published workflow for articles
+- API routes: `/api/blogs`, `/api/blogs/[slug]`, `/api/auth/[...nextauth]`
+
+### Performance
+
+- Blog slugs pre-rendered via `generateStaticParams`
+- Admin routes use `export const dynamic = 'force-dynamic'` so they are not pre-rendered at build time and do not require a live database during `next build`
+
+## Mobile App
+
+The Expo mobile app provides a minimal, dark-themed reader for blog content:
+
+- Home screen with branding and navigation to the blog list
+- Fetches posts from the web API (`https://kirito-blog.vercel.app/api/` by default)
+- Markdown rendering with syntax-highlighted code blocks
+- Runs on iOS, Android, and web via Expo
 
 ## ESLint Setup
 
@@ -164,6 +260,12 @@ Required GitHub secrets for the web build:
 - `AUTH_GITHUB_ID`
 - `AUTH_GITHUB_SECRET`
 - `NEXTAUTH_URL`
+
+## Deployment
+
+The web app is designed for [Vercel](https://vercel.com/) deployment. Set the same environment variables from `.env.local` in your Vercel project settings, and update the GitHub OAuth callback URL to match your production domain.
+
+For the mobile app, point `mobile/api/client.ts` `baseURL` at your deployed API before building for production.
 
 ## Build Notes
 
