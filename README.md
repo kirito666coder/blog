@@ -4,7 +4,7 @@ A full-stack technical blog platform with a **Next.js web app** and an **Expo mo
 
 The web app delivers an immersive landing experience with 3D visuals, a public blog, GitHub authentication, and a MongoDB-backed admin dashboard. The mobile app reads from the same REST API and renders posts with NativeWind styling.
 
-**Live demo:** [kirito-blog.vercel.app](https://kirito-blog.vercel.app
+**Live demo:** [kirito-blog.vercel.app](https://kirito-blog.vercel.app)
 
 ## Preview
 
