@@ -1,0 +1,26 @@
+FROM node:22-alpine 
+
+RUN apk add --no-cache libc6-compat
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+RUN corepack enable
+
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml ./pnpm-workspace.yaml ./
+COPY eslint.config.mjs ./
+Copy web ./web
+
+WORKDIR /app/web
+
+RUN pnpm install --frozen-lockfile
+
+ENV NODE_ENV=production
+
+RUN pnpm build
+
+EXPOSE 3000
+
+CMD ["pnpm", "start"]
