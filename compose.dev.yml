@@ -1,0 +1,22 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile.dev
+
+    container_name: next-dev
+
+    ports:
+      - '3000:3000'
+
+    volumes:
+      - .:/app
+      - /app/web/node_modules
+      - /app/node_modules
+
+    working_dir: /app/web
+
+    environment:
+      NODE_ENV: development
+
+    command: pnpm dev
