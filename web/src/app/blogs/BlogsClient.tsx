@@ -100,10 +100,7 @@ export default function BlogsClient({
       />
 
       {/* Blogs Grid */}
-      <div
-        ref={gridRef}
-        className="mt-12 grid w-full max-w-7xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
-      >
+      <div ref={gridRef} className="mt-12 w-full max-w-7xl">
         {filteredBlogs.map((blog) => (
           <BlogCard
             key={blog.slug}
