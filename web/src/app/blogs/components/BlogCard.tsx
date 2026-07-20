@@ -19,103 +19,17 @@ export const BlogCard = ({
   excerpt,
   tags,
 }: BlogCardProps) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  const glowRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const card = cardRef.current;
-
-    const glow = glowRef.current;
-
-    if (!card || !glow) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = card.getBoundingClientRect();
-
-      const x = e.clientX - rect.left;
-
-      const y = e.clientY - rect.top;
-
-      const rotateX = (y / rect.height - 0.5) * -10;
-
-      const rotateY = (x / rect.width - 0.5) * 10;
-
-      // Card tilt
-      gsap.to(card, {
-        rotateX,
-        rotateY,
-        duration: 0.4,
-        ease: 'power2.out',
-        transformPerspective: 1000,
-      });
-
-      // Glow follows mouse exactly
-      gsap.to(glow, {
-        x,
-        y,
-        duration: 0.25,
-        ease: 'power3.out',
-      });
-    };
-
-    const handleMouseEnter = () => {
-      gsap.to(glow, {
-        opacity: 0.12,
-        scale: 1,
-        duration: 0.3,
-      });
-    };
-
-    const handleMouseLeave = () => {
-      gsap.to(card, {
-        rotateX: 0,
-        rotateY: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-      });
-
-      gsap.to(glow, {
-        opacity: 0,
-        scale: 0.8,
-        duration: 0.4,
-        ease: 'power2.out',
-      });
-    };
-
-    card.addEventListener('mousemove', handleMouseMove);
-
-    card.addEventListener('mouseenter', handleMouseEnter);
-
-    card.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      card.removeEventListener('mousemove', handleMouseMove);
-
-      card.removeEventListener('mouseenter', handleMouseEnter);
-
-      card.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, []);
-
   return (
-    <Link href={`blogs/${slug}`} className="group block perspective-[1200px]">
+    <Link
+      href={`blogs/${slug}`}
+      className="group mt-25 block perspective-[1200px]"
+    >
       <div
-        ref={cardRef}
-        className="glass premium-shadow hover:border-foreground relative flex flex-col gap-4 overflow-hidden rounded-2xl border-r border-b p-6 transition-colors will-change-transform"
+        className="glass premium-shadow border-foreground/20 relative flex flex-col gap-4 overflow-hidden border-b pb-5"
         style={{
           transformStyle: 'preserve-3d',
         }}
       >
-        {/* Moving Glow Ball */}
-        <div
-          ref={glowRef}
-          className="bg-foreground pointer-events-none absolute top-0 left-0 z-0 h-40 w-40 rounded-full opacity-0"
-          style={{
-            transform: 'translate(-50%, -50%)',
-          }}
-        />
-
         <div className="relative z-10 flex items-center justify-between">
           <span className="bg-foreground text-background rounded-full px-3 py-1 text-xs font-medium">
             {category}
