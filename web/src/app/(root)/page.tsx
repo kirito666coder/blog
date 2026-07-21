@@ -152,24 +152,6 @@ export default function Home() {
                     </div>
 
                     <div
-                      onMouseEnter={() => setHomePageHover('about')}
-                      onMouseLeave={() => setHomePageHover(null)}
-                      className={`${getClass('about')} ${
-                        homePageHover === 'about' ? 'scale-110' : 'scale-100'
-                      }`}
-                    >
-                      <ButtonHoverLineEffect>
-                        <TransitionLink
-                          href="/about"
-                          revealName="About"
-                          x={100}
-                        >
-                          About
-                        </TransitionLink>
-                      </ButtonHoverLineEffect>
-                    </div>
-
-                    <div
                       onMouseEnter={() => setHomePageHover('theme')}
                       onMouseLeave={() => setHomePageHover(null)}
                       className={`${getClass('theme')} ${
