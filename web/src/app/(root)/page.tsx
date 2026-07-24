@@ -17,6 +17,7 @@ import { useSession } from 'next-auth/react';
 import Logo from '@/components/Logo';
 import { TextIntro } from '@/components/Animations';
 import { TransitionLink } from '@/components/Navigation';
+import HeroSection from './HeroSection';
 // import { seedData } from '@/data/seed';
 
 let introAlreadyPlayed = false;
@@ -91,14 +92,11 @@ export default function Home() {
     });
 
     const ctx = gsap.context(() => {
-      // fully covering the screen, no clip yet
       gsap.set(mainLayerRef.current, {
         clipPath: 'inset(0% 0% 0% 0%)',
       });
 
       gsap.to(mainLayerRef.current, {
-        // bottom inset grows to 100% — main page's visible area
-        // shrinks from the bottom up, revealing section 2 beneath it
         clipPath: 'inset(0% 0% 100% 0%)',
         ease: 'none',
         scrollTrigger: {
@@ -124,10 +122,8 @@ export default function Home() {
       <div id="smooth-wrapper">
         <div id="smooth-content" className="min-h-screen">
           <div ref={pinWrapRef} className="relative">
-            {/* SECOND SECTION — sits behind, fixed in place, never moves */}
-            <div className="bg-background absolute inset-0 z-0 flex h-screen w-screen items-center justify-center">
-              {/* your next page content here */}
-              <p className="text-9xl">hello world</p>
+            <div className="bg-background absolute inset-0 z-0 h-screen w-screen">
+              <HeroSection />
             </div>
             <div
               ref={mainLayerRef}
@@ -300,7 +296,7 @@ export default function Home() {
               </main>
             </div>
           </div>
-          <div style={{ height: '101vh' }} />
+          <div className="h-[101vh]" />
         </div>
       </div>
     </>
