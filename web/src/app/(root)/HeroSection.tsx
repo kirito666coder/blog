@@ -193,7 +193,7 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <div className="pointer-events-none absolute bottom-5 left-0 z-0 flex w-full overflow-hidden opacity-10 select-none">
+      <div className="pointer-events-none absolute bottom-5 left-0 z-0 flex w-full overflow-hidden opacity-50 select-none">
         <div
           className="marquee-content flex gap-8 text-[150px] leading-none font-black tracking-tighter whitespace-nowrap text-transparent uppercase"
           style={{ WebkitTextStroke: '2px var(--foreground)' }}

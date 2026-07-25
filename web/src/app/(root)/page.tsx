@@ -18,6 +18,7 @@ import Logo from '@/components/Logo';
 import { TextIntro } from '@/components/Animations';
 import { TransitionLink } from '@/components/Navigation';
 import HeroSection from './HeroSection';
+import { ScrollIndicator } from './components/ScrollIndicator';
 // import { seedData } from '@/data/seed';
 
 let introAlreadyPlayed = false;
@@ -82,19 +83,15 @@ export default function Home() {
 
   const mainLayerRef = useRef<HTMLDivElement>(null);
   const pinWrapRef = useRef<HTMLDivElement>(null);
+  const scrollProgressRef = useRef(0);
 
   useEffect(() => {
     if (loading) return;
 
-    const smoother = ScrollSmoother.create({
-      smooth: 3,
-      effects: true,
-    });
+    const smoother = ScrollSmoother.create({ smooth: 3, effects: true });
 
     const ctx = gsap.context(() => {
-      gsap.set(mainLayerRef.current, {
-        clipPath: 'inset(0% 0% 0% 0%)',
-      });
+      gsap.set(mainLayerRef.current, { clipPath: 'inset(0% 0% 0% 0%)' });
 
       gsap.to(mainLayerRef.current, {
         clipPath: 'inset(0% 0% 100% 0%)',
@@ -105,6 +102,9 @@ export default function Home() {
           end: '+=100%',
           scrub: true,
           pin: true,
+          onUpdate: (self) => {
+            scrollProgressRef.current = self.progress;
+          },
         },
       });
     });
@@ -293,6 +293,8 @@ export default function Home() {
                     </h1>
                   </div>
                 )}
+
+                <ScrollIndicator progressRef={scrollProgressRef} />
               </main>
             </div>
           </div>
