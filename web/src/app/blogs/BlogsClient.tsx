@@ -9,8 +9,6 @@ import { useGSAP } from '@gsap/react';
 import type { Blog } from '@/models/blog.schema';
 import Logo from '@/components/Logo';
 
-const CATEGORIES = ['All', 'Frontend', 'Backend', 'DevOps'];
-
 export default function BlogsClient({
   initialBlogs,
 }: {
@@ -40,11 +38,11 @@ export default function BlogsClient({
       tl.from(
         gridRef.current?.children || [],
         {
-          scale: 0.9,
+          y: 40,
           opacity: 0,
-          duration: 0.5,
+          duration: 0.6,
           stagger: 0.1,
-          ease: 'back.out(1.7)',
+          ease: 'power3.out',
         },
         '-=0.4'
       );
@@ -63,6 +61,16 @@ export default function BlogsClient({
     }
   }, [activeCategory]);
 
+  const availableCategories = useMemo(() => {
+    const cats = new Set<string>();
+    blogs.forEach((blog) => {
+      if (blog.category) {
+        cats.add(blog.category);
+      }
+    });
+    return ['All', ...Array.from(cats)];
+  }, [blogs]);
+
   const filteredBlogs = useMemo(() => {
     return activeCategory === 'All'
       ? blogs
@@ -72,19 +80,20 @@ export default function BlogsClient({
   return (
     <main
       ref={containerRef}
-      className="bg-background flex min-h-screen flex-col items-center px-6 pt-24 pb-20"
+      className="bg-background relative flex min-h-screen flex-col items-center overflow-hidden px-6 pt-24 pb-20"
     >
       <div className="fixed top-[5%] left-[3%] z-50">
         <Logo className="text-3xl" />
       </div>
+
       {/* Hero Section */}
       <section
         ref={heroRef}
-        className="mb-16 flex max-w-4xl flex-col items-center text-center"
+        className="relative z-10 mb-16 flex max-w-4xl flex-col items-center text-center"
       >
         <h1 className="font-ops mb-6 text-5xl font-extrabold tracking-tighter md:text-7xl">
           <span className="opacity-60">THE</span>{' '}
-          <span className="opacity-100">BL&lt;G&gt;</span>
+          <span className="text-foreground">BL&lt;G&gt;</span>
         </h1>
         <p className="text-muted-foreground max-w-2xl text-lg">
           Deep dives into modern web technologies, architectural patterns, and
@@ -93,14 +102,19 @@ export default function BlogsClient({
       </section>
 
       {/* Filter Section */}
-      <CategoryFilter
-        categories={CATEGORIES}
-        activeCategory={activeCategory}
-        onCategoryChange={setActiveCategory}
-      />
+      <div className="relative z-10 w-full max-w-7xl">
+        <CategoryFilter
+          categories={availableCategories}
+          activeCategory={activeCategory}
+          onCategoryChange={setActiveCategory}
+        />
+      </div>
 
       {/* Blogs Grid */}
-      <div ref={gridRef} className="mt-12 w-full max-w-7xl">
+      <div
+        ref={gridRef}
+        className="relative z-10 mt-12 grid w-full max-w-7xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3"
+      >
         {filteredBlogs.map((blog) => (
           <BlogCard
             key={blog.slug}
@@ -109,10 +123,13 @@ export default function BlogsClient({
             category={blog.category}
             excerpt={blog.excerpt ?? ''}
             tags={blog.tags}
+            readingTime={blog.readingTime}
+            createdAt={blog.createdAt}
+            coverImage={blog.coverImage}
           />
         ))}
         {filteredBlogs.length === 0 && (
-          <div className="text-muted-foreground col-span-full py-20 text-center">
+          <div className="text-muted-foreground col-span-full py-20 text-center text-lg">
             No articles found in this category. Stay tuned!
           </div>
         )}
