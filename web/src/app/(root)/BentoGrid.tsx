@@ -49,7 +49,7 @@ export default function BentoGrid() {
           <div className="from-background/90 absolute inset-0 z-0 bg-gradient-to-t to-transparent" />
           <div className="relative z-10">
             <div className="border-border/50 bg-background/50 mb-4 inline-flex items-center gap-2 rounded-full border px-3 py-1 backdrop-blur-md">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
+              <span className="bg-foreground h-2 w-2 animate-pulse rounded-full" />
               <span className="text-muted-foreground text-xs font-bold tracking-wider uppercase">
                 Available for work
               </span>
