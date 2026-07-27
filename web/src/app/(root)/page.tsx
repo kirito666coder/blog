@@ -20,6 +20,7 @@ import { TransitionLink } from '@/components/Navigation';
 import HeroSection from './HeroSection';
 import { ScrollIndicator } from './components/ScrollIndicator';
 import BentoGrid from './BentoGrid';
+import Footer from './Footer';
 // import { seedData } from '@/data/seed';
 
 let introAlreadyPlayed = false;
@@ -140,7 +141,7 @@ export default function Home() {
         <div id="smooth-content" className="min-h-screen">
           <div ref={pinWrapRef} className="relative">
             <div className="bg-background absolute inset-0 z-10 h-screen w-screen">
-              hello
+              <Footer />
             </div>
 
             <div

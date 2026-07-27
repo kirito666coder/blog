@@ -103,7 +103,7 @@ export default function BentoGrid() {
 
         <div className="bento-card grid grid-cols-2 grid-rows-2 gap-4 md:col-span-1 md:row-span-1">
           <a
-            href="#"
+            href="https://github.com/kirito666coder"
             className="bg-foreground/5 border-border/50 hover:bg-foreground/10 hover:border-foreground/30 flex items-center justify-center rounded-[2rem] border backdrop-blur-xl transition-all hover:scale-105"
           >
             <svg
@@ -121,7 +121,7 @@ export default function BentoGrid() {
             </svg>
           </a>
           <a
-            href="#"
+            href="https://github.com/kirito666coder"
             className="bg-foreground/5 border-border/50 hover:bg-foreground/10 hover:border-foreground/30 flex items-center justify-center rounded-[2rem] border backdrop-blur-xl transition-all hover:scale-105"
           >
             <svg
@@ -139,7 +139,7 @@ export default function BentoGrid() {
             </svg>
           </a>
           <a
-            href="#"
+            href="https://github.com/kirito666coder"
             className="bg-foreground/5 border-border/50 hover:bg-foreground/10 hover:border-foreground/30 flex items-center justify-center rounded-[2rem] border backdrop-blur-xl transition-all hover:scale-105"
           >
             <svg
