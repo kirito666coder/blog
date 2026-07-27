@@ -19,6 +19,7 @@ import { TextIntro } from '@/components/Animations';
 import { TransitionLink } from '@/components/Navigation';
 import HeroSection from './HeroSection';
 import { ScrollIndicator } from './components/ScrollIndicator';
+import BentoGrid from './BentoGrid';
 // import { seedData } from '@/data/seed';
 
 let introAlreadyPlayed = false;
@@ -146,7 +147,7 @@ export default function Home() {
               ref={thirdLayerRef}
               className="bg-background absolute inset-0 z-20 h-screen w-screen overflow-hidden"
             >
-              hello
+              <BentoGrid />
             </div>
 
             <div
