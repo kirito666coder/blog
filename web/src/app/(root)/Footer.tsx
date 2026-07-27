@@ -35,12 +35,6 @@ export default function Footer() {
             >
               Blogs
             </Link>
-            <Link
-              href="/admin"
-              className="text-muted-foreground hover:text-foreground text-sm font-medium transition-colors"
-            >
-              Admin
-            </Link>
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-foreground mb-2 text-sm font-black tracking-widest uppercase">
