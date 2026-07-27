@@ -82,6 +82,8 @@ export default function Home() {
   }, [loading]);
 
   const mainLayerRef = useRef<HTMLDivElement>(null);
+  const secondLayerRef = useRef<HTMLDivElement>(null);
+  const thirdLayerRef = useRef<HTMLDivElement>(null);
   const pinWrapRef = useRef<HTMLDivElement>(null);
   const scrollProgressRef = useRef(0);
 
@@ -92,20 +94,35 @@ export default function Home() {
 
     const ctx = gsap.context(() => {
       gsap.set(mainLayerRef.current, { clipPath: 'inset(0% 0% 0% 0%)' });
+      gsap.set(secondLayerRef.current, { clipPath: 'inset(0% 0% 0% 0%)' });
+      gsap.set(thirdLayerRef.current, { clipPath: 'inset(0% 0% 0% 0%)' });
 
-      gsap.to(mainLayerRef.current, {
-        clipPath: 'inset(0% 0% 100% 0%)',
-        ease: 'none',
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: pinWrapRef.current,
           start: 'top top',
-          end: '+=100%',
+          end: '+=300%',
           scrub: true,
           pin: true,
           onUpdate: (self) => {
             scrollProgressRef.current = self.progress;
           },
         },
+      });
+
+      tl.to(mainLayerRef.current, {
+        clipPath: 'inset(0% 0% 100% 0%)',
+        ease: 'none',
+      });
+
+      tl.to(secondLayerRef.current, {
+        clipPath: 'inset(0% 0% 100% 0%)',
+        ease: 'none',
+      });
+
+      tl.to(thirdLayerRef.current, {
+        clipPath: 'inset(0% 0% 100% 0%)',
+        ease: 'none',
       });
     });
 
@@ -114,7 +131,6 @@ export default function Home() {
       smoother.kill();
     };
   }, [loading]);
-
   return (
     <>
       <IntroLoader visible={loading} />
@@ -122,12 +138,26 @@ export default function Home() {
       <div id="smooth-wrapper">
         <div id="smooth-content" className="min-h-screen">
           <div ref={pinWrapRef} className="relative">
-            <div className="bg-background absolute inset-0 z-0 h-screen w-screen">
+            <div className="bg-background absolute inset-0 z-10 h-screen w-screen">
+              hello
+            </div>
+
+            <div
+              ref={thirdLayerRef}
+              className="bg-background absolute inset-0 z-20 h-screen w-screen overflow-hidden"
+            >
+              hello
+            </div>
+
+            <div
+              ref={secondLayerRef}
+              className="bg-background absolute inset-0 z-30 h-screen w-screen overflow-hidden"
+            >
               <HeroSection />
             </div>
             <div
               ref={mainLayerRef}
-              className="bg-background absolute inset-0 z-10 h-screen w-screen overflow-hidden"
+              className="bg-background absolute inset-0 z-40 h-screen w-screen overflow-hidden"
             >
               <main className="relative overflow-hidden">
                 <div
@@ -298,7 +328,7 @@ export default function Home() {
               </main>
             </div>
           </div>
-          <div className="h-[101vh]" />
+          <div className="h-screen" />
         </div>
       </div>
     </>
